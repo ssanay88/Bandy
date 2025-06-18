@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Bandy</string>
+    <string name="nickname">닉네임</string>
+    <string name="instrument">악기</string>
+    <string name="region">지역</string>
+    <string name="introduce">간단 소개</string>
+    <string name="link">링크</string>
+    <string name="regist_text">등록하기</string>
+    <string name="back_text">뒤로가기</string>
+
+    <!-- Login Screen -->
+    <string name="login_text">로그인</string>
+    <string name="naver_login_btn_text">네이버 로그인</string>
+    <string name="kakao_login_btn_text">카카오 로그인</string>
+    <string name="default_profile_image_descript">기본 프로필 이미지</string>
+    <string name="change_profile_image_icon_descript">프로필 이미지 변경</string>
+
+
+    <!-- ProfileRge Screen -->
+
+
+</resources>

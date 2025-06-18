@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="filled_btn_height">50dp</dimen>
+    <dimen name="outlined_btn_height">50dp</dimen>
+    <dimen name="space_8dp">8dp</dimen>
+    <dimen name="space_16dp">16dp</dimen>
+    <dimen name="space_24dp">24dp</dimen>
+
+    <!-- SplashScreen -->
+    <dimen name="splash_app_name_font_size">60sp</dimen>
+
+    <!-- LoginScreen -->
+    <dimen name="login_btn_padding">20dp</dimen>
+    <dimen name="login_btn_corner">8dp</dimen>
+    <dimen name="login_btn_height">60dp</dimen>
+    <dimen name="login_btn_space">18dp</dimen>
+    <dimen name="login_text">16sp</dimen>
+    <dimen name="login_text_bottom_padding">30dp</dimen>
+    <dimen name="login_button_section_bottom_padding">100dp</dimen>
+    <dimen name="login_screen_bandy_logo_height">100dp</dimen>
+    <dimen name="login_screen_bandy_logo_width">150dp</dimen>
+
+    <!-- Profile Regist Screen -->
+    <dimen name="profile_reg_title_text_size">20sp</dimen>"
+    <dimen name="profile_reg_screen_horizontal_padding">10dp</dimen>
+    <dimen name="profile_reg_screen_vertical_padding">20dp</dimen>
+
+</resources>
