@@ -7,6 +7,11 @@
     <string name="link">링크</string>
     <string name="regist_text">등록하기</string>
     <string name="back_text">뒤로가기</string>
+    <string name="home_screen_title">홈</string>
+    <string name="recruit_screen_title">모집</string>
+    <string name="my_band_screen_title">마이 밴드</string>
+    <string name="profile_screen_title">프로필</string>
+
 
     <!-- Login Screen -->
     <string name="login_text">로그인</string>
@@ -14,6 +19,9 @@
     <string name="kakao_login_btn_text">카카오 로그인</string>
     <string name="default_profile_image_descript">기본 프로필 이미지</string>
     <string name="change_profile_image_icon_descript">프로필 이미지 변경</string>
+    <string name="top_appbar_logo_descript">상단앱바 로고</string>
+    <string name="top_app_bar_chat_icon_descript">상단앱바 채팅 아이콘</string>
+    <string name="top_app_bar_noti_icon_descript">상단앱바 알림 아이콘</string>
 
 
     <!-- ProfileRge Screen -->

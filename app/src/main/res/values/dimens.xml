@@ -6,6 +6,13 @@
     <dimen name="space_16dp">16dp</dimen>
     <dimen name="space_24dp">24dp</dimen>
 
+    <!-- TopAppBar -->
+    <dimen name="start_app_logo_icon_start_padding">10dp</dimen>
+    <dimen name="end_badge_icons_section_padding">10dp</dimen>
+    <dimen name="end_badge_icons_section_spacer_padding">20dp</dimen>
+    <dimen name="badge_icon_size">20dp</dimen>
+    <dimen name="badge_icon_text_font_size">14sp</dimen>
+
     <!-- SplashScreen -->
     <dimen name="splash_app_name_font_size">60sp</dimen>
 
