@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -159,22 +160,24 @@ fun FindBandItemView(item: Band, onBandInfoClick: (String) -> Unit) {
     WhiteRoundedCornerCard(
         modifier = Modifier
             .padding(dimensionResource(R.dimen.item_view_card_padding))
+            .fillMaxWidth()
+            .aspectRatio(0.55f)
             .throttleClick {
                 onBandInfoClick(item.bandId)
             }
     ) {
         Column (
-            modifier = Modifier.height(dimensionResource(R.dimen.find_band_item_view_height)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.find_member_item_view_space))
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top
         ) {
             AsyncImage(
                 model = item.bandProfileImageUrl,
                 contentDescription = item.bandName,
                 modifier = Modifier
-                    .height(dimensionResource(R.dimen.find_band_item_view_image_height))
+                    .fillMaxWidth()
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(dimensionResource(R.dimen.band_image_corner))),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 placeholder = painterResource(R.drawable.bandy_logo_tertiary_color),
                 error = painterResource(R.drawable.bandy_logo_tertiary_color)
             )
@@ -197,7 +200,7 @@ fun BandName(bandName: String) {
     Text(
         text = bandName,
         fontFamily = SuitFontFamily,
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
         maxLines = ITEM_VIEW_BAND_NAME_MAX_LINE,
         overflow = TextOverflow.Ellipsis,
@@ -213,6 +216,7 @@ fun BandContent(bandContent: String, modifier: Modifier = Modifier) {
         style = MaterialTheme.typography.bodyMedium,
         maxLines = ITEM_VIEW_BAND_CONTENT_MAX_LINES,
         overflow = TextOverflow.Ellipsis,
+        modifier = modifier
     )
 }
 

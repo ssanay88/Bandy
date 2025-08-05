@@ -65,7 +65,6 @@
     <!-- Recruit Screen -->
     <dimen name="item_view_card_padding">4dp</dimen>
     <dimen name="recruit_tab_layout_indicator_height">4dp</dimen>
-    <dimen name="find_band_item_view_height">350dp</dimen>
     <dimen name="find_band_item_view_padding">4dp</dimen>
     <dimen name="find_band_item_view_image_height">200dp</dimen>
     <dimen name="find_band_item_view_image_padding">4dp</dimen>
