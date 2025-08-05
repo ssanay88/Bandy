@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="band_image_corner">8dp</dimen>
+    <dimen name="space_5dp">5dp</dimen>
+    <dimen name="space_8dp">8dp</dimen>
+    <dimen name="space_10dp">10dp</dimen>
+    <dimen name="space_16dp">16dp</dimen>
+    <dimen name="space_24dp">24dp</dimen>
+    <dimen name="padding_5dp">5dp</dimen>
+    <dimen name="padding_10dp">10dp</dimen>
+    <dimen name="padding_vertical_5dp">5dp</dimen>
+    <dimen name="elevation_8dp">8dp</dimen>
+
+    <!-- TopAppBar -->
+    <dimen name="start_app_logo_icon_start_padding">10dp</dimen>
+    <dimen name="end_badge_icon_size">24dp</dimen>
+    <dimen name="end_badge_icons_section_padding">10dp</dimen>
+    <dimen name="end_badge_icons_section_spacer_padding">20dp</dimen>
+    <dimen name="badge_icon_size">20dp</dimen>
+    <dimen name="badge_icon_text_font_size">14sp</dimen>
+    <dimen name="top_app_bar_divider_height">0.5dp</dimen>
+
+    <!-- FloatingButton  -->
+    <dimen name="floating_button_icon_size">50dp</dimen>
+    <dimen name="floating_button_item_view_padding">8dp</dimen>
+    <dimen name="floating_button_item_view_icon_size">24dp</dimen>
+    <dimen name="floating_button_item_view_icon_text_space">8dp</dimen>
+    <dimen name="floating_button_item_view_width">150dp</dimen>
+
+    <!-- LoginScreen -->
+    <dimen name="login_btn_space">18dp</dimen>
+    <dimen name="login_text">16sp</dimen>
+    <dimen name="login_text_bottom_padding">30dp</dimen>
+    <dimen name="login_button_section_bottom_padding">100dp</dimen>
+    <dimen name="login_screen_bandy_logo_height">100dp</dimen>
+    <dimen name="login_screen_bandy_logo_width">150dp</dimen>
+    <dimen name="login_btn_section_horizontal_padding">20dp</dimen>
+
+    <!-- Home Screen -->
+    <dimen name="top_banner_height">200dp</dimen>
+    <dimen name="popular_band_item_view_width">180dp</dimen>
+    <dimen name="popular_band_item_view_height">300dp</dimen>
+    <dimen name="popular_band_item_view_round">12dp</dimen>
+    <dimen name="popular_band_list_space">8dp</dimen>
+    <dimen name="popular_band_item_view_text_top_padding">8dp</dimen>
+    <dimen name="section_title_vertical_padding">10dp</dimen>
+    <dimen name="section_horizontal_padding">10dp</dimen>
+    <dimen name="best_posting_item_view_vertical_padding">5dp</dimen>
+    <dimen name="best_posting_spacer_height">1dp</dimen>
+    <dimen name="best_posting_spacer_horizontal_padding">8dp</dimen>
+    <dimen name="posting_top_padding">10dp</dimen>
+    <dimen name="posting_spacer_height">2dp</dimen>
+    <dimen name="posting_info_row_author_img_size">30dp</dimen>
+    <dimen name="posting_info_row_author_name_start_padding">10dp</dimen>
+    <dimen name="posting_info_row_view_count_start_padding">30dp</dimen>
+    <dimen name="posting_info_row_posting_time_start_padding">20dp</dimen>
+
+    <!-- PostingDetailScreen -->
+    <dimen name="posting_detail_user_image_size">30dp</dimen>
+    <dimen name="posting_detail_info_icon_size">18dp</dimen>
+    <dimen name="posting_detail_content_section_min_height">100dp</dimen>
+    <dimen name="posting_detail_content_section_author_info_space">2dp</dimen>
+    <dimen name="posting_detail_content_section_content_space">4dp</dimen>
+
+    <!-- Recruit Screen -->
+    <dimen name="item_view_card_padding">4dp</dimen>
+    <dimen name="recruit_tab_layout_indicator_height">4dp</dimen>
+    <dimen name="find_band_item_view_height">350dp</dimen>
+    <dimen name="find_band_item_view_padding">4dp</dimen>
+    <dimen name="find_band_item_view_image_height">200dp</dimen>
+    <dimen name="find_band_item_view_image_padding">4dp</dimen>
+    <dimen name="find_band_item_view_band_name_top_padding">5dp</dimen>
+    <dimen name="find_band_item_view_band_tag_top_padding">8dp</dimen>
+    <dimen name="find_band_item_view_band_tag_horizontal_space">4dp</dimen>
+    <dimen name="find_band_item_view_band_tag_vertical_space">6dp</dimen>
+    <dimen name="find_member_item_view_band_tag_space">2dp</dimen>
+    <dimen name="find_member_item_view_space">4dp</dimen>
+    <dimen name="find_member_item_view_height">150dp</dimen>
+    <dimen name="find_member_item_view_padding">10dp</dimen>
+    <dimen name="find_member_item_view_band_name_vertical_padding">4dp</dimen>
+    <dimen name="find_member_item_view_band_img_size">30dp</dimen>
+    <dimen name="find_member_item_view_band_name_start_padding">10dp</dimen>
+    <dimen name="find_member_item_view_view_count_start_padding">30dp</dimen>
+    <dimen name="find_member_item_view_posting_time_start_padding">20dp</dimen>
+
+    <!-- Create Recruit Member Screen -->
+    <dimen name="recruit_member_recruiting_info_content_text_field_height">200dp</dimen>
+
+    <!-- Recruiting Member Detail Screen  -->
+    <dimen name="recruiting_member_posting_band_img_size">30dp</dimen>
+
+    <!-- MyBand Screen -->
+    <dimen name="my_band_info_section_top_padding">100dp</dimen>
+    <dimen name="my_band_info_section_horizontal_padding">10dp</dimen>
+    <dimen name="my_band_info_section_card_height">200dp</dimen>
+    <dimen name="my_band_info_section_card_top_padding">40dp</dimen>
+    <dimen name="my_band_member_section_min_height">150dp</dimen>
+    <dimen name="band_member_leader_icon_space">14dp</dimen>
+    <dimen name="band_member_leader_icon_size">14dp</dimen>
+    <dimen name="band_member_divider_height">2dp</dimen>
+    <dimen name="band_member_divider_horizontal_padding">5dp</dimen>
+    <dimen name="my_band_description_section_min_height">100dp</dimen>
+    <dimen name="my_band_profile_image_size">80dp</dimen>
+    <dimen name="my_band_profile_section_space">10dp</dimen>
+    <dimen name="suggest_fine_band_screen_padding">30dp</dimen>
+    <dimen name="suggest_fine_band_button_height">60dp</dimen>
+
+    <!-- Band Detail Info Screen -->
+    <dimen name="my_band_detail_info_column_top_padding">120dp</dimen>
+    <dimen name="my_band_detail_info_column_horizontal_padding">10dp</dimen>
+
+    <!-- Chat Screen -->
+    <dimen name="chat_room_item_view_thumbnail_image_size">80dp</dimen>
+    <dimen name="chat_room_item_view_padding">10dp</dimen>
+    <dimen name="chat_room_info_view_padding">10dp</dimen>
+    <dimen name="chat_room_info_last_message_view_top_padding">8dp</dimen>
+
+    <!-- Profile Screen   -->
+    <dimen name="profile_info_section_height">120dp</dimen>
+    <dimen name="profile_info_image_size">80dp</dimen>
+    <dimen name="profile_info_name_start_padding">14dp</dimen>
+    <dimen name="profile_description_min_height">100dp</dimen>
+    <dimen name="profile_description_top_padding">10dp</dimen>
+    <dimen name="profile_menu_height">60dp</dimen>
+    <dimen name="profile_menu_icon_size">40dp</dimen>
+    <dimen name="profile_menu_text_start_padding">20dp</dimen>
+
+    <!-- Profile Regist Screen -->
+    <dimen name="profile_reg_title_text_size">20sp</dimen>"
+    <dimen name="profile_reg_screen_horizontal_padding">10dp</dimen>
+    <dimen name="profile_reg_screen_vertical_padding">20dp</dimen>
+    <dimen name="profile_reg_screen_introduce_text_field_min_height">120dp</dimen>
+    <dimen name="profile_reg_screen_gender_button_height">50dp</dimen>
+    <dimen name="profile_reg_screen_gender_button_corner_radius">100dp</dimen>
+    <dimen name="profile_reg_screen_birth_border_width">1dp</dimen>
+    <dimen name="profile_reg_screen_birth_border_radius">100dp</dimen>
+    <dimen name="profile_reg_screen_birth_border_padding">20dp</dimen>
+    
+    <!-- Notification Screen -->
+    <dimen name="notification_item_view_arrow_icon_size">16dp</dimen>
+
+    <!-- Create Band Screen -->
+    <dimen name="added_member_profile_image_size">40dp</dimen>
+    <dimen name="band_introduce_text_field_min_height">200dp</dimen>
+    <dimen name="platform_icon_size">20dp</dimen>
+
+    <!-- Manage Band Screen -->
+    <dimen name="manage_band_screen_leader_icon_size">24dp</dimen>
+    <dimen name="manage_band_screen_leader_icon_space">8dp</dimen>
+    <dimen name="manage_member_icon_size">24dp</dimen>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="filled_btn_height">50dp</dimen>
+    <dimen name="outlined_btn_height">50dp</dimen>
+
+    <dimen name="small_circle_image_default_size">30dp</dimen>
+
+    <!-- Component   -->
+    <dimen name="thin_divider_height">0.5dp</dimen>
+    <dimen name="login_btn_padding">20dp</dimen>
+    <dimen name="login_btn_corner">8dp</dimen>
+    <dimen name="login_btn_height">60dp</dimen>
+    <dimen name="white_rounded_corner_card_elevation">4dp</dimen>
+    <dimen name="section_divider_height">5dp</dimen>
+    <dimen name="section_title_text_vertical_padding">10dp</dimen>
+    <dimen name="gray_rounded_corner_text_corner">4dp</dimen>
+    <dimen name="gray_rounded_corner_text_horizontal_padding">6dp</dimen>
+    <dimen name="left_icon_text_horizontal_space">5dp</dimen>
+    <dimen name="loading_icon_size">50dp</dimen>
+    <dimen name="loading_icon_stroke_width">8dp</dimen>
+</resources>

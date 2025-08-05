@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_name">이름</string>
+    <string name="nickname">닉네임</string>
+    <string name="instrument">악기</string>
+    <string name="skill_level">실력 수준</string>
+    <string name="region">지역</string>
+    <string name="gender">성별</string>
+    <string name="birthday">생년월일</string>
+    <string name="birthday_input_text">생년월일을 선택해주세요</string>
+    <string name="any_gender">상관 없음</string>
+    <string name="male">남성</string>
+    <string name="female">여성</string>
+    <string name="introduce">간단 소개</string>
+    <string name="regist_text">등록하기</string>
+    <string name="back_text">뒤로가기</string>
+    <string name="cancel_text">취소</string>
+    <string name="confirm_text">확인</string>
+    <string name="create_band_text">밴드 생성</string>
+    <string name="recruit_member_text">멤버 모집</string>
+
+    <!-- Top App Bar -->
+    <string name="top_app_bar_chat_icon_descript">상단앱바 채팅 아이콘</string>
+    <string name="top_app_bar_noti_icon_descript">상단앱바 알림 아이콘</string>
+    <string name="top_app_bar_back_icon_descript">상단앱바 뒤로가기 아이콘</string>
+
+    <!-- Splash Screen -->
+    <string name="top_appbar_logo_descript">상단앱바 로고</string>
+
+    <!-- Login Screen -->
+    <string name="login_text">로그인</string>
+    <string name="start_login_text">Bandy에 오신 것을 환영합니다. \n로그인 후 새로운 밴드메이트를 찾아보세요!</string>
+    <string name="naver_login_btn_text">네이버 로그인</string>
+    <string name="kakao_login_btn_text">카카오 로그인</string>
+
+    <!-- Home Screen -->
+    <string name="best_posting_section_title">인기 게시물</string>
+    <string name="free_type_posting">자유</string>
+    <string name="tip_type_posting">팁</string>
+    <string name="advertise_type_posting">홍보</string>
+    <string name="qna_type_posting">홍보</string>
+    <string name="popular_band_section_title">현재 인기 밴드</string>
+    <string name="posting_info_view_count_text">조회수 : %1$s</string>
+
+    <!-- Recruit Screen -->
+    <string name="find_band_tab_text">밴드 찾기</string>
+    <string name="find_member_tab_text">멤버 찾기</string>
+    <string name="recruit_instrument_text">%1$s 모집</string>
+    <string name="find_member_view_count_text">조회수 : %1$s</string>
+
+    <!-- Create Recruit Member Screen -->
+    <string name="recruit_member_instrument_section_title">모집 악기</string>
+    <string name="recruit_member_age_section_title">연령대</string>
+    <string name="recruit_member_skill_level_section_title">실력 수준</string>
+    <string name="recruit_member_gender_section_title">모집 성별</string>
+    <string name="recruit_member_recruiting_info_content_section_title">모집 안내</string>
+    <string name="recruit_member_recruiting_info_content_section_content">모집 조건을 상세하게 적어주세요!\n합주 요일, 횟수, 위치 혹은\n성실하신 분!, JPOP을 좋아하시는 분! 등 추가적인 조건을 알려주세요! </string>
+
+    <!-- Recruit Member Detail Screen   -->
+    <string name="recruit_member_detail_info_target_instrument_title">모집 악기</string>
+    <string name="recruit_member_detail_info_target_age_title">나이</string>
+    <string name="recruit_member_detail_info_target_gender_title">성별</string>
+    <string name="recruit_member_detail_info_target_region_title">지역</string>
+    <string name="apply_button_text">지원하기</string>
+
+    <!-- My Band Screen -->
+    <string name="my_band_title">My Band</string>
+    <string name="my_band_member_text">우리 멤버</string>
+    <string name="band_introduce_text">밴드 소개</string>
+    <string name="band_gallery_text">밴드 앨범</string>
+    <string name="band_formation_day_text">since %1$s</string>
+    <string name="band_days_since_formation_text">+ %1$s 일</string>
+    <string name="introduction_text">자기 소개</string>
+    <string name="update_profile_menu_text">프로필 수정</string>
+    <string name="posting_history_menu_text">게시글 기록</string>
+    <string name="manage_band_menu_text">밴드 관리</string>
+    <string name="notification_menu_text">알림</string>
+    <string name="find_new_band_button_text">새로운 밴드 찾아보기</string>
+    <string name="find_new_band_message">새로운 밴드를 \n찾아보세요!</string>
+    <string name="default_profile_image_description">기본 프로필 이미지</string>
+
+    <!-- Band Detail Info Screen -->
+    <string name="my_band_profile_image_descript">my band profile image</string>
+
+    <!-- Profile Screen -->
+    <string name="my_posting_history_tab_text">작성한 글(%1s개)</string>
+    <string name="commented_posting_history_tab_text">댓글 단 글(%1s개)</string>
+
+    <!-- Profile Reg Screen -->
+    <string name="default_profile_image_descript">기본 프로필 이미지</string>
+    <string name="change_profile_image_icon_descript">프로필 이미지 변경</string>
+
+    <!-- Posting Detail Screen -->
+    <string name="posting_view_count_icon_description">게시글 조회수 아이콘</string>
+    <string name="posting_time_icon_description">게시글 등록 시간 아이콘</string>
+    <string name="posting_comment_input_label">댓글을 입력해주세요</string>
+    <string name="posting_comment_input_button_text">등록</string>
+
+    <!-- Create Band Screen -->
+    <string name="band_name_regist_text_field_title">밴드 이름</string>
+    <string name="band_region_regist_spinner_title">합주 지역</string>
+    <string name="band_member_add_section_title">밴드 멤버 등록</string>
+    <string name="add_member_button_text">멤버 추가</string>
+    <string name="band_introduce_regist_text_field_title">밴드 소개</string>
+    <string name="create_band_button_text">밴드 생성</string>
+    <string name="band_link_regist_text_field_title">링크(선택)</string>
+    <string name="platform_text_field_label">%s 주소 입력</string>
+    <string name="youtube_platform_text">Youtube</string>
+    <string name="instagram_platform_text">Instagram</string>
+    <string name="spotify_platform_text">Spotify</string>
+
+    <!-- Manage Band Screen -->
+    <string name="manage_member_icon_description">밴드 멤버 관리 아이콘</string>
+    <string name="delegate_leader_text">밴드장 위임</string>
+    <string name="remove_member_text">추방하기</string>
+    <string name="member_detail_info_text">멤버 상세 정보</string>
+
+    <!-- Region -->
+    <string name="seoul">서울특별시</string>
+    <string name="gyeonggido">경기도</string>
+    <string name="incheon">인천광역시</string>
+    <string name="sejong">세종특별자치시</string>
+    <string name="gangwondo">강원도</string>
+    <string name="chungcheongbukdo">충청북도</string>
+    <string name="chungcheongnamdo">충청남도</string>
+    <string name="daejeon">대전광역시</string>
+    <string name="gyeongsangbukdo">경상북도</string>
+    <string name="daegu">대구광역시</string>
+    <string name="gyeongsangnamdo">경상남도</string>
+    <string name="ulsan">울산광역시</string>
+    <string name="busan">부산광역시</string>
+    <string name="jeollabukdo">전라북도</string>
+    <string name="jeollanamdo">전라남도</string>
+    <string name="gwangju">광주광역시</string>
+    <string name="jeju">제주특별자치도</string>
+
+    <string-array name="sido_List">
+        <item>서울특별시</item>
+        <item>경기도</item>
+        <item>인천광역시</item>
+        <item>세종특별자치시</item>
+        <item>강원도</item>
+        <item>충청북도</item>
+        <item>충청남도</item>
+        <item>대전광역시</item>
+        <item>경상북도</item>
+        <item>대구광역시</item>
+        <item>경상남도</item>
+        <item>울산광역시</item>
+        <item>부산광역시</item>
+        <item>전라북도</item>
+        <item>전라남도</item>
+        <item>광주광역시</item>
+        <item>제주특별자치도</item>
+    </string-array>
+
+    <string-array name="jeollabukdo">
+        <item>전체</item>
+        <item>고창군</item>
+        <item>군산시</item>
+        <item>김제시</item>
+        <item>남원시</item>
+        <item>무주군</item>
+        <item>부안군</item>
+        <item>순창군</item>
+        <item>완주군</item>
+        <item>익산시</item>
+        <item>임실군</item>
+        <item>장수군</item>
+        <item>전주시</item>
+        <item>정읍시</item>
+        <item>진안군</item>
+    </string-array>
+
+    <string-array name="jeju">
+        <item>전체</item>
+        <item>서귀포시</item>
+        <item>제주시</item>
+    </string-array>
+
+    <string-array name="daejeon">
+        <item>전체</item>
+        <item>대덕구</item>
+        <item>동구</item>
+        <item>서구</item>
+        <item>유성구</item>
+        <item>중구</item>
+    </string-array>
+
+    <string-array name="busan">
+        <item>전체</item>
+        <item>강서구</item>
+        <item>금정구</item>
+        <item>기장군</item>
+        <item>남구</item>
+        <item>동구</item>
+        <item>동래구</item>
+        <item>부산진구</item>
+        <item>북구</item>
+        <item>사상구</item>
+        <item>사하구</item>
+        <item>서구</item>
+        <item>수영구</item>
+        <item>연제구</item>
+        <item>영도구</item>
+        <item>중구</item>
+        <item>해운대구</item>
+    </string-array>
+
+    <string-array name="gangwondo">
+        <item>전체</item>
+        <item>강릉시</item>
+        <item>고성군</item>
+        <item>동해시</item>
+        <item>삼척시</item>
+        <item>속초시</item>
+        <item>양구군</item>
+        <item>양양군</item>
+        <item>영월군</item>
+        <item>원주시</item>
+        <item>연제군</item>
+        <item>정성군</item>
+        <item>철원군</item>
+        <item>춘천시</item>
+        <item>태백시</item>
+        <item>평창군</item>
+        <item>흥천군</item>
+        <item>화천군</item>
+        <item>횡성군</item>
+    </string-array>
+
+    <string-array name="jeollanamdo">
+        <item>전체</item>
+        <item>강진군</item>
+        <item>고흥군</item>
+        <item>곡성군</item>
+        <item>광양시</item>
+        <item>구례군</item>
+        <item>나주시</item>
+        <item>담양군</item>
+        <item>목포시</item>
+        <item>무안군</item>
+        <item>보성군</item>
+        <item>순천시</item>
+        <item>신안군</item>
+        <item>여수시</item>
+        <item>영광군</item>
+        <item>영암군</item>
+        <item>완도군</item>
+        <item>장성군</item>
+        <item>장흥군</item>
+        <item>진도군</item>
+        <item>함평군</item>
+        <item>해남군</item>
+        <item>화순군</item>
+    </string-array>
+
+    <string-array name="incheon">
+        <item>전체</item>
+        <item>강화군</item>
+        <item>계양구</item>
+        <item>남동구</item>
+        <item>동구</item>
+        <item>미추홀구</item>
+        <item>부평구</item>
+        <item>서구</item>
+        <item>연수구</item>
+        <item>옹진군</item>
+        <item>중구</item>
+    </string-array>
+
+    <string-array name="gwangju">
+        <item>전체</item>
+        <item>광산구</item>
+        <item>남구</item>
+        <item>동구</item>
+        <item>북구</item>
+        <item>서구</item>
+    </string-array>
+
+    <string-array name="ulsan">
+        <item>전체</item>
+        <item>남구</item>
+        <item>동구</item>
+        <item>북구</item>
+        <item>울주군</item>
+        <item>중구</item>
+    </string-array>
+
+    <string-array name="daegu">
+        <item>전체</item>
+        <item>남구</item>
+        <item>달서구</item>
+        <item>달성군</item>
+        <item>동구</item>
+        <item>북구</item>
+        <item>서구</item>
+        <item>수성구</item>
+        <item>중구</item>
+    </string-array>
+
+    <string-array name="gyeongsangbukdo">
+        <item>전체</item>
+        <item>경산시</item>
+        <item>경주시</item>
+        <item>고령군</item>
+        <item>구미시</item>
+        <item>군위군</item>
+        <item>김천시</item>
+        <item>문경시</item>
+        <item>봉화군</item>
+        <item>상주시</item>
+        <item>성주군</item>
+        <item>안동시</item>
+        <item>영덕군</item>
+        <item>영양군</item>
+        <item>영주시</item>
+        <item>영천시</item>
+        <item>예천군</item>
+        <item>울릉군</item>
+        <item>울진군</item>
+        <item>의성군</item>
+        <item>청도군</item>
+        <item>청송군</item>
+        <item>칠곡군</item>
+        <item>포항시</item>
+    </string-array>
+
+    <string-array name="chungcheongbukdo">
+        <item>전체</item>
+        <item>괴산군</item>
+        <item>단양군</item>
+        <item>보은군</item>
+        <item>영동군</item>
+        <item>옥천군</item>
+        <item>음성군</item>
+        <item>제천시</item>
+        <item>증평군</item>
+        <item>진천군</item>
+        <item>청주시</item>
+        <item>충주시</item>
+    </string-array>
+
+    <string-array name="gyeongsangnamdo">
+        <item>전체</item>
+        <item>거제시</item>
+        <item>거창군</item>
+        <item>고성군</item>
+        <item>김해시</item>
+        <item>남해군</item>
+        <item>밀양시</item>
+        <item>사천시</item>
+        <item>산청군</item>
+        <item>양산시</item>
+        <item>의령군</item>
+        <item>진주시</item>
+        <item>창녕군</item>
+        <item>창원시</item>
+        <item>통영시</item>
+        <item>하동군</item>
+        <item>함안군</item>
+        <item>함양군</item>
+        <item>합천군</item>
+    </string-array>
+
+    <string-array name="chungcheongnamdo">
+        <item>전체</item>
+        <item>계릉시</item>
+        <item>공주시</item>
+        <item>금산군</item>
+        <item>논산시</item>
+        <item>당진시</item>
+        <item>보령시</item>
+        <item>부여군</item>
+        <item>서산시</item>
+        <item>서천군</item>
+        <item>아산시</item>
+        <item>애산군</item>
+        <item>천안시</item>
+        <item>청양군</item>
+        <item>태안군</item>
+        <item>홍성군</item>
+    </string-array>
+
+    <string-array name="gyeonggido">
+        <item>전체</item>
+        <item>가평군</item>
+        <item>고양시</item>
+        <item>과천시</item>
+        <item>광명시</item>
+        <item>광주시</item>
+        <item>구리시</item>
+        <item>군포시</item>
+        <item>김포시</item>
+        <item>남양주시</item>
+        <item>동두천시</item>
+        <item>부천시</item>
+        <item>성남시</item>
+        <item>수원시</item>
+        <item>시흥시</item>
+        <item>안산시</item>
+        <item>안성시</item>
+        <item>안양시</item>
+        <item>양주시</item>
+        <item>양평군</item>
+        <item>여주시</item>
+        <item>연천군</item>
+        <item>오산시</item>
+        <item>용인시</item>
+        <item>의왕시</item>
+        <item>의정부시</item>
+        <item>이천시</item>
+        <item>파주시</item>
+        <item>평택시</item>
+        <item>포천시</item>
+        <item>하남시</item>
+        <item>화성시</item>
+    </string-array>
+
+    <string-array name="sejong">
+        <item>전체</item>
+    </string-array>
+
+    <string-array name="seoul">
+        <item>전체</item>
+        <item>강남구</item>
+        <item>강동구</item>
+        <item>강북구</item>
+        <item>강서구</item>
+        <item>광진구</item>
+        <item>구로구</item>
+        <item>금천구</item>
+        <item>노원구</item>
+        <item>도봉구</item>
+        <item>동대문구</item>
+        <item>동작구</item>
+        <item>마포구</item>
+        <item>서대문구</item>
+        <item>서초구</item>
+        <item>성동구</item>
+        <item>성북구</item>
+        <item>송파구</item>
+        <item>양천구</item>
+        <item>영등포구</item>
+        <item>용산구</item>
+        <item>은평구</item>
+        <item>종로구</item>
+        <item>중구</item>
+        <item>중랑구</item>
+    </string-array>
+
+</resources>

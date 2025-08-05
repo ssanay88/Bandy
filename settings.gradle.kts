@@ -16,8 +16,15 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/")
+        }
     }
 }
 
 rootProject.name = "Bandy"
-include(":app")
+include(":bandy")
+include(":feature")
+include(":shared")
+include(":data")
+include(":business")

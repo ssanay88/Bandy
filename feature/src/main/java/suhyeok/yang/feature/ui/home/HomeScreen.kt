@@ -1,0 +1,246 @@
+package suhyeok.yang.feature.ui.home
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
+import com.yang.business.model.Band
+import com.yang.business.model.HomeTopBanner
+import com.yang.business.model.Posting
+import com.yang.business.enums.PostingType
+import suhyeok.yang.feature.R
+import suhyeok.yang.feature.common.components.PostingItemView
+import suhyeok.yang.shared.common.component.LoadingScreen
+import suhyeok.yang.shared.common.component.SectionDivider
+import suhyeok.yang.shared.common.component.SectionTitleText
+import suhyeok.yang.shared.common.util.throttleClick
+import suhyeok.yang.shared.ui.theme.Gray
+import suhyeok.yang.shared.ui.theme.LightGray
+import suhyeok.yang.shared.ui.theme.SuitFontFamily
+
+const val POSTING_TITLE_MAX_LINE = 1
+
+@Composable
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    onPopularBandClick: (String) -> Unit,
+    onPostingClick: (String) -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    if (uiState.overallLoading) {
+        LoadingScreen()
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                TopBannerSection(
+                    uiState.topBannerList,
+                    rememberPagerState(initialPage = 2) { uiState.topBannerList.size }
+                )
+            }
+
+            item { SectionDivider() }
+
+            item {
+                PopularBandListSection(uiState.popularBandList, onPopularBandClick)
+            }
+
+            item { SectionDivider() }
+
+            item { BestPostingSection(uiState.postingList, onPostingClick) }
+
+            item { SectionDivider() }
+
+            // TODO 일정 갯수로 데이터 불러오도록 수정
+            items(uiState.postingList) { posting ->
+                PostingItemView(posting ,onPostingClick)
+            }
+        }
+    }
+
+
+}
+
+@Composable
+fun TopBannerSection(
+    itemList: List<HomeTopBanner>,
+    pagerState: PagerState
+) {
+    HorizontalPager(
+        modifier = Modifier.fillMaxWidth().height(dimensionResource(R.dimen.top_banner_height)),
+        state = pagerState
+    ) { index ->
+        AsyncImage(
+            model = itemList[index].bannerImageUrl,
+            contentDescription = itemList[index].bannerDescription,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+    }
+}
+
+@Composable
+fun BestPostingSection(bestPostingList: List<Posting>, onPostingClick: (String) -> Unit) {
+    // 인기 게시글
+    Column(
+        modifier = Modifier
+            .padding(horizontal = dimensionResource(R.dimen.section_title_vertical_padding))
+    ) {
+        SectionTitleText(
+            title = stringResource(R.string.best_posting_section_title),
+        )
+
+        var rank = 1
+        bestPostingList.take(5).forEach { posting ->
+            BestPostingItemView(rank++, posting, onPostingClick)
+        }
+
+    }
+}
+
+@Composable
+fun BestPostingItemView(rank: Int, posting: Posting, onPostingClick: (String) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = dimensionResource(R.dimen.best_posting_item_view_vertical_padding))
+            .throttleClick {
+                onPostingClick(posting.postingId)
+            }
+    ) {
+        Text(
+            text = rank.toString(),
+            modifier = Modifier.weight(0.05f),
+            fontFamily = SuitFontFamily,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = when (posting.postingType) {
+                PostingType.FREE -> stringResource(R.string.free_type_posting)
+                PostingType.TIP -> stringResource(R.string.tip_type_posting)
+                PostingType.ADVERTISE -> stringResource(R.string.advertise_type_posting)
+                PostingType.QNA -> stringResource(R.string.qna_type_posting)
+            },
+            modifier = Modifier.weight(0.15f),
+            textAlign = TextAlign.Center,
+            fontFamily = SuitFontFamily,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Gray
+        )
+        Text(
+            text = posting.title,
+            fontFamily = SuitFontFamily,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(0.5f),
+            maxLines = POSTING_TITLE_MAX_LINE,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(dimensionResource(R.dimen.best_posting_spacer_height))
+            .padding(horizontal = dimensionResource(R.dimen.best_posting_spacer_horizontal_padding))
+            .background(LightGray)
+    )
+
+}
+
+
+@Composable
+fun PopularBandListSection(
+    popularBandList: List<Band>,
+    onPopularBandClick: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.section_horizontal_padding))
+    ) {
+        SectionTitleText(title = stringResource(R.string.popular_band_section_title))
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.popular_band_list_space))
+        ) {
+            items(popularBandList) { band ->
+                PopularBandItemView(onPopularBandClick, band)
+            }
+        }
+    }
+}
+
+@Composable
+fun PopularBandItemView(onPopularBandClick: (String) -> Unit, band: Band) {
+    Column(
+        modifier = Modifier
+            .width(dimensionResource(R.dimen.popular_band_item_view_width))
+            .height(dimensionResource(R.dimen.popular_band_item_view_height))
+            .throttleClick {
+                // TODO 선택한 밴드 상세 페이지로 이동
+                // BandDetailInfoPage(band)
+                onPopularBandClick(band.bandId)
+            }
+    ) {
+        AsyncImage(
+            model = band.bandProfileImageUrl,
+            contentDescription = band.bandName,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(dimensionResource(R.dimen.popular_band_item_view_round))),
+            contentScale = ContentScale.FillBounds,
+            placeholder = painterResource(R.drawable.bandy_logo_tertiary_color)
+        )
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = band.bandName,
+                fontFamily = SuitFontFamily,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.popular_band_item_view_text_top_padding))
+            )
+            Text(
+                text = band.bandDescription,
+                fontFamily = SuitFontFamily,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.popular_band_item_view_text_top_padding))
+            )
+        }
+    }
+}

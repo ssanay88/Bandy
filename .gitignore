@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+bandy/secret.properties
+feature/src/main/java/suhyeok/yang/feature/MockDataFile.kt

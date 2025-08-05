@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "230388010316",
+    "project_id": "bandy-f8688",
+    "storage_bucket": "bandy-f8688.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230388010316:android:fcb5e7d3dd73710fe753e9",
+        "android_client_info": {
+          "package_name": "suhyeok.yang.bandy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdcY0t-joZfyOk3FP646Epm_Jr7F7GiVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

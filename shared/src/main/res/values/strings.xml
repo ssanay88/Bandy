@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_screen_title">홈</string>
+    <string name="recruit_screen_title">모집</string>
+    <string name="my_band_screen_title">마이 밴드</string>
+    <string name="chat_screen_title">채팅</string>
+    <string name="profile_screen_title">프로필</string>
+    <string name="login_screen_title">로그인</string>
+    <string name="profile_reg_screen_title">프로필 등록</string>
+    <string name="band_detail_info_screen_title">밴드 상세 정보</string>
+    <string name="posting_detail_screen_title">게시글</string>
+    <string name="profile_update_screen_title">프로필 수정</string>
+    <string name="manage_band_screen_title">밴드 정보 수정</string>
+    <string name="notification_screen_title">알림</string>
+    <string name="posting_history_screen_title">게시글 내역</string>
+</resources>
