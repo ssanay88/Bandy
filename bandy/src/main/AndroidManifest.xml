@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!-- 개발에서만 allowBackup : false로 설정 - 기기에서 앱 삭제시 설정을 남김없이 지우기 위해   -->
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:name=".BandyApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
