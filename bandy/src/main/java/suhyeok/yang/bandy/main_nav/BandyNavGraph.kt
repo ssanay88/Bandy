@@ -31,7 +31,7 @@ import suhyeok.yang.feature.ui.posting.PostingHistoryScreen
 import suhyeok.yang.feature.ui.profile.ProfileScreen
 import suhyeok.yang.feature.screen.ProfileUpdateScreen
 import suhyeok.yang.feature.ui.recruit.RecruitScreen
-import suhyeok.yang.feature.screen.RecruitingMemberDetailScreen
+import suhyeok.yang.feature.ui.recruit.RecruitingMemberScreen
 import suhyeok.yang.feature.ui.band.BandInfoScreen
 import suhyeok.yang.feature.ui.band.BandInfoViewModel
 import suhyeok.yang.feature.ui.band.CreateBandViewModel
@@ -151,7 +151,7 @@ fun BandyNavGraph(
                 },
                 onRecruitingMemberClick = { recruitPostingId ->
                     navController.navigate(
-                        NestedScreenRoute.RecruitingMemberDetailScreen(recruitPostingId)
+                        NestedScreenRoute.RecruitingMemberScreen(recruitPostingId)
                     )
                 }
             )
@@ -192,9 +192,9 @@ fun BandyNavGraph(
                 navBackStackEntry.toRoute<NestedScreenRoute.PostingDetailScreen>().postingId
             PostingDetailScreen(postingId, postingDetailViewModel)
         }
-        composable<NestedScreenRoute.RecruitingMemberDetailScreen> {navBackStackEntry ->
-            val recruitPostingId = navBackStackEntry.toRoute<NestedScreenRoute.RecruitingMemberDetailScreen>().recruitingPostingId
-            RecruitingMemberDetailScreen(recruitPostingId)
+        composable<NestedScreenRoute.RecruitingMemberScreen> {navBackStackEntry ->
+            val recruitPostingId = navBackStackEntry.toRoute<NestedScreenRoute.RecruitingMemberScreen>().recruitingPostingId
+            RecruitingMemberScreen(recruitPostingId)
         }
         composable<NestedScreenRoute.ProfileUpdateScreen> {
             ProfileUpdateScreen(

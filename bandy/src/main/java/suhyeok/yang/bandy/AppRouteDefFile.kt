@@ -49,7 +49,7 @@ sealed interface NestedScreenRoute {
     data class PostingDetailScreen(var postingId: String = "") : NestedScreenRoute
 
     @Serializable
-    data class RecruitingMemberDetailScreen(var recruitingPostingId: String = "") : NestedScreenRoute
+    data class RecruitingMemberScreen(var recruitingPostingId: String = "") : NestedScreenRoute
 
     @Serializable
     data class ProfileUpdateScreen(var userId: String = "") : NestedScreenRoute

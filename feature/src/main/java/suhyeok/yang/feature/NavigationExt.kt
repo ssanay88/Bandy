@@ -39,7 +39,7 @@ val NavBackStackEntry.topBarAsRouteName: TopBarItem
                     titleResId = R.string.posting_detail_screen_title
                 )
             }
-            routeName.contains("RecruitingMemberDetailScreen") -> {
+            routeName.contains("RecruitingMemberScreen") -> {
                 TopBarItem(
                     topBarType = TopBarType.BACK_ONLY
                 )

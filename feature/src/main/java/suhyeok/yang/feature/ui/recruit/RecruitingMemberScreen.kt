@@ -1,4 +1,4 @@
-package suhyeok.yang.feature.screen
+package suhyeok.yang.feature.ui.recruit
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,7 @@ import suhyeok.yang.shared.ui.theme.TextGray
 import java.time.LocalDateTime
 
 @Composable
-fun RecruitingMemberDetailScreen(
+fun RecruitingMemberScreen(
     recruitPostingId: String,
     navController: NavController = rememberNavController()
 ) {
