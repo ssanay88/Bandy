@@ -66,7 +66,7 @@ const val ITEM_VIEW_CHIPS_MAX_LINES = 2
 fun RecruitScreen(
     viewModel: RecruitViewModel,
     onBandInfoClick: (String) -> Unit,
-    onRecruitingMemberClick: () -> Unit
+    onRecruitingMemberClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -247,7 +247,7 @@ fun FindBandItemViewPreview() {
 @Composable
 fun MemberRecruitingScreen(
     recruitPostingList: List<RecruitPosting>,
-    onRecruitingMemberClick: () -> Unit
+    onRecruitingMemberClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -259,12 +259,12 @@ fun MemberRecruitingScreen(
 }
 
 @Composable
-fun MemberRecruitingItemView(item: RecruitPosting, onRecruitingMemberClick: () -> Unit) {
+fun MemberRecruitingItemView(item: RecruitPosting, onRecruitingMemberClick: (String) -> Unit) {
     WhiteRoundedCornerCard(
         modifier = Modifier
             .padding(dimensionResource(R.dimen.item_view_card_padding))
             .throttleClick {
-                onRecruitingMemberClick()
+                onRecruitingMemberClick(item.recruitPostingId)
             }
     ) {
         Column(

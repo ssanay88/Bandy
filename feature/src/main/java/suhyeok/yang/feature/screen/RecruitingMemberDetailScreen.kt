@@ -34,9 +34,9 @@ import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.TextGray
 import java.time.LocalDateTime
 
-@Preview(showBackground = true)
 @Composable
 fun RecruitingMemberDetailScreen(
+    recruitPostingId: String,
     navController: NavController = rememberNavController()
 ) {
     val mockData = MockData.mockRecruitPostingList[0]
