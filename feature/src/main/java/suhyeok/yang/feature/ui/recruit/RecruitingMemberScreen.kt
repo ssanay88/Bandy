@@ -37,7 +37,8 @@ import java.time.LocalDateTime
 @Composable
 fun RecruitingMemberScreen(
     recruitPostingId: String,
-    navController: NavController = rememberNavController()
+    navController: NavController,
+    viewModel: RecruitingMemberViewModel
 ) {
     val mockData = MockData.mockRecruitPostingList[0]
     Column {
