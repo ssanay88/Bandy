@@ -19,10 +19,10 @@ data class RecruitPosting(
     var targetRegion: Region,
     var targetInstrument: Instrument,
     var recruitingStatus: RecruitingStatus,
-    val createdAt: LocalDateTime,
-    var updatedAt: LocalDateTime,
-    var viewCount: Int,
-    var commentCount: Int
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    var viewCount: Int = 0,
+    var commentCount: Int = 0
 ) {
     fun targetAgeGroupToString(): String = if (targetAgeGroups.isEmpty()) "전체" else targetAgeGroups.joinToString(", ") { it.name }
 
