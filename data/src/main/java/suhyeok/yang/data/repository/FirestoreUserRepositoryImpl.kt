@@ -35,6 +35,12 @@ class FirestoreUserRepositoryImpl(val targetDataSource: UserDataSource): UserRep
         emit(targetDataSource.deleteUser(userId))
     }.catch {
         emit(DataResourceResult.Failure(it))
+    }
 
+    override suspend fun searchUserByNickname(nickname: String): Flow<DataResourceResult<List<User>>> = flow {
+        emit(DataResourceResult.Loading)
+        emit(targetDataSource.searchUserByNickname(nickname))
+    }.catch {
+        emit(DataResourceResult.Failure(it))
     }
 }

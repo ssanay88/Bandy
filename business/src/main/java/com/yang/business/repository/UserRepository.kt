@@ -9,4 +9,5 @@ interface UserRepository {
     suspend fun createUser(newUser: User): Flow<DataResourceResult<Unit>>
     suspend fun updateUser(updatedUser: User): Flow<DataResourceResult<Unit>>
     suspend fun deleteUser(userId: String): Flow<DataResourceResult<Unit>>
+    suspend fun searchUserByNickname(nickname: String): Flow<DataResourceResult<List<User>>>
 }

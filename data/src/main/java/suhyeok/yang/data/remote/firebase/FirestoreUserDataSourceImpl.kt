@@ -77,4 +77,18 @@ class FirestoreUserDataSourceImpl: UserDataSource {
     }.getOrElse {
         DataResourceResult.Failure(it)
     }
+
+    override suspend fun searchUserByNickname(nickname: String): DataResourceResult<List<User>> = runCatching {
+        val usersSnapshot = db.collection(USER_COLLECTION)
+            .whereGreaterThanOrEqualTo("_nickName", nickname)
+            .whereLessThanOrEqualTo("_nickName", nickname + "\uf8ff")
+            .get()
+            .await()
+
+        val users = usersSnapshot.documents.mapNotNull { it.toObject(UserDTO::class.java)?.toBusinessUser() }
+
+        DataResourceResult.Success(users)
+    }.getOrElse {
+        DataResourceResult.Failure(it)
+    }
 }

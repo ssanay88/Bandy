@@ -46,6 +46,7 @@ import com.yang.business.usecase.recruitposting.UpdateRecruitPostingUseCase
 import com.yang.business.usecase.user.DeleteUserUseCase
 import com.yang.business.usecase.user.ReadUserUseCase
 import com.yang.business.usecase.user.CreateUserUseCase
+import com.yang.business.usecase.user.SearchUserByNicknameUseCase
 import com.yang.business.usecase.user.UpdateUserUseCase
 import com.yang.business.usecase.user.UserUseCases
 import com.yang.business.usecase.usersession.CheckUserRegisteredUseCase
@@ -106,7 +107,8 @@ class ApplicationContainerImpl(
         readUser = ReadUserUseCase(userRepository),
         createUser = CreateUserUseCase(userRepository),
         updateUser = UpdateUserUseCase(userRepository),
-        deleteUser = DeleteUserUseCase(userRepository)
+        deleteUser = DeleteUserUseCase(userRepository),
+        searchUserByNickname = SearchUserByNicknameUseCase(userRepository)
     )
 
     override val postingUseCases = PostingUseCases(

@@ -10,10 +10,13 @@ data class Band(
     var bandDescription: String,
     var members: List<User>,
     var region: Region,
-    val startDate: LocalDate,
+    val startDate: LocalDate = LocalDate.now(),
     var leaderId: String,
-    var isRecruiting: Boolean,
-    var preferredGenres: List<String>,
-    var viewCount: Int
+    var isRecruiting: Boolean = false,
+    var preferredGenres: List<String> = emptyList(),
+    var viewCount: Int = 0,
+    var youtubeLink: String = "",
+    var instagramLink: String = "",
+    var spotifyLink: String = "",
     // var bandGallery TODO 갤러리 기능 추가
 )

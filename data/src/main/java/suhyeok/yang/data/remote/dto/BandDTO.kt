@@ -18,6 +18,9 @@ data class BandDTO(
     var _leaderId: String = "",
     var _isRecruiting: Boolean = false,
     var _preferredGenres: List<String> = listOf(),
-    var _viewCount: Int = 0
+    var _viewCount: Int = 0,
+    var _youtubeLink: String = "",
+    var _instagramLink: String = "",
+    var _spotifyLink: String = ""
     // var _bandGallery TODO 갤러리 기능 추가
 )

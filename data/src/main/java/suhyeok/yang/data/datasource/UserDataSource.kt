@@ -8,4 +8,5 @@ interface UserDataSource {
     suspend fun createUser(newUser: User): DataResourceResult<Unit>
     suspend fun updateUser(updatedUser: User): DataResourceResult<Unit>
     suspend fun deleteUser(userId: String): DataResourceResult<Unit>
+    suspend fun searchUserByNickname(nickname: String): DataResourceResult<List<User>>
 }

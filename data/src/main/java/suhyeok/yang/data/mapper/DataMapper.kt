@@ -140,7 +140,10 @@ fun BandDTO.toBusinessBand() = Band(
     leaderId = this._leaderId,
     isRecruiting = this._isRecruiting,
     preferredGenres = this._preferredGenres,
-    viewCount = this._viewCount
+    viewCount = this._viewCount,
+    youtubeLink = this._youtubeLink,
+    instagramLink = this._instagramLink,
+    spotifyLink = this._spotifyLink
 )
 
 fun List<BandDTO>.toBusinessBandList() =
@@ -158,7 +161,10 @@ fun Band.toFirestoreBandDTO() = mapOf(
     "_leaderId" to this.leaderId,
     "_isRecruiting" to this.isRecruiting,
     "_preferredGenres" to this.preferredGenres,
-    "_viewCount" to this.viewCount
+    "_viewCount" to this.viewCount,
+    "_youtubeLink" to this.youtubeLink,
+    "_instagramLink" to this.instagramLink,
+    "_spotifyLink" to this.spotifyLink
 )
 
 /**
