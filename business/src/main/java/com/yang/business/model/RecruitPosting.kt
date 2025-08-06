@@ -4,6 +4,7 @@ import com.yang.business.enums.AgeGroup
 import com.yang.business.enums.Gender
 import com.yang.business.enums.Instrument
 import com.yang.business.enums.RecruitingStatus
+import com.yang.business.enums.SkillLevel
 import java.time.LocalDateTime
 
 data class RecruitPosting(
@@ -17,6 +18,7 @@ data class RecruitPosting(
     var targetAgeGroups: List<AgeGroup>,
     var targetGender: Gender,
     var targetRegion: Region,
+    var targetSkillLevel: SkillLevel,
     var targetInstrument: Instrument,
     var recruitingStatus: RecruitingStatus,
     val createdAt: LocalDateTime = LocalDateTime.now(),

@@ -19,6 +19,7 @@ data class RecruitPostingDTO(
     var _targetAgeGroups: List<AgeGroup> = listOf(),
     var _targetGender: Gender = Gender.ALL,
     var _targetRegion: String = "",
+    var _targetSkillLevel: String = "",
     var _targetInstrument: Instrument = Instrument.VOCAL,
     var _recruitingStatus: RecruitingStatus = RecruitingStatus.ACTIVE,
     val _createdAt: String = "",
