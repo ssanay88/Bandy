@@ -1,5 +1,6 @@
 package suhyeok.yang.shared.common.util
 
+import com.yang.business.enums.AgeGroup
 import com.yang.business.enums.Instrument
 import com.yang.business.enums.SkillLevel
 
@@ -66,4 +67,34 @@ fun String.toSkillLevel(): SkillLevel =
         ADVANCED_LABEL -> SkillLevel.ADVANCED
         EXPERT_LABEL -> SkillLevel.EXPERT
         else -> SkillLevel.BEGINNER
+    }
+
+/**
+ * AgeGroup
+ */
+const val TEENAGERS_LABEL = "10대"
+const val TWENTIES_LABEL = "20대"
+const val THIRTIES_LABEL = "30대"
+const val FORTIES_LABEL = "40대"
+const val OVER_FIFTIE_LABEL = "50대 이상"
+const val ALL_AGES_LABEL = "전연령"
+
+fun AgeGroup.toStr(): String =
+    when (this) {
+        AgeGroup.TEENAGERS -> TEENAGERS_LABEL
+        AgeGroup.TWENTIES -> TWENTIES_LABEL
+        AgeGroup.THIRTIES -> THIRTIES_LABEL
+        AgeGroup.FORTIES -> FORTIES_LABEL
+        AgeGroup.OVER_FIFTIE -> OVER_FIFTIE_LABEL
+        AgeGroup.ALL_AGES -> ALL_AGES_LABEL
+    }
+
+fun String.toAgeGroup(): AgeGroup =
+    when (this) {
+        TEENAGERS_LABEL -> AgeGroup.TEENAGERS
+        TWENTIES_LABEL -> AgeGroup.TWENTIES
+        THIRTIES_LABEL -> AgeGroup.THIRTIES
+        FORTIES_LABEL -> AgeGroup.FORTIES
+        OVER_FIFTIE_LABEL -> AgeGroup.OVER_FIFTIE
+        else -> AgeGroup.ALL_AGES
     }
