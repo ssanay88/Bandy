@@ -1,4 +1,4 @@
-package suhyeok.yang.feature.screen
+package suhyeok.yang.feature.ui.recruitmember
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,9 +43,11 @@ import suhyeok.yang.shared.ui.theme.Primary
 import suhyeok.yang.shared.ui.theme.TextGray
 import suhyeok.yang.shared.ui.theme.White
 
-@Preview(showBackground = true)
 @Composable
-fun CreateRecruitingMemberScreen(navController: NavController = rememberNavController()) {
+fun CreateRecruitingMemberScreen(
+    viewModel: CreateRecruitingMemberViewModel,
+    navController: NavController
+) {
 
     var selectedSido by remember { mutableStateOf("") }
     var selectedSigungu by remember { mutableStateOf("") }

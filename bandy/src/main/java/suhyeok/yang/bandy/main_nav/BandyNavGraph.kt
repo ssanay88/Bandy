@@ -14,6 +14,7 @@ import suhyeok.yang.bandy.NestedScreenRoute
 import suhyeok.yang.feature.factory.BandInfoViewModelFactory
 import suhyeok.yang.feature.factory.ChatViewModelFactory
 import suhyeok.yang.feature.factory.CreateBandViewModelFactory
+import suhyeok.yang.feature.factory.CreateRecruitingMemberViewModelFactory
 import suhyeok.yang.feature.factory.FirestoreSettingViewModelFactory
 import suhyeok.yang.feature.factory.HomeViewModelFactory
 import suhyeok.yang.feature.factory.MyBandViewModelFactory
@@ -22,7 +23,7 @@ import suhyeok.yang.feature.factory.ProfileViewModelFactory
 import suhyeok.yang.feature.factory.RecruitViewModelFactory
 import suhyeok.yang.feature.factory.RecruitingMemberViewModelFactory
 import suhyeok.yang.feature.ui.band.CreateBandScreen
-import suhyeok.yang.feature.screen.CreateRecruitingMemberScreen
+import suhyeok.yang.feature.ui.recruitmember.CreateRecruitingMemberScreen
 import suhyeok.yang.feature.ui.home.HomeScreen
 import suhyeok.yang.feature.screen.ManageBandScreen
 import suhyeok.yang.feature.ui.myband.MyBandScreen
@@ -44,6 +45,7 @@ import suhyeok.yang.feature.ui.posting.PostingDetailViewModel
 import suhyeok.yang.feature.ui.profile.ProfileViewModel
 import suhyeok.yang.feature.ui.recruit.RecruitViewModel
 import suhyeok.yang.feature.ui.recruit.RecruitingMemberViewModel
+import suhyeok.yang.feature.ui.recruitmember.CreateRecruitingMemberViewModel
 import suhyeok.yang.shared.di.ApplicationContainerProvider
 
 @Composable
@@ -102,6 +104,9 @@ fun BandyNavGraph(
 
     val createBandFactory = CreateBandViewModelFactory(userUseCases, bandUseCases, userSessionUseCases)
     val createBandViewModel: CreateBandViewModel = viewModel(factory = createBandFactory)
+
+    val createRecruitingMemberFactory = CreateRecruitingMemberViewModelFactory(userSessionUseCases, bandUseCases, recruitPostingUseCases)
+    val createRecruitingMemberViewModel: CreateRecruitingMemberViewModel = viewModel(factory = createRecruitingMemberFactory)
 
     val recruitingMemberFactory = RecruitingMemberViewModelFactory(userSessionUseCases, bandUseCases, recruitPostingUseCases)
     val recruitingMemberViewModel: RecruitingMemberViewModel = viewModel(factory = recruitingMemberFactory)
@@ -221,7 +226,7 @@ fun BandyNavGraph(
             }
         }
         composable<NestedScreenRoute.CreateRecruitingMemberScreen> {
-            CreateRecruitingMemberScreen(navController)
+            CreateRecruitingMemberScreen(createRecruitingMemberViewModel, navController)
         }
         composable<NestedScreenRoute.NotificationScreen> {
             NotificationScreen()
