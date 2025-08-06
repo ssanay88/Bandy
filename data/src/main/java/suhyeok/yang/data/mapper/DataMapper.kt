@@ -22,6 +22,7 @@ import suhyeok.yang.data.remote.dto.RecruitPostingDTO
 import suhyeok.yang.data.remote.dto.UserDTO
 import suhyeok.yang.shared.common.util.DateTimeUtils
 import suhyeok.yang.shared.common.util.toInstrument
+import suhyeok.yang.shared.common.util.toSkillLevel
 import suhyeok.yang.shared.common.util.toStr
 
 /**
@@ -257,6 +258,7 @@ fun RecruitPostingDTO.toBusinessRecruitPosting() = RecruitPosting(
     targetAgeGroups = this._targetAgeGroups,
     targetGender = this._targetGender,
     targetRegion = toRegionData(this._targetRegion),
+    targetSkillLevel = this._targetSkillLevel.toSkillLevel(),
     targetInstrument = this._targetInstrument,
     recruitingStatus = this._recruitingStatus,
     createdAt = DateTimeUtils.toLocalDateTime(this._createdAt),
@@ -279,6 +281,7 @@ fun RecruitPosting.toFirestoreRecruitPostingDTO() = mapOf(
     "_targetAgeGroups" to this.targetAgeGroups,
     "_targetGender" to this.targetGender,
     "_targetRegion" to this.targetRegion.toString(),
+    "_targetSkillLevel" to this.targetSkillLevel.toStr(),
     "_targetInstrument" to this.targetInstrument,
     "_recruitingStatus" to this.recruitingStatus,
     "_createdAt" to DateTimeUtils.toIsoString(this.createdAt),
