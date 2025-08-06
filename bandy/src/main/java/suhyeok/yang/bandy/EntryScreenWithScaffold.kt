@@ -55,7 +55,10 @@ fun EntryScreenWithScaffold() {
         },
         floatingActionButton = {
             if (currentRoute == screenWithFloatingButton) {
-                FloatingButton()
+                FloatingButton(
+                    onCreateBandClick = { navController.navigate(NestedScreenRoute.CreateBandScreen) },
+                    onRecruitMemberClick = { navController.navigate(NestedScreenRoute.CreateRecruitingMemberScreen) }
+                )
             }
         }
     ) { innerPadding ->

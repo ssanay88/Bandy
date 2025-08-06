@@ -70,12 +70,14 @@ val NavBackStackEntry.topBarAsRouteName: TopBarItem
             }
             routeName.contains("CreateBandScreen") -> {
                 TopBarItem(
-                    topBarType = TopBarType.BACK_ONLY
+                    topBarType = TopBarType.BACK_WITH_TITLE,
+                    titleResId = R.string.create_band_screen_title
                 )
             }
             routeName.contains("CreateRecruitingMemberScreen") -> {
                 TopBarItem(
-                    topBarType = TopBarType.BACK_ONLY
+                    topBarType = TopBarType.BACK_WITH_TITLE,
+                    titleResId = R.string.create_recruiting_member_screen_title
                 )
             }
             routeName.contains("ChatRoomScreen") -> {

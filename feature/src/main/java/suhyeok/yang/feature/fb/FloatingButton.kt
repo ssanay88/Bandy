@@ -35,9 +35,11 @@ import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.ui.theme.Primary
 import suhyeok.yang.shared.ui.theme.White
 
-@Preview(showBackground = true)
 @Composable
-fun FloatingButton() {
+fun FloatingButton(
+    onCreateBandClick: () -> Unit,
+    onRecruitMemberClick: () -> Unit
+) {
     var fabExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -48,13 +50,13 @@ fun FloatingButton() {
             FabItemView(
                 title = stringResource(R.string.create_band_text),
                 iconResId = R.drawable.ic_create_band,
-                onClick = {  }
+                onClick = onCreateBandClick
             )
 
             FabItemView(
                 title = stringResource(R.string.recruit_member_text),
                 iconResId = R.drawable.ic_recruit_member,
-                onClick = {  }
+                onClick = onRecruitMemberClick
             )
         }
 
