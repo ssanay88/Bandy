@@ -8,6 +8,7 @@ data class UserSessionEntity(
     val _userProfileImage: String,
     val _userDescription: String,
     val _userInstrument: String,
+    val _userRegion: String,
     val _isLeader: Boolean,
     val _isBand: Boolean,
     val _bandId: String

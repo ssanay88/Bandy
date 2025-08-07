@@ -32,6 +32,7 @@ class UserSessionDataSourceImpl(
         val userProfileImage = pref[UserPreferencesKeys.USER_PROFILE_IMAGE] ?: ""
         val userDescription = pref[UserPreferencesKeys.USER_DESCRIPTION] ?: ""
         val userInstrument = pref[UserPreferencesKeys.USER_INSTRUMENT] ?: ""
+        val userRegion = pref[UserPreferencesKeys.USER_REGION] ?: ""
         val isLeader = pref[UserPreferencesKeys.IS_LEADER] ?: false
         val isBand = pref[UserPreferencesKeys.IS_BAND] ?: false
         val bandId = pref[UserPreferencesKeys.BAND_ID] ?: ""
@@ -44,6 +45,7 @@ class UserSessionDataSourceImpl(
             _userProfileImage = userProfileImage,
             _userDescription = userDescription,
             _userInstrument = userInstrument,
+            _userRegion = userRegion,
             _isLeader = isLeader,
             _isBand = isBand,
             _bandId = bandId
@@ -63,6 +65,7 @@ class UserSessionDataSourceImpl(
             pref[UserPreferencesKeys.USER_PROFILE_IMAGE] = newSessionEntity._userProfileImage
             pref[UserPreferencesKeys.USER_DESCRIPTION] = newSessionEntity._userDescription
             pref[UserPreferencesKeys.USER_INSTRUMENT] = newSessionEntity._userInstrument
+            pref[UserPreferencesKeys.USER_REGION] = newSessionEntity._userRegion
             pref[UserPreferencesKeys.IS_LEADER] = newSessionEntity._isLeader
             pref[UserPreferencesKeys.IS_BAND] = newSessionEntity._isBand
             pref[UserPreferencesKeys.BAND_ID] = newSessionEntity._bandId

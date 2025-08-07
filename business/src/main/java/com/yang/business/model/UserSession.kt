@@ -10,6 +10,7 @@ data class UserSession(
     val userProfileImage: String,
     val userDescription: String,
     val userInstrument: Instrument,
+    val userRegion: Region,
     val isLeader: Boolean,
     val isBand: Boolean,
     val bandId: String,

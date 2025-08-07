@@ -14,6 +14,7 @@ object UserPreferencesKeys {
     val USER_PROFILE_IMAGE = stringPreferencesKey("user_profile_image")
     val USER_DESCRIPTION = stringPreferencesKey("user_description")
     val USER_INSTRUMENT = stringPreferencesKey("user_instrument")
+    val USER_REGION = stringPreferencesKey("user_region")
     val IS_LEADER = booleanPreferencesKey("is_leader")
     val IS_BAND = booleanPreferencesKey("is_band")
     val BAND_ID = stringPreferencesKey("band_id")
