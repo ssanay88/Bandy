@@ -13,7 +13,7 @@ data class User(
     var profileImageUrl: String = "",
     var instrument: Instrument = Instrument.VOCAL,
     var userDescription: String = "",
-    var region: Region = Region("", ""),
+    var region: Region = Region(),
     val gender: Gender = Gender.MALE,
     var skillLevel: SkillLevel = SkillLevel.BEGINNER,
     val birthDate: LocalDate = LocalDate.now(),

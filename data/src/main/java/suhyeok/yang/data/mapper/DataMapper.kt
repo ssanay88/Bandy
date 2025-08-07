@@ -290,10 +290,15 @@ fun RecruitPosting.toFirestoreRecruitPostingDTO() = mapOf(
     "_commentCount" to this.commentCount
 )
 
-fun toRegionData(regionString: String): Region {
-    val (sido, sigungu) = regionString.split(" ")
-    return Region(sido, sigungu)
-}
+fun toRegionData(regionString: String): Region =
+    when {
+        regionString.isEmpty() -> Region()
+        else -> {
+            val (sido, sigungu) = regionString.split(" ")
+            Region(sido, sigungu)
+        }
+    }
+
 
 /**
  * UserSession Data Mapper

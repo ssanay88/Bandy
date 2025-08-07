@@ -22,7 +22,7 @@ data class RecruitingMemberUiState(
     val authorId: String = "",
     var targetAgeGroups: List<AgeGroup> = emptyList(),
     var targetGender: Gender = Gender.ALL,
-    var targetRegion: Region = Region("", ""),
+    var targetRegion: Region = Region(),
     var targetSkillLevel: SkillLevel = SkillLevel.BEGINNER,
     var targetInstrument: Instrument = Instrument.NOTHING,
     var recruitingStatus: RecruitingStatus = RecruitingStatus.ACTIVE,
@@ -30,5 +30,4 @@ data class RecruitingMemberUiState(
     var updatedAt: LocalDateTime = LocalDateTime.now(),
     var viewCount: Int = 0,
     var commentCount: Int = 0
-
 ) : UiState(overallLoading, globalError)

@@ -21,6 +21,8 @@ import suhyeok.yang.shared.common.component.OutlinedSpinner
 
 @Composable
 fun RegionSelectSection(
+    initSido: String = "서울특별시",
+    initSigungu: String = "전체",
     onSidoChanged: (String) -> Unit,
     onSigunguChanged: (String) -> Unit
 ) {
@@ -58,8 +60,8 @@ fun RegionSelectSection(
         }
 
         LaunchedEffect(Unit) {
-            onSidoChanged(sidoList[0])
-            onSigunguChanged(sigunguList[0])
+            onSidoChanged(initSido)
+            onSigunguChanged(initSigungu)
         }
 
         Row(
@@ -69,7 +71,7 @@ fun RegionSelectSection(
             OutlinedSpinner(
                 modifier = Modifier.weight(0.5f),
                 items = sidoList,
-                selectedItemIdx = 0,
+                selectedItemIdx = sidoList.indexOf(initSido),
                 label = stringResource(R.string.region),
                 onValueChange = {
 
@@ -81,7 +83,7 @@ fun RegionSelectSection(
             OutlinedSpinner(
                 modifier = Modifier.weight(0.5f),
                 items = sigunguList,
-                selectedItemIdx = 0,
+                selectedItemIdx = sigunguList.indexOf(initSigungu),
                 label = stringResource(R.string.region),
                 onValueChange = {
                     onSigunguChanged(it)
