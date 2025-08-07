@@ -438,7 +438,9 @@ fun MemberInfoItemView(user: User = MockData.mockUsers.random()) {
             modifier = Modifier,
             imageResId = user.profileImageUrl,
             imageSize = dimensionResource(R.dimen.added_member_profile_image_size),
-            imageDescription = user.nickName
+            imageDescription = user.nickName,
+            placeHolderResId = R.drawable.bandy_logo_tertiary_color,
+            errorResId = R.drawable.bandy_logo_tertiary_color
         )
         Row(
             modifier = Modifier.fillMaxWidth()

@@ -90,7 +90,9 @@ fun PostingInfoRow(
             modifier = Modifier,
             imageResId = postingAuthorImage,
             imageSize = dimensionResource(R.dimen.posting_info_row_author_img_size),
-            imageDescription = postingAuthorNickName
+            imageDescription = postingAuthorNickName,
+            placeHolderResId = R.drawable.bandy_logo_tertiary_color,
+            errorResId = R.drawable.bandy_logo_tertiary_color
         )
 
         Text(

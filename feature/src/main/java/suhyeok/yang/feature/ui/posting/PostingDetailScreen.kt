@@ -197,7 +197,9 @@ fun PostingInfoRow(
     ) {
         CircleImageView(
             imageResId = postingAuthor.authorProfileImageUrl,
-            imageSize = dimensionResource(R.dimen.posting_detail_user_image_size)
+            imageSize = dimensionResource(R.dimen.posting_detail_user_image_size),
+            placeHolderResId = R.drawable.bandy_logo_tertiary_color,
+            errorResId = R.drawable.bandy_logo_tertiary_color
         )
         Column(
             modifier = Modifier.fillMaxWidth()

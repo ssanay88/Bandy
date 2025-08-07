@@ -135,7 +135,9 @@ fun RecruitingAuthorBandInfoRow(
         CircleImageView(
             modifier = Modifier,
             imageResId = bandProfileImageUrl,
-            imageSize = dimensionResource(R.dimen.recruiting_member_posting_band_img_size)
+            imageSize = dimensionResource(R.dimen.recruiting_member_posting_band_img_size),
+            placeHolderResId = R.drawable.bandy_logo_tertiary_color,
+            errorResId = R.drawable.bandy_logo_tertiary_color
         )
         Column(
             modifier = Modifier.fillMaxWidth()
