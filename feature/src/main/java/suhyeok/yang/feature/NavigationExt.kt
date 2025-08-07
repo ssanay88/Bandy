@@ -28,6 +28,18 @@ val NavBackStackEntry.topBarAsRouteName: TopBarItem
             }
 
             // NestedScreen
+            routeName.contains("CreateBandScreen") -> {
+                TopBarItem(
+                    topBarType = TopBarType.BACK_WITH_TITLE,
+                    titleResId = R.string.create_band_screen_title
+                )
+            }
+            routeName.contains("CreateRecruitingMemberScreen") -> {
+                TopBarItem(
+                    topBarType = TopBarType.BACK_WITH_TITLE,
+                    titleResId = R.string.create_recruiting_member_screen_title
+                )
+            }
             routeName.contains("BandInfoScreen") -> {
                 TopBarItem(
                     topBarType = TopBarType.BACK_ONLY
@@ -66,18 +78,6 @@ val NavBackStackEntry.topBarAsRouteName: TopBarItem
                 TopBarItem(
                     topBarType = TopBarType.BACK_WITH_TITLE,
                     titleResId = R.string.notification_screen_title
-                )
-            }
-            routeName.contains("CreateBandScreen") -> {
-                TopBarItem(
-                    topBarType = TopBarType.BACK_WITH_TITLE,
-                    titleResId = R.string.create_band_screen_title
-                )
-            }
-            routeName.contains("CreateRecruitingMemberScreen") -> {
-                TopBarItem(
-                    topBarType = TopBarType.BACK_WITH_TITLE,
-                    titleResId = R.string.create_recruiting_member_screen_title
                 )
             }
             routeName.contains("ChatRoomScreen") -> {
