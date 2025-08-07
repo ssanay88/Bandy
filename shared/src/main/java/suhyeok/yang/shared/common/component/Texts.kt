@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import suhyeok.yang.shared.R
 import suhyeok.yang.shared.ui.theme.BackgroundGray
@@ -34,7 +35,10 @@ fun LoginButtonText(
     Text(
         modifier = modifier,
         text = text,
+        fontFamily = SuitFontFamily,
+        style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
         color = fontColor
     )
 }

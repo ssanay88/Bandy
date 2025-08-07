@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -115,10 +116,20 @@ fun NaverLoginButton(context: Context) {
             LoginManager.naverLogin(context)
         },
         content = {
-            LoginButtonText(
-                text = stringResource(R.string.naver_login_btn_text),
-                fontColor = White
-            )
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                LoginButtonText(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.naver_login_btn_text),
+                    fontColor = White
+                )
+                Image(
+                    painterResource(R.drawable.ic_naver_login),
+                    contentDescription = null,
+                    modifier = Modifier.align(Alignment.CenterStart)
+                )
+            }
         }
     )
 }
