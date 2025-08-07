@@ -31,13 +31,10 @@ fun RegionSelectSection(
 
         val context = LocalContext.current
 
-        val sidoList = context.resources.getStringArray(R.array.sido_List).toList()
-        var sigunguList by remember { mutableStateOf(context.resources.getStringArray(R.array.seoul).toList()) }
-
         fun getStringRes(ResId: Int): String = context.getString(ResId)
 
-        fun updateSigungu(selectedSido: String) {
-            val resId = when (selectedSido) {
+        fun getSigunguArrayResId(selectedSido: String): Int {
+            return when (selectedSido) {
                 getStringRes(R.string.seoul) -> R.array.seoul
                 getStringRes(R.string.gyeonggido) -> R.array.gyeonggido
                 getStringRes(R.string.incheon) -> R.array.incheon
@@ -56,8 +53,11 @@ fun RegionSelectSection(
                 getStringRes(R.string.gwangju) -> R.array.gwangju
                 else -> R.array.jeju
             }
-            sigunguList = context.resources.getStringArray(resId).toList()
         }
+
+        var selectedSigungu by remember { mutableStateOf(initSigungu) }
+        val sidoList = context.resources.getStringArray(R.array.sido_List).toList()
+        var sigunguList by remember { mutableStateOf(context.resources.getStringArray(getSigunguArrayResId(initSido)).toList()) }
 
         LaunchedEffect(Unit) {
             onSidoChanged(initSido)
@@ -73,10 +73,11 @@ fun RegionSelectSection(
                 items = sidoList,
                 selectedItemIdx = sidoList.indexOf(initSido),
                 label = stringResource(R.string.region),
-                onValueChange = {
-
-                    updateSigungu(it)
-                    onSidoChanged(it)
+                onValueChange = {newSido ->
+                    onSidoChanged(newSido)
+                    sigunguList = context.resources.getStringArray(getSigunguArrayResId(newSido)).toList()
+                    selectedSigungu = sigunguList.first()
+                    onSigunguChanged(selectedSigungu)
                 }
             )
 
