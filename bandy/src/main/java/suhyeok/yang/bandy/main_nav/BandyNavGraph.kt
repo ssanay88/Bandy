@@ -187,7 +187,7 @@ fun BandyNavGraph(
             MyBandScreen(
                 viewModel = myBandViewModel,
                 onSuggestFindBandClick = {
-                    navController.navigate(MainScreenRoute.RecruitScreen)
+                    navController.navigate(MainScreenRoute.RecruitScreen())
                 }
             )
         }
