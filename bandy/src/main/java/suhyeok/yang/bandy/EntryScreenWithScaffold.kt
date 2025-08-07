@@ -22,20 +22,22 @@ fun EntryScreenWithScaffold() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val currentRoute = currentDestination?.route?.split(".")?.last()
+    val currentRoute = currentDestination?.route?.substringBefore("?")?.substringAfterLast(".") ?: ""
+    val recruitScreenRoute = MainScreenRoute.RecruitScreen().toString().split("(").first()
 
-    val topBarItem =
-        navController.currentBackStackEntry?.topBarAsRouteName ?: TopBarItem()
+    val topBarItem = navController.currentBackStackEntry?.topBarAsRouteName ?: TopBarItem()
 
     val screensWithBottomNav = listOf(
         MainScreenRoute.HomeScreen.toString(),
-        MainScreenRoute.RecruitScreen.toString(),
+        recruitScreenRoute,
         MainScreenRoute.MyBandScreen.toString(),
         MainScreenRoute.ChatScreen.toString(),
         MainScreenRoute.ProfileScreen.toString()
     )
 
-    val screenWithFloatingButton = MainScreenRoute.RecruitScreen.toString()
+    val screenWithFloatingButton = listOf(
+        recruitScreenRoute
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -54,7 +56,7 @@ fun EntryScreenWithScaffold() {
             }
         },
         floatingActionButton = {
-            if (currentRoute == screenWithFloatingButton) {
+            if (currentRoute in screenWithFloatingButton) {
                 FloatingButton(
                     onCreateBandClick = { navController.navigate(NestedScreenRoute.CreateBandScreen) },
                     onRecruitMemberClick = { navController.navigate(NestedScreenRoute.CreateRecruitingMemberScreen) }

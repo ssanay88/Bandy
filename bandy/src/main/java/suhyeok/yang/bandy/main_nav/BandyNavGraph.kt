@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.yang.business.enums.RecruitScreenTab
 import suhyeok.yang.feature.ui.chat.ChatScreen
 import suhyeok.yang.bandy.MainScreenRoute
 import suhyeok.yang.bandy.NestedScreenRoute
@@ -151,9 +152,11 @@ fun BandyNavGraph(
                 }
             )
         }
-        composable<MainScreenRoute.RecruitScreen> {
+        composable<MainScreenRoute.RecruitScreen> {navBackStackEntry ->
+            val currentTab = navBackStackEntry.toRoute<MainScreenRoute.RecruitScreen>().currentTab
             RecruitScreen(
                 viewModel = recruitViewModel,
+                currentTab = currentTab,
                 onBandInfoClick = { bandId ->
                     navController.navigate(
                         NestedScreenRoute.BandInfoScreen(bandId)
@@ -198,8 +201,7 @@ fun BandyNavGraph(
             BandInfoScreen(bandInfoViewModel, bandId)
         }
         composable<NestedScreenRoute.PostingDetailScreen> { navBackStackEntry ->
-            val postingId =
-                navBackStackEntry.toRoute<NestedScreenRoute.PostingDetailScreen>().postingId
+            val postingId = navBackStackEntry.toRoute<NestedScreenRoute.PostingDetailScreen>().postingId
             PostingDetailScreen(postingId, postingDetailViewModel)
         }
         composable<NestedScreenRoute.RecruitingMemberScreen> {navBackStackEntry ->
@@ -226,7 +228,9 @@ fun BandyNavGraph(
             }
         }
         composable<NestedScreenRoute.CreateRecruitingMemberScreen> {
-            CreateRecruitingMemberScreen(createRecruitingMemberViewModel, navController)
+            CreateRecruitingMemberScreen(createRecruitingMemberViewModel, navController) {
+                navController.navigate(MainScreenRoute.RecruitScreen(RecruitScreenTab.MEMBER_RECRUIT_TAB))
+            }
         }
         composable<NestedScreenRoute.NotificationScreen> {
             NotificationScreen()

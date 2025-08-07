@@ -122,7 +122,15 @@ fun CreateRecruitingMemberScreen(
             navController = navController,
             onCreateRecruitingClick = {
                 when (viewModel.validateRecruitingMemberPosting()) {
-                    is ValidationResult.Success -> viewModel.createRecruitingMemberPosting()
+                    is ValidationResult.Success -> {
+                        Toast.makeText(
+                            context,
+                            "성공",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        viewModel.createRecruitingMemberPosting()
+                        onCreateRecruitingClick()
+                    }
                     is ValidationResult.InstrumentUnselected -> Toast.makeText(
                         context,
                         instrumentUnselectedMessage,

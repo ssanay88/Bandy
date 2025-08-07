@@ -1,5 +1,6 @@
 package suhyeok.yang.bandy
 
+import com.yang.business.enums.RecruitScreenTab
 import kotlinx.serialization.Serializable
 
 /**
@@ -13,7 +14,7 @@ sealed interface MainScreenRoute {
     data object HomeScreen : MainScreenRoute
 
     @Serializable
-    data object RecruitScreen : MainScreenRoute
+    data class RecruitScreen(val currentTab: RecruitScreenTab = RecruitScreenTab.BAND_RECRUIT_TAB) : MainScreenRoute
 
     @Serializable
     data object MyBandScreen : MainScreenRoute

@@ -50,7 +50,7 @@ class FirestoreRecruitPostingDataSourceImpl: RecruitPostingDataSource {
             .await()
 
         val recruitPostingDTOList = recruitPostingListSnapshot.toObjects(RecruitPostingDTO::class.java)
-        DataResourceResult.Success(recruitPostingDTOList.toBusinessRecruitPostingList())
+        DataResourceResult.Success(recruitPostingDTOList.toBusinessRecruitPostingList().sortedByDescending { it.createdAt })
     }.getOrElse {
         DataResourceResult.Failure(it)
     }

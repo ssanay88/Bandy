@@ -20,7 +20,7 @@ data class BottomNavItem(
             BottomNavItem(
                 tabTitleResId = R.string.recruit_screen_title,
                 tabIcon = R.drawable.ic_outline_recruit_tab,
-                destination = MainScreenRoute.RecruitScreen,
+                destination = MainScreenRoute.RecruitScreen(),
                 route = "RecruitScreen"
             ),
             BottomNavItem(

@@ -42,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.Band
 import com.yang.business.enums.Instrument
+import com.yang.business.enums.RecruitScreenTab
 import com.yang.business.model.RecruitPosting
 import com.yang.business.model.Region
 import suhyeok.yang.feature.MockData
@@ -65,12 +66,19 @@ const val ITEM_VIEW_CHIPS_MAX_LINES = 2
 @Composable
 fun RecruitScreen(
     viewModel: RecruitViewModel,
+    currentTab: RecruitScreenTab,
     onBandInfoClick: (String) -> Unit,
     onRecruitingMemberClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val currentTabIndex = when (currentTab) {
+        RecruitScreenTab.BAND_RECRUIT_TAB -> 0
+        RecruitScreenTab.MEMBER_RECRUIT_TAB -> 1
+    }
     
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(currentTabIndex) }
+
     val tabIncludedData = listOf(
         stringResource(R.string.find_band_tab_text),
         stringResource(R.string.find_member_tab_text)
