@@ -66,6 +66,8 @@
     <dimen name="posting_detail_content_section_min_height">100dp</dimen>
     <dimen name="posting_detail_content_section_author_info_space">2dp</dimen>
     <dimen name="posting_detail_content_section_content_space">4dp</dimen>
+    <dimen name="posting_detail_comment_input_button_vertical_padding">10dp</dimen>
+    <dimen name="posting_detail_comment_input_button_horizontal_padding">5dp</dimen>
 
     <!-- Recruit Screen -->
     <dimen name="item_view_card_padding">4dp</dimen>

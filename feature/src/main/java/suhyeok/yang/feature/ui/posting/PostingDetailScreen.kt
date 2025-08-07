@@ -15,10 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,19 +28,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
 import com.yang.business.model.Comment
 import com.yang.business.model.PostingAuthorInfo
 import com.yang.business.model.User
-import suhyeok.yang.feature.MockData
 import suhyeok.yang.feature.R
 import suhyeok.yang.shared.R as SharedR
 import suhyeok.yang.shared.common.component.CircleImageView
@@ -51,6 +53,8 @@ import suhyeok.yang.shared.common.component.SectionTitleText
 import suhyeok.yang.shared.common.component.ThinDivider
 import suhyeok.yang.shared.common.util.DateTimeUtils
 import suhyeok.yang.shared.common.util.throttleClick
+import suhyeok.yang.shared.ui.theme.Gray
+import suhyeok.yang.shared.ui.theme.Primary
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.TextGray
 import suhyeok.yang.shared.ui.theme.White
@@ -83,6 +87,7 @@ fun PostingDetailScreen(
         uiState.overallLoading -> {
             LoadingScreen()
         }
+
         uiState.postingId.isNotEmpty() -> {
             Box() {
                 LazyColumn(
@@ -90,13 +95,15 @@ fun PostingDetailScreen(
                         .fillMaxSize()
                         .padding(bottom = with(LocalDensity.current) { inputHeight.toDp() })
                 ) {
-                    item { PostingHeadSection(
-                        uiState.postingType,
-                        uiState.postingTitle,
-                        uiState.postingAuthorInfo,
-                        uiState.postingCreatedAt,
-                        uiState.postingViewCount
-                    ) }
+                    item {
+                        PostingHeadSection(
+                            uiState.postingType,
+                            uiState.postingTitle,
+                            uiState.postingAuthorInfo,
+                            uiState.postingCreatedAt,
+                            uiState.postingViewCount
+                        )
+                    }
 
                     item { SectionDivider() }
 
@@ -271,7 +278,7 @@ fun PostingContentSection(postingContent: String) {
 fun CommentItemView(comment: Comment, author: User) {
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_5dp))
+        modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_10dp))
     ) {
         CircleImageView(
             modifier = Modifier,
@@ -315,6 +322,8 @@ fun CommentInputRow(
     onCommentTextChange: (String) -> Unit,
     onCommentSubmit: () -> Unit
 ) {
+    val isCommentEmpty = nowComment.isBlank()
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -322,7 +331,7 @@ fun CommentInputRow(
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TextField(
+        OutlinedTextField(
             modifier = Modifier.weight(1f),
             value = nowComment,
             onValueChange = { onCommentTextChange(it) },
@@ -332,11 +341,26 @@ fun CommentInputRow(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Text(
-            text = stringResource(R.string.posting_comment_input_button_text),
-            modifier = Modifier.throttleClick {
-                onCommentSubmit()
-            }
-        )
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(4.dp))
+                .background(if (isCommentEmpty) Gray else Primary)
+                .throttleClick {
+                    if (!isCommentEmpty) onCommentSubmit()
+                }
+        ) {
+            Text(
+                text = stringResource(R.string.posting_comment_input_button_text),
+                fontFamily = SuitFontFamily,
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                color = White,
+                modifier = Modifier.padding(
+                    vertical = dimensionResource(R.dimen.posting_detail_comment_input_button_vertical_padding),
+                    horizontal = dimensionResource(R.dimen.posting_detail_comment_input_button_horizontal_padding)
+                )
+            )
+        }
     }
 }
