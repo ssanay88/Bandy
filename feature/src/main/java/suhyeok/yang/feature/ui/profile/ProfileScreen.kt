@@ -30,6 +30,7 @@ import suhyeok.yang.feature.R
 import suhyeok.yang.shared.R as SharedR
 import suhyeok.yang.shared.common.component.CircleImageView
 import suhyeok.yang.shared.common.component.SectionDivider
+import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 
 @Composable
@@ -167,7 +168,7 @@ fun ProfileMenuRow(
             .fillMaxWidth()
             .height(dimensionResource(R.dimen.profile_menu_height))
             .padding(vertical = dimensionResource(R.dimen.padding_vertical_5dp))
-            .clickable { onClick() },
+            .throttleClick { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
