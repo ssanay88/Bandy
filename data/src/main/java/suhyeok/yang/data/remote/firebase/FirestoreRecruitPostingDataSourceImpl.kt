@@ -30,11 +30,12 @@ class FirestoreRecruitPostingDataSourceImpl: RecruitPostingDataSource {
 
     override suspend fun readRecruitPosting(postingId: String): DataResourceResult<RecruitPosting> = runCatching {
         val recruitPostingSnapshot = db.collection(RECRUIT_POSTING_COLLECTION)
-            .document(postingId)
+            .whereEqualTo("_recruitPostingId", postingId)
             .get()
             .await()
 
-        val recruitPostingDTO = recruitPostingSnapshot.toObject(RecruitPostingDTO::class.java)
+        val recruitPostingDTO = recruitPostingSnapshot.toObjects(RecruitPostingDTO::class.java).firstOrNull()
+
         if (recruitPostingDTO != null) {
             DataResourceResult.Success(recruitPostingDTO.toBusinessRecruitPosting())
         } else {

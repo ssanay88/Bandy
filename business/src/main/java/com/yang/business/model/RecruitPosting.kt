@@ -25,12 +25,4 @@ data class RecruitPosting(
     var updatedAt: LocalDateTime = LocalDateTime.now(),
     var viewCount: Int = 0,
     var commentCount: Int = 0
-) {
-    fun targetAgeGroupToString(): String = if (targetAgeGroups.isEmpty()) "전체" else targetAgeGroups.joinToString(", ") { it.name }
-
-    fun targetGenderToString(): String = when (targetGender) {
-        Gender.MALE -> "남성"
-        Gender.FEMALE -> "여성"
-        else -> "전체"
-    }
-}
+)

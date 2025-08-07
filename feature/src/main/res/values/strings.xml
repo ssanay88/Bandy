@@ -67,6 +67,7 @@
     <string name="recruit_member_detail_info_target_age_title">나이</string>
     <string name="recruit_member_detail_info_target_gender_title">성별</string>
     <string name="recruit_member_detail_info_target_region_title">지역</string>
+    <string name="recruit_member_detail_info_target_skill_level_title">실력 수준</string>
     <string name="apply_button_text">지원하기</string>
 
     <!-- My Band Screen -->
