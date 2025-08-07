@@ -20,6 +20,7 @@ import suhyeok.yang.feature.factory.FirestoreSettingViewModelFactory
 import suhyeok.yang.feature.factory.HomeViewModelFactory
 import suhyeok.yang.feature.factory.MyBandViewModelFactory
 import suhyeok.yang.feature.factory.PostingDetailViewModelFactory
+import suhyeok.yang.feature.factory.ProfileUpdateViewModelFactory
 import suhyeok.yang.feature.factory.ProfileViewModelFactory
 import suhyeok.yang.feature.factory.RecruitViewModelFactory
 import suhyeok.yang.feature.factory.RecruitingMemberViewModelFactory
@@ -32,7 +33,7 @@ import suhyeok.yang.feature.screen.NotificationScreen
 import suhyeok.yang.feature.ui.posting.PostingDetailScreen
 import suhyeok.yang.feature.ui.posting.PostingHistoryScreen
 import suhyeok.yang.feature.ui.profile.ProfileScreen
-import suhyeok.yang.feature.screen.ProfileUpdateScreen
+import suhyeok.yang.feature.ui.profile.ProfileUpdateScreen
 import suhyeok.yang.feature.ui.recruit.RecruitScreen
 import suhyeok.yang.feature.ui.recruit.RecruitingMemberScreen
 import suhyeok.yang.feature.ui.band.BandInfoScreen
@@ -43,6 +44,7 @@ import suhyeok.yang.feature.viewmodel.FirestoreSettingViewModel
 import suhyeok.yang.feature.ui.home.HomeViewModel
 import suhyeok.yang.feature.ui.myband.MyBandViewModel
 import suhyeok.yang.feature.ui.posting.PostingDetailViewModel
+import suhyeok.yang.feature.ui.profile.ProfileUpdateViewModel
 import suhyeok.yang.feature.ui.profile.ProfileViewModel
 import suhyeok.yang.feature.ui.recruit.RecruitViewModel
 import suhyeok.yang.feature.ui.recruit.RecruitingMemberViewModel
@@ -100,17 +102,29 @@ fun BandyNavGraph(
     val profileFactory = ProfileViewModelFactory(userSessionUseCases)
     val profileViewModel: ProfileViewModel = viewModel(factory = profileFactory)
 
-    val postingDetailFactory = PostingDetailViewModelFactory(postingUseCases, userSessionUseCases, userUseCases)
+    val postingDetailFactory =
+        PostingDetailViewModelFactory(postingUseCases, userSessionUseCases, userUseCases)
     val postingDetailViewModel: PostingDetailViewModel = viewModel(factory = postingDetailFactory)
 
-    val createBandFactory = CreateBandViewModelFactory(userUseCases, bandUseCases, userSessionUseCases)
+    val createBandFactory =
+        CreateBandViewModelFactory(userUseCases, bandUseCases, userSessionUseCases)
     val createBandViewModel: CreateBandViewModel = viewModel(factory = createBandFactory)
 
-    val createRecruitingMemberFactory = CreateRecruitingMemberViewModelFactory(userSessionUseCases, bandUseCases, recruitPostingUseCases)
-    val createRecruitingMemberViewModel: CreateRecruitingMemberViewModel = viewModel(factory = createRecruitingMemberFactory)
+    val createRecruitingMemberFactory = CreateRecruitingMemberViewModelFactory(
+        userSessionUseCases,
+        bandUseCases,
+        recruitPostingUseCases
+    )
+    val createRecruitingMemberViewModel: CreateRecruitingMemberViewModel =
+        viewModel(factory = createRecruitingMemberFactory)
 
-    val recruitingMemberFactory = RecruitingMemberViewModelFactory(userSessionUseCases, bandUseCases, recruitPostingUseCases)
-    val recruitingMemberViewModel: RecruitingMemberViewModel = viewModel(factory = recruitingMemberFactory)
+    val recruitingMemberFactory =
+        RecruitingMemberViewModelFactory(userSessionUseCases, bandUseCases, recruitPostingUseCases)
+    val recruitingMemberViewModel: RecruitingMemberViewModel =
+        viewModel(factory = recruitingMemberFactory)
+
+    val profileUpdateFactory = ProfileUpdateViewModelFactory(userSessionUseCases, userUseCases)
+    val profileUpdateViewModel: ProfileUpdateViewModel = viewModel(factory = profileUpdateFactory)
 
     NavHost(
         navController = navController,
@@ -152,7 +166,7 @@ fun BandyNavGraph(
                 }
             )
         }
-        composable<MainScreenRoute.RecruitScreen> {navBackStackEntry ->
+        composable<MainScreenRoute.RecruitScreen> { navBackStackEntry ->
             val currentTab = navBackStackEntry.toRoute<MainScreenRoute.RecruitScreen>().currentTab
             RecruitScreen(
                 viewModel = recruitViewModel,
@@ -204,14 +218,15 @@ fun BandyNavGraph(
             val postingId = navBackStackEntry.toRoute<NestedScreenRoute.PostingDetailScreen>().postingId
             PostingDetailScreen(postingId, postingDetailViewModel)
         }
-        composable<NestedScreenRoute.RecruitingMemberScreen> {navBackStackEntry ->
+        composable<NestedScreenRoute.RecruitingMemberScreen> { navBackStackEntry ->
             val recruitPostingId = navBackStackEntry.toRoute<NestedScreenRoute.RecruitingMemberScreen>().recruitingPostingId
             RecruitingMemberScreen(recruitPostingId, navController, recruitingMemberViewModel)
         }
         composable<NestedScreenRoute.ProfileUpdateScreen> {
             ProfileUpdateScreen(
-                navController = navController,
-                {
+                viewModel = profileUpdateViewModel,
+                onCancelClick = { navController.popBackStack() },
+                onUpdateClick = {
                     // TODO 프로필 업데이트 버튼 클릭?
                 }
             )
@@ -220,17 +235,25 @@ fun BandyNavGraph(
             PostingHistoryScreen()
         }
         composable<NestedScreenRoute.ManageBandScreen> {
-            ManageBandScreen(navController)
+            ManageBandScreen(onCancelClick = { navController.popBackStack() })
         }
         composable<NestedScreenRoute.CreateBandScreen> {
-            CreateBandScreen(createBandViewModel, navController) {
-                navController.navigate(MainScreenRoute.MyBandScreen)
-            }
+            CreateBandScreen(
+                viewModel = createBandViewModel,
+                onCancelClick = { navController.popBackStack() },
+                onCreateBandClick = {
+                    navController.navigate(MainScreenRoute.MyBandScreen)
+                }
+            )
         }
         composable<NestedScreenRoute.CreateRecruitingMemberScreen> {
-            CreateRecruitingMemberScreen(createRecruitingMemberViewModel, navController) {
-                navController.navigate(MainScreenRoute.RecruitScreen(RecruitScreenTab.MEMBER_RECRUIT_TAB))
-            }
+            CreateRecruitingMemberScreen(
+                viewModel = createRecruitingMemberViewModel,
+                onCancelClick = { navController.popBackStack() },
+                onCreateRecruitingClick = {
+                    navController.navigate(MainScreenRoute.RecruitScreen(RecruitScreenTab.MEMBER_RECRUIT_TAB))
+                }
+            )
         }
         composable<NestedScreenRoute.NotificationScreen> {
             NotificationScreen()

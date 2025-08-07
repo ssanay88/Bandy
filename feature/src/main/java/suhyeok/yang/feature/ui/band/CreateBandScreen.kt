@@ -70,7 +70,7 @@ import java.util.UUID
 @Composable
 fun CreateBandScreen(
     viewModel: CreateBandViewModel,
-    navController: NavController,
+    onCancelClick: () -> Unit,
     onCreateBandClick: () -> Unit
 ) {
     var selectedBandProfileImageUrl by remember { mutableStateOf("") }
@@ -164,28 +164,30 @@ fun CreateBandScreen(
                 }
             )
         }
-        CreateBandScreenButtonSection(navController, onCreateClick = {
-            if (validateBandProfile()) {
-                onCreateBandClick()
-                val newBand = Band(
-                    bandId = "band_${UUID.randomUUID()}",
-                    bandName = selectedBandName,
-                    bandProfileImageUrl = selectedBandProfileImageUrl,
-                    coverImageUrl = selectedBandCoverImageUrl,
-                    region = Region(sido = selectedSido, sigungu = selectedSigungu),
-                    leaderId = "",
-                    members = selectedMemberList,
-                    bandDescription = selectedBandIntroduce,
-                    youtubeLink = selectedYoutubeLink,
-                    instagramLink = selectedInstagramLink,
-                    spotifyLink = selectedSpotifyLink
-                )
-                viewModel.apply {
-                    registerNewBand(newBand)
-                    updateUserWithBand(newBand)
+        CreateBandScreenButtonSection(
+            onCancelClick = onCancelClick,
+            onCreateClick = {
+                if (validateBandProfile()) {
+                    onCreateBandClick()
+                    val newBand = Band(
+                        bandId = "band_${UUID.randomUUID()}",
+                        bandName = selectedBandName,
+                        bandProfileImageUrl = selectedBandProfileImageUrl,
+                        coverImageUrl = selectedBandCoverImageUrl,
+                        region = Region(sido = selectedSido, sigungu = selectedSigungu),
+                        leaderId = "",
+                        members = selectedMemberList,
+                        bandDescription = selectedBandIntroduce,
+                        youtubeLink = selectedYoutubeLink,
+                        instagramLink = selectedInstagramLink,
+                        spotifyLink = selectedSpotifyLink
+                    )
+                    viewModel.apply {
+                        registerNewBand(newBand)
+                        updateUserWithBand(newBand)
+                    }
                 }
-            }
-        })
+            })
     }
 
 }
@@ -439,7 +441,8 @@ fun MemberInfoItemView(user: User = MockData.mockUsers.random()) {
             imageDescription = user.nickName
         )
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = dimensionResource(R.dimen.padding_10dp)),
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = dimensionResource(R.dimen.padding_10dp)),
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
@@ -551,11 +554,11 @@ fun LinkTextField(
 }
 
 @Composable
-fun CreateBandScreenButtonSection(navController: NavController, onCreateClick: () -> Unit) {
+fun CreateBandScreenButtonSection(onCancelClick: () -> Unit, onCreateClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_8dp))
     ) {
-        CancelButton(Modifier.weight(0.5f), navController)
+        CancelButton(Modifier.weight(0.5f), onCancelClick)
         CreateBandButton(Modifier.weight(0.5f), onCreateClick)
     }
 }

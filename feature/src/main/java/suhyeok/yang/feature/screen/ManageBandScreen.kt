@@ -54,9 +54,8 @@ import kotlin.math.exp
 /**
  * 밴드 관리 스크린
  */
-@Preview(showBackground = true)
 @Composable
-fun ManageBandScreen(navController: NavController = rememberNavController()) {
+fun ManageBandScreen(onCancelClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +68,7 @@ fun ManageBandScreen(navController: NavController = rememberNavController()) {
         BandRegionUpdateSection()
         BandMemberUpdateSection()
         BandIntroduceUpdateSection()
-        ManageBandScreenButtonSection(navController)
+        ManageBandScreenButtonSection(onCancelClick)
     }
 }
 
@@ -252,11 +251,11 @@ fun BandIntroduceUpdateSection() {
 }
 
 @Composable
-fun ManageBandScreenButtonSection(navController: NavController) {
+fun ManageBandScreenButtonSection(onCancelClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_8dp))
     ) {
-        CancelButton(Modifier.weight(0.5f), navController)
+        CancelButton(Modifier.weight(0.5f), onCancelClick)
         UpdateBandButton(Modifier.weight(0.5f))
     }
 }

@@ -12,10 +12,10 @@ import suhyeok.yang.shared.common.component.OutLinedButton
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 
 @Composable
-fun CancelButton(modifier: Modifier = Modifier, navController: NavController) {
+fun CancelButton(modifier: Modifier = Modifier, onCancelClick: () -> Unit) {
     OutLinedButton(
         modifier = modifier,
-        onClick = { navController.popBackStack() },
+        onClick = { onCancelClick() },
         content = {
             Text(
                 text = stringResource(R.string.cancel_text),
