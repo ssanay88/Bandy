@@ -79,7 +79,6 @@ fun BandDetailInfoSection(band: Band) {
                 BandPageSectionSpacer()
                 BandDescriptionSection(band.bandDescription)
                 BandPageSectionSpacer()
-                BandGallery()
             }
         }
         BandInfoSection(band)
