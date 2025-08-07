@@ -27,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.yang.business.enums.AgeGroup
@@ -54,7 +53,7 @@ import suhyeok.yang.shared.ui.theme.White
 @Composable
 fun CreateRecruitingMemberScreen(
     viewModel: CreateRecruitingMemberViewModel,
-    navController: NavController,
+    onCancelClick: () -> Unit,
     onCreateRecruitingClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -119,10 +118,10 @@ fun CreateRecruitingMemberScreen(
         }
 
         CreateRecruitingMemberButton(
-            navController = navController,
+            onCancelClick = onCancelClick,
             onCreateRecruitingClick = {
                 when (viewModel.validateRecruitingMemberPosting()) {
-                    is ValidationResult.Success -> {
+                    is RecruitPostingValidationResult.Success -> {
                         Toast.makeText(
                             context,
                             "성공",
@@ -131,19 +130,19 @@ fun CreateRecruitingMemberScreen(
                         viewModel.createRecruitingMemberPosting()
                         onCreateRecruitingClick()
                     }
-                    is ValidationResult.InstrumentUnselected -> Toast.makeText(
+                    is RecruitPostingValidationResult.InstrumentUnselected -> Toast.makeText(
                         context,
                         instrumentUnselectedMessage,
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    is ValidationResult.PostingTitleEmpty -> Toast.makeText(
+                    is RecruitPostingValidationResult.PostingTitleEmpty -> Toast.makeText(
                         context,
                         postingTitleIsEmptyMessage,
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    is ValidationResult.PostingContentEmpty -> Toast.makeText(
+                    is RecruitPostingValidationResult.PostingContentEmpty -> Toast.makeText(
                         context,
                         postingContentIsEmptyMessage,
                         Toast.LENGTH_SHORT
@@ -346,14 +345,14 @@ fun RecruitingInfoContentSection(
 
 @Composable
 fun CreateRecruitingMemberButton(
-    navController: NavController,
+    onCancelClick: () -> Unit,
     onCreateRecruitingClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.padding(dimensionResource(R.dimen.padding_10dp)),
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_8dp))
     ) {
-        CancelButton(Modifier.weight(0.5f), navController)
+        CancelButton(Modifier.weight(0.5f), onCancelClick)
         CreateRecruitingButton(Modifier.weight(0.5f), onCreateRecruitingClick)
     }
 }

@@ -83,15 +83,15 @@ class CreateRecruitingMemberViewModel(
         }
     }
 
-    fun validateRecruitingMemberPosting(): ValidationResult {
+    fun validateRecruitingMemberPosting(): RecruitPostingValidationResult {
         return when {
-            _uiState.value.targetInstrument == Instrument.NOTHING -> ValidationResult.InstrumentUnselected
+            _uiState.value.targetInstrument == Instrument.NOTHING -> RecruitPostingValidationResult.InstrumentUnselected
 
-            _uiState.value.recruitingInfoTitle.isEmpty() -> ValidationResult.PostingTitleEmpty
+            _uiState.value.recruitingInfoTitle.isEmpty() -> RecruitPostingValidationResult.PostingTitleEmpty
 
-            _uiState.value.recruitingInfoContent.isEmpty() -> ValidationResult.PostingContentEmpty
+            _uiState.value.recruitingInfoContent.isEmpty() -> RecruitPostingValidationResult.PostingContentEmpty
 
-            else -> ValidationResult.Success
+            else -> RecruitPostingValidationResult.Success
         }
     }
 
