@@ -54,6 +54,11 @@
     <dimen name="posting_info_row_author_name_start_padding">10dp</dimen>
     <dimen name="posting_info_row_view_count_start_padding">30dp</dimen>
     <dimen name="posting_info_row_posting_time_start_padding">20dp</dimen>
+    <dimen name="top_banner_indicator_corner">20dp</dimen>
+    <dimen name="top_banner_indicator_outside_padding">6dp</dimen>
+    <dimen name="top_banner_indicator_inside_vertical_padding">4dp</dimen>
+    <dimen name="top_banner_indicator_inside_horizontal_padding">8dp</dimen>
+    <dimen name="top_banner_indicator_text_space">5dp</dimen>
 
     <!-- PostingDetailScreen -->
     <dimen name="posting_detail_user_image_size">30dp</dimen>

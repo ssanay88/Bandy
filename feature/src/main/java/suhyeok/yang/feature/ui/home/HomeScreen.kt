@@ -1,7 +1,9 @@
 package suhyeok.yang.feature.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -38,6 +40,7 @@ import com.yang.business.model.Band
 import com.yang.business.model.HomeTopBanner
 import com.yang.business.model.Posting
 import com.yang.business.enums.PostingType
+import kotlinx.coroutines.delay
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.PostingItemView
 import suhyeok.yang.shared.common.component.LoadingScreen
@@ -47,8 +50,11 @@ import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.ui.theme.Gray
 import suhyeok.yang.shared.ui.theme.LightGray
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
+import suhyeok.yang.shared.ui.theme.White
 
 const val POSTING_TITLE_MAX_LINE = 1
+const val TOP_BANNER_AUTO_SCROLL_DELAY = 5000L
+const val TOP_BANNER_VIEW_PORT_SIZE = 3
 
 @Composable
 fun HomeScreen(
@@ -66,8 +72,7 @@ fun HomeScreen(
         ) {
             item {
                 TopBannerSection(
-                    uiState.topBannerList,
-                    rememberPagerState(initialPage = 2) { uiState.topBannerList.size }
+                    uiState.topBannerList
                 )
             }
 
@@ -95,20 +100,100 @@ fun HomeScreen(
 
 @Composable
 fun TopBannerSection(
-    itemList: List<HomeTopBanner>,
-    pagerState: PagerState
+    itemList: List<HomeTopBanner>
 ) {
-    HorizontalPager(
-        modifier = Modifier.fillMaxWidth().height(dimensionResource(R.dimen.top_banner_height)),
-        state = pagerState
-    ) { index ->
-        AsyncImage(
-            model = itemList[index].bannerImageUrl,
-            contentDescription = itemList[index].bannerDescription,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds
+    val initialPage = (Int.MAX_VALUE / 2).let { it - (it  % itemList.size) }
+    val pagerState = rememberPagerState(initialPage = initialPage) { Int.MAX_VALUE }
+    val infiniteItemList = { index: Int -> itemList[index % itemList.size]}
+
+    LaunchedEffect(pagerState) {
+        while (true) {
+            delay(TOP_BANNER_AUTO_SCROLL_DELAY)
+
+            if (!pagerState.isScrollInProgress) {
+                val nextPage = (pagerState.currentPage + 1).let { if (it !in 0..Int.MAX_VALUE) initialPage else it }
+                runCatching {
+                    pagerState.animateScrollToPage(nextPage)
+                }.onFailure {
+                    Log.e("error", it.message.toString())
+                }
+            }
+        }
+    }
+
+    Box {
+        HorizontalPager(
+            modifier = Modifier.fillMaxWidth().height(dimensionResource(R.dimen.top_banner_height)),
+            state = pagerState,
+            beyondViewportPageCount = TOP_BANNER_VIEW_PORT_SIZE
+        ) { index ->
+            AsyncImage(
+                model = infiniteItemList(index).bannerImageUrl,
+                contentDescription = infiniteItemList(index).bannerDescription,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(bottom = dimensionResource(R.dimen.top_banner_indicator_outside_padding), end = dimensionResource(R.dimen.top_banner_indicator_outside_padding))
+                .align(Alignment.BottomEnd)
+        ) {
+            TopBannerIndicator(
+                currentPage = pagerState.currentPage % itemList.size,
+                totalPages = itemList.size,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.top_banner_indicator_corner)))
+                    .background(Gray.copy(alpha = 0.8f))
+                    .padding(vertical = dimensionResource(R.dimen.top_banner_indicator_inside_vertical_padding), horizontal = dimensionResource(R.dimen.top_banner_indicator_inside_horizontal_padding))
+            )
+        }
+    }
+}
+
+@Composable
+fun TopBannerIndicator(
+    currentPage: Int = 0,
+    totalPages: Int = 0,
+    modifier: Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.top_banner_indicator_text_space))
+    ) {
+        TopBannerIndicatorText(
+            text = "${currentPage + 1}",
+            modifier = Modifier,
+            fontWeight = FontWeight.Bold
+        )
+
+        TopBannerIndicatorText(
+            text = "/",
+            modifier = Modifier
+        )
+
+        TopBannerIndicatorText(
+            text = totalPages.toString(),
+            modifier = Modifier
         )
     }
+}
+
+@Composable
+fun TopBannerIndicatorText(
+    text: String,
+    modifier: Modifier,
+    fontWeight: FontWeight = FontWeight.Normal
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        fontFamily = SuitFontFamily,
+        fontWeight = fontWeight,
+        style = MaterialTheme.typography.labelMedium,
+        color = White
+    )
 }
 
 @Composable
