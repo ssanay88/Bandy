@@ -53,8 +53,14 @@
     <string name="recruit_member_age_section_title">연령대</string>
     <string name="recruit_member_skill_level_section_title">실력 수준</string>
     <string name="recruit_member_gender_section_title">모집 성별</string>
+    <string name="recruit_member_recruiting_info_title_section_title">제목</string>
+    <string name="recruit_member_recruiting_info_title_section_content">제목을 입력해주세요</string>
     <string name="recruit_member_recruiting_info_content_section_title">모집 안내</string>
     <string name="recruit_member_recruiting_info_content_section_content">모집 조건을 상세하게 적어주세요!\n합주 요일, 횟수, 위치 혹은\n성실하신 분!, JPOP을 좋아하시는 분! 등 추가적인 조건을 알려주세요! </string>
+    <string name="recruit_member_posting_select_instrument_message">모집 악기를 선택해주세요</string>
+    <string name="recruit_member_posting_input_title_message">제목을 입력해주세요</string>
+    <string name="recruit_member_posting_input_content_message">내용을 입력해주세요</string>
+
 
     <!-- Recruit Member Detail Screen   -->
     <string name="recruit_member_detail_info_target_instrument_title">모집 악기</string>

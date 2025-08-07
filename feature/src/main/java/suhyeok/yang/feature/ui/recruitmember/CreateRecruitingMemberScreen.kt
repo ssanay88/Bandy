@@ -1,5 +1,6 @@
 package suhyeok.yang.feature.ui.recruitmember
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,9 +28,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.yang.business.enums.AgeGroup
 import com.yang.business.enums.Gender
+import com.yang.business.enums.Instrument
+import com.yang.business.enums.SkillLevel
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.CancelButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
@@ -38,6 +42,10 @@ import suhyeok.yang.feature.ui.profile.TitleText
 import suhyeok.yang.shared.common.component.FilledButton
 import suhyeok.yang.shared.common.component.OutlinedSpinner
 import suhyeok.yang.shared.common.component.SelectableChip
+import suhyeok.yang.shared.common.util.toAgeGroup
+import suhyeok.yang.shared.common.util.toInstrument
+import suhyeok.yang.shared.common.util.toSkillLevel
+import suhyeok.yang.shared.common.util.toStr
 import suhyeok.yang.shared.ui.theme.BackgroundGray
 import suhyeok.yang.shared.ui.theme.Primary
 import suhyeok.yang.shared.ui.theme.TextGray
@@ -46,11 +54,18 @@ import suhyeok.yang.shared.ui.theme.White
 @Composable
 fun CreateRecruitingMemberScreen(
     viewModel: CreateRecruitingMemberViewModel,
-    navController: NavController
+    navController: NavController,
+    onCreateRecruitingClick: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
-    var selectedSido by remember { mutableStateOf("") }
-    var selectedSigungu by remember { mutableStateOf("") }
+    val instrumentUnselectedMessage =
+        stringResource(R.string.recruit_member_posting_select_instrument_message)
+    val postingTitleIsEmptyMessage =
+        stringResource(R.string.recruit_member_posting_input_title_message)
+    val postingContentIsEmptyMessage =
+        stringResource(R.string.recruit_member_posting_input_content_message)
 
     Column {
         Column(
@@ -61,33 +76,80 @@ fun CreateRecruitingMemberScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_24dp))
         ) {
-            RecruitingInstrumentSection()
-            RecruitingAgeSection()
-            RegionSelectSection(
-                onSidoChanged = { selectedSido = it },
-                onSigunguChanged = { selectedSigungu = it }
+            RecruitingInstrumentSection(
+                onInstrumentChanged = { selectedInstrument ->
+                    viewModel.setTargetInstrument(selectedInstrument)
+                }
             )
-            RecruitingGenderSection()
-            RecruitingSkillLevelSection()
-            RecruitingInfoContentSection()
+
+            RecruitingAgeSection(
+                updateTargetAgeGroup = { selectedAgeGroup ->
+                    viewModel.updateAgeGroup(selectedAgeGroup)
+                }
+            )
+
+            RegionSelectSection(
+                onSidoChanged = { selectedSido -> viewModel.setTargetSido(selectedSido) },
+                onSigunguChanged = { selectedSigungu -> viewModel.setTargetSigungu(selectedSigungu) }
+            )
+
+            RecruitingGenderSection(
+                onGenderChanged = { selectedGender ->
+                    viewModel.setTargetGender(selectedGender)
+                }
+            )
+
+            RecruitingSkillLevelSection(
+                onSkillLevelChanged = {
+
+                }
+            )
+            RecruitingInfoTitleSection(
+                recruitingInfoTitle = uiState.recruitingInfoTitle,
+                onRecruitingInfoTitleChanged = { inputTitle ->
+                    viewModel.setRecruitingInfoTitle(inputTitle)
+                }
+            )
+            RecruitingInfoContentSection(
+                recruitingInfoContent = uiState.recruitingInfoContent,
+                onRecruitingInfoContentChanged = { inputContent ->
+                    viewModel.setRecruitingInfoContent(inputContent)
+                }
+            )
         }
+
         CreateRecruitingMemberButton(
             navController = navController,
-            onCreateRecruitingClick = { /*TODO 구인 공고 등록*/ }
+            onCreateRecruitingClick = {
+                when (viewModel.validateRecruitingMemberPosting()) {
+                    is ValidationResult.Success -> viewModel.createRecruitingMemberPosting()
+                    is ValidationResult.InstrumentUnselected -> Toast.makeText(
+                        context,
+                        instrumentUnselectedMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    is ValidationResult.PostingTitleEmpty -> Toast.makeText(
+                        context,
+                        postingTitleIsEmptyMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    is ValidationResult.PostingContentEmpty -> Toast.makeText(
+                        context,
+                        postingContentIsEmptyMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         )
     }
 }
 
 @Composable
-fun RecruitingInstrumentSection() {
-    val instrumentList = listOf(
-        "보컬",
-        "기타",
-        "베이스",
-        "키보드",
-        "드럼"
-    )
-    var recruitingInstrument by remember { mutableStateOf(instrumentList[0]) }
+fun RecruitingInstrumentSection(
+    onInstrumentChanged: (Instrument) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -95,11 +157,11 @@ fun RecruitingInstrumentSection() {
 
         OutlinedSpinner(
             modifier = Modifier.fillMaxWidth(),
-            items = instrumentList,
+            items = Instrument.entries.map { it.toStr() },
             selectedItemIdx = 0,
             label = stringResource(R.string.instrument),
-            onValueChange = {
-                recruitingInstrument = it
+            onValueChange = { targetInstrument ->
+                onInstrumentChanged(targetInstrument.toInstrument())
             }
 
         )
@@ -107,38 +169,39 @@ fun RecruitingInstrumentSection() {
 }
 
 @Composable
-fun RecruitingAgeSection() {
+fun RecruitingAgeSection(
+    updateTargetAgeGroup: (AgeGroup) -> Unit
+) {
     Column {
         TitleText(text = stringResource(R.string.recruit_member_detail_info_target_age_title))
-        AgeChipsRow()
+        AgeChipsRow(updateTargetAgeGroup)
     }
 }
 
 @Composable
-fun AgeChipsRow() {
-    val ageLists = listOf<String>(
-        "10대",
-        "20대",
-        "30대",
-        "40대",
-        "50대 이상"
-    )
-
+fun AgeChipsRow(
+    updateTargetAgeGroup: (AgeGroup) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        ageLists.forEach {
-            CreateRecruitingMemberChip(text = it)
+        AgeGroup.entries.map { it.toStr() }.forEach {
+            CreateRecruitingMemberChip(
+                ageGroupText = it,
+                updateTargetAgeGroup = updateTargetAgeGroup
+            )
         }
     }
 }
 
 
-
 @Composable
-fun RecruitingGenderSection() {
-    var selectedButtonId by remember { mutableStateOf(Gender.ALL) }
+fun RecruitingGenderSection(
+    onGenderChanged: (Gender) -> Unit
+) {
+    var targetGender by remember { mutableStateOf(Gender.ALL) }
+
     val selectedButtonColors = ButtonDefaults.buttonColors(
         containerColor = Primary,
         contentColor = White
@@ -162,27 +225,30 @@ fun RecruitingGenderSection() {
                 modifier = Modifier.fillMaxHeight().weight(1f),
                 buttonText = stringResource(R.string.any_gender),
                 textStyle = MaterialTheme.typography.titleMedium,
-                colors = if (selectedButtonId == Gender.ALL) selectedButtonColors else unSelectedButtonColors,
+                colors = if (targetGender == Gender.ALL) selectedButtonColors else unSelectedButtonColors,
                 onClick = {
-                    selectedButtonId = Gender.ALL
+                    targetGender = Gender.ALL
+                    onGenderChanged(Gender.ALL)
                 }
             )
             RadioSelectButton(
                 modifier = Modifier.fillMaxHeight().weight(1f),
                 buttonText = stringResource(R.string.male),
                 textStyle = MaterialTheme.typography.titleMedium,
-                colors = if (selectedButtonId == Gender.MALE) selectedButtonColors else unSelectedButtonColors,
+                colors = if (targetGender == Gender.MALE) selectedButtonColors else unSelectedButtonColors,
                 onClick = {
-                    selectedButtonId = Gender.MALE
+                    targetGender = Gender.MALE
+                    onGenderChanged(Gender.MALE)
                 }
             )
             RadioSelectButton(
                 modifier = Modifier.fillMaxHeight().weight(1f),
                 buttonText = stringResource(R.string.female),
                 textStyle = MaterialTheme.typography.titleMedium,
-                colors = if (selectedButtonId == Gender.FEMALE) selectedButtonColors else unSelectedButtonColors,
+                colors = if (targetGender == Gender.FEMALE) selectedButtonColors else unSelectedButtonColors,
                 onClick = {
-                    selectedButtonId = Gender.FEMALE
+                    targetGender = Gender.FEMALE
+                    onGenderChanged(Gender.FEMALE)
                 }
             )
         }
@@ -191,28 +257,29 @@ fun RecruitingGenderSection() {
 
 
 @Composable
-fun CreateRecruitingMemberChip(text: String) {
+fun CreateRecruitingMemberChip(
+    ageGroupText: String,
+    updateTargetAgeGroup: (AgeGroup) -> Unit
+) {
     var selected by remember { mutableStateOf(false) }
 
     SelectableChip(
-        text = text,
+        text = ageGroupText,
         selected = selected,
-        onClick = { selected = !selected },
+        onClick = {
+            selected = !selected
+            updateTargetAgeGroup(ageGroupText.toAgeGroup())
+        },
         modifier = Modifier
     )
 }
 
 
 @Composable
-fun RecruitingSkillLevelSection() {
-    val skillLevelList = listOf(
-        "입문",
-        "초금",
-        "중급",
-        "고급",
-        "전문가"
-    )
-    var recruitingInstrument by remember { mutableStateOf(skillLevelList[0]) }
+fun RecruitingSkillLevelSection(
+    onSkillLevelChanged: (SkillLevel) -> Unit
+) {
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -220,11 +287,11 @@ fun RecruitingSkillLevelSection() {
 
         OutlinedSpinner(
             modifier = Modifier.fillMaxWidth(),
-            items = skillLevelList,
+            items = SkillLevel.entries.map { it.toStr() },
             selectedItemIdx = 0,
             label = stringResource(R.string.instrument),
             onValueChange = {
-                recruitingInstrument = it
+                onSkillLevelChanged(it.toSkillLevel())
             }
 
         )
@@ -232,14 +299,39 @@ fun RecruitingSkillLevelSection() {
 }
 
 @Composable
-fun RecruitingInfoContentSection() {
+fun RecruitingInfoTitleSection(
+    recruitingInfoTitle: String,
+    onRecruitingInfoTitleChanged: (String) -> Unit
+) {
+    Column {
+        TitleText(text = stringResource(R.string.recruit_member_recruiting_info_title_section_title))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = recruitingInfoTitle,
+            onValueChange = { onRecruitingInfoTitleChanged(it) },
+            placeholder = {
+                Text(text = stringResource(R.string.recruit_member_recruiting_info_title_section_content))
+            }
+        )
+    }
+}
+
+@Composable
+fun RecruitingInfoContentSection(
+    recruitingInfoContent: String,
+    onRecruitingInfoContentChanged: (String) -> Unit
+) {
     Column {
         TitleText(text = stringResource(R.string.recruit_member_recruiting_info_content_section_title))
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().heightIn(min = dimensionResource(R.dimen.recruit_member_recruiting_info_content_text_field_height)),
-            value = "",
-            onValueChange = {},
-            label = { Text(stringResource(R.string.recruit_member_recruiting_info_content_section_content)) }
+            modifier = Modifier.fillMaxWidth()
+                .heightIn(min = dimensionResource(R.dimen.recruit_member_recruiting_info_content_text_field_height)),
+            value = recruitingInfoContent,
+            onValueChange = { onRecruitingInfoContentChanged(it) },
+            placeholder = {
+                Text(text = stringResource(R.string.recruit_member_recruiting_info_content_section_content))
+            }
         )
     }
 }
@@ -260,7 +352,6 @@ fun CreateRecruitingMemberButton(
 
 @Composable
 fun CreateRecruitingButton(modifier: Modifier = Modifier, onCreateRecruitingClick: () -> Unit) {
-    val context = LocalContext.current
 
     FilledButton(
         modifier = modifier,
