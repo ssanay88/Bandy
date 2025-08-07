@@ -97,6 +97,10 @@
     <string name="default_profile_image_descript">기본 프로필 이미지</string>
     <string name="change_profile_image_icon_descript">프로필 이미지 변경</string>
 
+    <!-- Profile Update Screen -->
+    <string name="profile_update_select_instrument_message">사용 악기를 선택해주세요</string>
+    <string name="profile_update_input_nickname_message">닉네임을 입력해주세요</string>
+
     <!-- Posting Detail Screen -->
     <string name="posting_view_count_icon_description">게시글 조회수 아이콘</string>
     <string name="posting_time_icon_description">게시글 등록 시간 아이콘</string>
