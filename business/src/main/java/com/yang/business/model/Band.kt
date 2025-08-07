@@ -17,6 +17,5 @@ data class Band(
     var viewCount: Int = 0,
     var youtubeLink: String = "",
     var instagramLink: String = "",
-    var spotifyLink: String = "",
-    // var bandGallery TODO 갤러리 기능 추가
+    var spotifyLink: String = ""
 )

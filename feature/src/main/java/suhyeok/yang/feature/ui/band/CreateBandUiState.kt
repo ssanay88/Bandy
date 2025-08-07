@@ -9,5 +9,16 @@ data class CreateBandUiState(
     override val globalError: BandyException? = null,
 
     val bandLeaderId: String = "",
-    val matchedUsers: List<User> = emptyList()
+    val matchedUsers: List<User> = emptyList(),
+
+    val bandProfileImageUrl: String = "",
+    val bandCoverImageUrl: String = "",
+    val bandName: String = "",
+    val bandSido: String = "",
+    val bandSigungu: String = "",
+    val bandMemberList: List<User> = emptyList(),
+    val bandIntroduce: String = "",
+    val bandYoutubeLink: String = "",
+    val bandInstagramLink: String = "",
+    val bandSpotifyLink: String = ""
 ) : UiState(overallLoading, globalError)

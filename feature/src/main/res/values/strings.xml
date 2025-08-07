@@ -124,7 +124,7 @@
     <string name="search_member_dialog_title">멤버 추가</string>
     <string name="search_member_dialog_search_text">닉네임으로 검색</string>
     <string name="search_member_dialog_close_text">닫기</string>
-
+    <string name="band_name_input_message">밴드명을 입력해주세요</string>
     <!-- Manage Band Screen -->
     <string name="manage_member_icon_description">밴드 멤버 관리 아이콘</string>
     <string name="delegate_leader_text">밴드장 위임</string>
