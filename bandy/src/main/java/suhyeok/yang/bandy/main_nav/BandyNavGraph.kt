@@ -226,9 +226,7 @@ fun BandyNavGraph(
             ProfileUpdateScreen(
                 viewModel = profileUpdateViewModel,
                 onCancelClick = { navController.popBackStack() },
-                onUpdateClick = {
-                    // TODO 프로필 업데이트 버튼 클릭?
-                }
+                onUpdateClick = { navController.navigate(MainScreenRoute.ProfileScreen) }
             )
         }
         composable<NestedScreenRoute.PostingHistoryScreen> {
