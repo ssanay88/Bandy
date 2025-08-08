@@ -99,7 +99,7 @@ class ApplicationContainerImpl(
     private val homeTopBannerRepository: HomeTopBannerRepository = FirestoreHomeTopBannerRepositoryImpl(remoteHomeTopBannerDataSource)
 
     private val remoteChatRoomDataSource: ChatRoomDataSource = FirestoreChatRoomDataSourceImpl()
-    private val chatRoomRepository: ChatRoomRepository = FirestoreChatRoomRepositoryImpl(remoteChatRoomDataSource)
+    override val chatRoomRepository: ChatRoomRepository = FirestoreChatRoomRepositoryImpl(remoteChatRoomDataSource)
 
     private val remoteRecruitPostingDataSource: RecruitPostingDataSource = FirestoreRecruitPostingDataSourceImpl()
     private val recruitPostingRepository: RecruitPostingRepository = FirestoreRecruitPostingRepositoryImpl(remoteRecruitPostingDataSource)

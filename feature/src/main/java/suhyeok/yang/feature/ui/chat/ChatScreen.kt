@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,14 +26,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.ChatRoom
-import suhyeok.yang.feature.MockData.chatRoomList
 import suhyeok.yang.feature.R
 import suhyeok.yang.shared.common.component.ThinDivider
+import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.ui.theme.Red
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.White
@@ -42,21 +40,27 @@ import suhyeok.yang.shared.ui.theme.White
 @Composable
 fun ChatScreen(
     viewModel: ChatViewModel,
-    onChatRoomClick: () -> Unit
+    onChatRoomClick: (String, String) -> Unit
 ) {
-    val uiState by viewModel.chatUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(uiState.chatRooms) { room ->
-            ChatRoomItemView(room)
+            ChatRoomItemView(room, uiState.currentUserId, onChatRoomClick)
         }
     }
 }
 
 @Composable
-fun ChatRoomItemView(room: ChatRoom) {
+fun ChatRoomItemView(
+    room: ChatRoom,
+    currentUserId: String,
+    onChatRoomClick: (String, String) -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().throttleClick {
+            onChatRoomClick(room.chatRoomId, currentUserId)
+        }
     ) {
         Row {
             AsyncImage(
@@ -134,10 +138,3 @@ fun ChatRoomLastMessageView(lastMessage: String?, unreadMessageCount: Int) {
     }
 
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ChatRoomItemViewPreview(room: ChatRoom = chatRoomList.random()) {
-    ChatRoomItemView(room)
-}
-

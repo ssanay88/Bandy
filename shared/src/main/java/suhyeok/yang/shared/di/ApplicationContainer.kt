@@ -1,5 +1,6 @@
 package suhyeok.yang.shared.di
 
+import com.yang.business.repository.ChatRoomRepository
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.chatroom.ChatRoomUseCases
 import com.yang.business.usecase.hometopbanner.HomeTopBannerUseCases
@@ -17,6 +18,7 @@ interface ApplicationContainer {
     val bandUseCases: BandUseCases
     val homeTopBannerUseCases: HomeTopBannerUseCases
     val chatRoomUseCases: ChatRoomUseCases
+    val chatRoomRepository: ChatRoomRepository
     val recruitPostingUseCases: RecruitPostingUseCases
     val userSessionUseCases: UserSessionUseCases
     val messageUseCases: MessageUseCases
