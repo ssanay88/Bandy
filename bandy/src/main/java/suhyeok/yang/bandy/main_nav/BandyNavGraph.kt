@@ -20,6 +20,7 @@ import suhyeok.yang.feature.factory.FirestoreSettingViewModelFactory
 import suhyeok.yang.feature.factory.HomeViewModelFactory
 import suhyeok.yang.feature.factory.MyBandViewModelFactory
 import suhyeok.yang.feature.factory.PostingDetailViewModelFactory
+import suhyeok.yang.feature.factory.PostingHistoryViewModelFactory
 import suhyeok.yang.feature.factory.ProfileUpdateViewModelFactory
 import suhyeok.yang.feature.factory.ProfileViewModelFactory
 import suhyeok.yang.feature.factory.RecruitViewModelFactory
@@ -44,6 +45,8 @@ import suhyeok.yang.feature.viewmodel.FirestoreSettingViewModel
 import suhyeok.yang.feature.ui.home.HomeViewModel
 import suhyeok.yang.feature.ui.myband.MyBandViewModel
 import suhyeok.yang.feature.ui.posting.PostingDetailViewModel
+import suhyeok.yang.feature.ui.profile.PostingHistoryScreen
+import suhyeok.yang.feature.ui.profile.PostingHistoryViewModel
 import suhyeok.yang.feature.ui.profile.ProfileUpdateViewModel
 import suhyeok.yang.feature.ui.profile.ProfileViewModel
 import suhyeok.yang.feature.ui.recruit.RecruitViewModel
@@ -65,6 +68,8 @@ fun BandyNavGraph(
         (applicationContext as ApplicationContainerProvider).provideApplicationContainer().bandUseCases
     val postingUseCases =
         (applicationContext as ApplicationContainerProvider).provideApplicationContainer().postingUseCases
+    val postingHistoryUseCases =
+        (applicationContext as ApplicationContainerProvider).provideApplicationContainer().postingHistoryUseCases
     val recruitPostingUseCases =
         (applicationContext as ApplicationContainerProvider).provideApplicationContainer().recruitPostingUseCases
     val homeTopBannerUseCases =
@@ -105,6 +110,9 @@ fun BandyNavGraph(
     val postingDetailFactory =
         PostingDetailViewModelFactory(postingUseCases, userSessionUseCases, userUseCases)
     val postingDetailViewModel: PostingDetailViewModel = viewModel(factory = postingDetailFactory)
+
+    val postingHistoryFactory = PostingHistoryViewModelFactory(userSessionUseCases, postingHistoryUseCases)
+    val postingHistoryViewModel: PostingHistoryViewModel = viewModel(factory = postingHistoryFactory)
 
     val createBandFactory =
         CreateBandViewModelFactory(userUseCases, bandUseCases, userSessionUseCases)
@@ -230,7 +238,9 @@ fun BandyNavGraph(
             )
         }
         composable<NestedScreenRoute.PostingHistoryScreen> {
-            PostingHistoryScreen()
+            PostingHistoryScreen(
+                viewModel = postingHistoryViewModel
+            )
         }
         composable<NestedScreenRoute.ManageBandScreen> {
             ManageBandScreen(onCancelClick = { navController.popBackStack() })

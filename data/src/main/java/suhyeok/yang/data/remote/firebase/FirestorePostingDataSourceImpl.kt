@@ -90,4 +90,40 @@ class FirestorePostingDataSourceImpl: PostingDataSource {
     }.getOrElse {
         DataResourceResult.Failure(it)
     }
+
+    override suspend fun readMyPosting(userId: String): DataResourceResult<List<Posting>> = runCatching {
+        val myPostingSnapshot = db.collection(POSTING_COLLECTION)
+            .whereEqualTo("_postingAuthorInfo.authorId", userId)
+            .get()
+            .await()
+
+        val myPostingDTOList = myPostingSnapshot.toObjects(PostingDTO::class.java)
+
+        if (myPostingDTOList.isNotEmpty()) {
+            DataResourceResult.Success(myPostingDTOList.toBusinessPostingList().sortedByDescending { it.createdAt })
+        } else {
+            DataResourceResult.Failure(Exception("Posting not found"))
+        }
+    }.getOrElse {
+        DataResourceResult.Failure(it)
+    }
+
+    override suspend fun readCommentedPosting(userId: String): DataResourceResult<List<Posting>> = runCatching {
+        val commentedPostingSnapshot = db.collection(POSTING_COLLECTION)
+            .whereEqualTo("_comments._authorId", userId)
+            .get()
+            .await()
+
+        val commentedPostingDTOList = commentedPostingSnapshot.toObjects(PostingDTO::class.java)
+
+        if (commentedPostingDTOList.isNotEmpty()) {
+            DataResourceResult.Success(commentedPostingDTOList.toBusinessPostingList().sortedByDescending { it.createdAt })
+        } else {
+            DataResourceResult.Failure(Exception("Posting not found"))
+        }
+    }.getOrElse {
+        DataResourceResult.Failure(it)
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package suhyeok.yang.feature.screen
+package suhyeok.yang.feature.ui.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +17,9 @@ import suhyeok.yang.feature.common.components.PostingItemView
 import suhyeok.yang.feature.ui.recruit.TabLayout
 
 @Composable
-fun PostingHistoryScreen() {
+fun PostingHistoryScreen(
+    viewModel: PostingHistoryViewModel
+) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabIncludedData = listOf<String>(
         // TODO 내 정보에 저장된 포스팅한 글, 댓글 단 글의 갯수를 추가

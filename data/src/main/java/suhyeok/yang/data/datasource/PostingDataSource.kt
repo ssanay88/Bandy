@@ -9,4 +9,6 @@ interface PostingDataSource {
     suspend fun readPostingDetail(postingId: String): DataResourceResult<Posting>
     suspend fun updatePosting(updatedPosting: Posting): DataResourceResult<Unit>
     suspend fun deletePosting(postingId: String): DataResourceResult<Unit>
+    suspend fun readMyPosting(userId: String): DataResourceResult<List<Posting>>
+    suspend fun readCommentedPosting(userId: String): DataResourceResult<List<Posting>>
 }

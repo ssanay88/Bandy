@@ -4,6 +4,7 @@ import android.content.Context
 import com.yang.business.repository.BandRepository
 import com.yang.business.repository.ChatRoomRepository
 import com.yang.business.repository.HomeTopBannerRepository
+import com.yang.business.repository.PostingHistoryRepository
 import com.yang.business.repository.PostingRepository
 import com.yang.business.repository.RecruitPostingRepository
 import com.yang.business.repository.UserRepository
@@ -37,6 +38,9 @@ import com.yang.business.usecase.posting.PostingUseCases
 import com.yang.business.usecase.posting.ReadPostingDetailUseCase
 import com.yang.business.usecase.posting.ReadPostingUseCase
 import com.yang.business.usecase.posting.UpdatePostingUseCase
+import com.yang.business.usecase.postinghistory.PostingHistoryUseCases
+import com.yang.business.usecase.postinghistory.ReadCommentedPostingUseCase
+import com.yang.business.usecase.postinghistory.ReadMyPostingUseCase
 import com.yang.business.usecase.recruitposting.CreateRecruitPostingUseCase
 import com.yang.business.usecase.recruitposting.DeleteRecruitPostingUseCase
 import com.yang.business.usecase.recruitposting.ReadRecruitPostingListUseCase
@@ -72,6 +76,7 @@ import suhyeok.yang.data.repository.DatastoreUserSessionRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreBandRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreChatRoomRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreHomeTopBannerRepositoryImpl
+import suhyeok.yang.data.repository.FirestorePostingHistoryRepositoryImpl
 import suhyeok.yang.data.repository.FirestorePostingRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreRecruitPostingRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreUserRepositoryImpl
@@ -102,6 +107,7 @@ class ApplicationContainerImpl(
     private val localUserSessionDataSource: UserSessionDataSource = UserSessionDataSourceImpl(context)
     private val userSessionRepository: UserSessionRepository = DatastoreUserSessionRepositoryImpl(localUserSessionDataSource)
 
+    private val postingHistoryRepository: PostingHistoryRepository = FirestorePostingHistoryRepositoryImpl(remotePostingDataSource)
 
     override val userUseCases = UserUseCases(
         readUser = ReadUserUseCase(userRepository),
@@ -117,6 +123,11 @@ class ApplicationContainerImpl(
         readPostingDetail = ReadPostingDetailUseCase(postingRepository),
         updatePosting = UpdatePostingUseCase(postingRepository),
         deletePosting = DeletePostingUseCase(postingRepository)
+    )
+
+    override val postingHistoryUseCases = PostingHistoryUseCases(
+        readMyPosting = ReadMyPostingUseCase(postingHistoryRepository),
+        readCommentedPosting = ReadCommentedPostingUseCase(postingHistoryRepository)
     )
 
     override val bandUseCases = BandUseCases(
