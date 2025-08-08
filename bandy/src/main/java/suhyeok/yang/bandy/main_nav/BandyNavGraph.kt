@@ -239,7 +239,10 @@ fun BandyNavGraph(
         }
         composable<NestedScreenRoute.PostingHistoryScreen> {
             PostingHistoryScreen(
-                viewModel = postingHistoryViewModel
+                viewModel = postingHistoryViewModel,
+                onPostingClick = { postingId ->
+                    navController.navigate(NestedScreenRoute.PostingDetailScreen(postingId))
+                }
             )
         }
         composable<NestedScreenRoute.ManageBandScreen> {

@@ -1,6 +1,5 @@
 package suhyeok.yang.data.remote.firebase
 
-import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.yang.business.common.DataResourceResult
@@ -109,12 +108,15 @@ class FirestorePostingDataSourceImpl: PostingDataSource {
     }
 
     override suspend fun readCommentedPosting(userId: String): DataResourceResult<List<Posting>> = runCatching {
-        val commentedPostingSnapshot = db.collection(POSTING_COLLECTION)
-            .whereEqualTo("_comments._authorId", userId)
+        val postingSnapshot = db.collection(POSTING_COLLECTION)
             .get()
             .await()
 
-        val commentedPostingDTOList = commentedPostingSnapshot.toObjects(PostingDTO::class.java)
+        val commentedPostingDTOList = postingSnapshot.toObjects(PostingDTO::class.java).filter { postingDTO ->
+            postingDTO._comments.any { commentDTO ->
+                commentDTO._authorId == userId
+            }
+        }
 
         if (commentedPostingDTOList.isNotEmpty()) {
             DataResourceResult.Success(commentedPostingDTOList.toBusinessPostingList().sortedByDescending { it.createdAt })

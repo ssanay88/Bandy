@@ -11,6 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yang.business.model.Posting
 import suhyeok.yang.feature.MockData
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.PostingItemView
@@ -18,13 +20,16 @@ import suhyeok.yang.feature.ui.recruit.TabLayout
 
 @Composable
 fun PostingHistoryScreen(
-    viewModel: PostingHistoryViewModel
+    viewModel: PostingHistoryViewModel,
+    onPostingClick: (String) -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     var selectedTabIndex by remember { mutableIntStateOf(0) }
+
     val tabIncludedData = listOf<String>(
-        // TODO 내 정보에 저장된 포스팅한 글, 댓글 단 글의 갯수를 추가
-        stringResource(R.string.my_posting_history_tab_text, MockData.postingList.size),
-        stringResource(R.string.commented_posting_history_tab_text, MockData.postingList.size)
+        stringResource(R.string.my_posting_history_tab_text, uiState.myPostingList.size),
+        stringResource(R.string.commented_posting_history_tab_text, uiState.commentedPostingList.size)
     )
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -34,10 +39,12 @@ fun PostingHistoryScreen(
         }
         when (selectedTabIndex) {
             0 -> MyPostingScreen(
-                onPostingClick = {}
+                myPostings = uiState.myPostingList,
+                onPostingClick = onPostingClick
             )
             1 -> CommentedPostingScreen(
-                onPostingClick = {}
+                commentedPostings = uiState.commentedPostingList,
+                onPostingClick = onPostingClick
             )
         }
     }
@@ -45,11 +52,11 @@ fun PostingHistoryScreen(
 
 @Composable
 fun MyPostingScreen(
+    myPostings: List<Posting>,
     onPostingClick: (String) -> Unit
 ) {
     LazyColumn {
-        val postingList = MockData.postingList
-        items(postingList) { posting ->
+        items(myPostings) { posting ->
             PostingItemView(posting, onPostingClick)
         }
     }
@@ -57,11 +64,11 @@ fun MyPostingScreen(
 
 @Composable
 fun CommentedPostingScreen(
+    commentedPostings: List<Posting>,
     onPostingClick: (String) -> Unit
 ) {
     LazyColumn {
-        val postingList = MockData.postingList
-        items(postingList) { posting ->
+        items(commentedPostings) { posting ->
             PostingItemView(posting,  onPostingClick)
         }
     }
