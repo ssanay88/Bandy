@@ -13,7 +13,7 @@ interface ChatRoomDataSource {
     suspend fun deleteChatRoom(chatRoomId: String): DataResourceResult<Unit>
 
     suspend fun sendMessage(chatRoomId: String, message: Message): DataResourceResult<Unit>
-    suspend fun observeMessages(chatRoomId: String): List<Message>
+    suspend fun observeMessages(chatRoomId: String): DataResourceResult<List<Message>>
     suspend fun markMessagesAsRead(chatRoomId: String, userId: String): DataResourceResult<Unit>
     suspend fun getUnreadMessageCount(chatRoomId: String, userId: String): Int
     suspend fun getChatParticipants(chatRoomId: String): List<User>

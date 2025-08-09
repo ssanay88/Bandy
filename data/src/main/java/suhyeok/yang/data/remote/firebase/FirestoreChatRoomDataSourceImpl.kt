@@ -8,10 +8,13 @@ import com.yang.business.common.DataResourceResult
 import com.yang.business.model.ChatRoom
 import com.yang.business.model.Message
 import com.yang.business.model.User
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import suhyeok.yang.data.datasource.ChatRoomDataSource
 import suhyeok.yang.data.mapper.toBusinessChatRoomList
 import suhyeok.yang.data.mapper.toBusinessMessage
+import suhyeok.yang.data.mapper.toBusinessMessageList
 import suhyeok.yang.data.mapper.toBusinessUserList
 import suhyeok.yang.data.mapper.toFirestoreChatRoomDTO
 import suhyeok.yang.data.mapper.toFirestoreMessageDTO
@@ -30,13 +33,33 @@ class FirestoreChatRoomDataSourceImpl : ChatRoomDataSource {
     override suspend fun createChatRoom(
         newChatRoom: ChatRoom
     ): DataResourceResult<Unit> = runCatching {
-        db.collection(CHAT_ROOM_COLLECTION)
-            .add(newChatRoom.toFirestoreChatRoomDTO())
-            .await()
-        DataResourceResult.Success(Unit)
+        withContext(Dispatchers.IO) {
+            db.collection(CHAT_ROOM_COLLECTION)
+                .add(newChatRoom.toFirestoreChatRoomDTO())
+                .await()
+            Log.d("tngur", "success -> ${newChatRoom.chatRoomId}")
+            DataResourceResult.Success(Unit)
+        }
     }.getOrElse {
+        Log.d("tngur", "fail -> ${it.message}")
         DataResourceResult.Failure(it)
     }
+
+//    override suspend fun createChatRoom(
+//        newChatRoom: ChatRoom
+//    ): DataResourceResult<Unit> = runCatching {
+//        val newChatRoomDTO = newChatRoom.toFirestoreChatRoomDTO()
+//
+//        db.collection(CHAT_ROOM_COLLECTION)
+//            .document(newChatRoom.chatRoomId)
+//            .set(newChatRoomDTO)
+//            .await()
+//
+//        DataResourceResult.Success(Unit)
+//    }.getOrElse {
+//        Log.d("tngur", "fail : ${it.message}")
+//        DataResourceResult.Failure(it)
+//    }
 
     override suspend fun readChatRoom(userId: String): DataResourceResult<List<ChatRoom>> =
         runCatching {
@@ -48,6 +71,7 @@ class FirestoreChatRoomDataSourceImpl : ChatRoomDataSource {
             val chatRoomDTOList = chatRoomSnapshot.toObjects(ChatRoomDTO::class.java)
             val chatRoomList = chatRoomDTOList.toBusinessChatRoomList()
                 .sortedByDescending { it.lastMessageTimestamp ?: LocalDateTime.MIN }
+
             DataResourceResult.Success(chatRoomList)
         }.getOrElse {
             DataResourceResult.Failure(it)
@@ -95,7 +119,6 @@ class FirestoreChatRoomDataSourceImpl : ChatRoomDataSource {
             _timestamp = message.timestamp.toString()
         )
 
-
         val chatRoomDocRef = db.collection(CHAT_ROOM_COLLECTION).document(chatRoomId)
         // 기존 메시지 리스트 불러오기
         val chatRoomSnapshot = chatRoomDocRef.get().await()
@@ -118,16 +141,24 @@ class FirestoreChatRoomDataSourceImpl : ChatRoomDataSource {
         DataResourceResult.Failure(it)
     }
 
-    override suspend fun observeMessages(chatRoomId: String): List<Message> = runCatching {
-        val snapshot = db.collection(CHAT_ROOM_COLLECTION)
+    override suspend fun observeMessages(chatRoomId: String): DataResourceResult<List<Message>> = runCatching {
+        val messagesSnapshot = db.collection(CHAT_ROOM_COLLECTION)
             .document(chatRoomId)
-            .get()
-            .await()
+            .collection("_messages")
 
-        val dto = snapshot.toObject(ChatRoomDTO::class.java)
-        dto?._messages?.map { it.toBusinessMessage() } ?: emptyList()
+        messagesSnapshot.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                DataResourceResult.Failure(Exception("Failed to retrieve messages"))
+            }
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                val messages = snapshot.toObjects(MessageDTO::class.java)
+                DataResourceResult.Success(messages.toBusinessMessageList())
+            }
+        }
+        DataResourceResult.Uninitialized
     }.getOrElse {
-        emptyList()
+        DataResourceResult.Failure(it)
     }
 
     override suspend fun markMessagesAsRead(

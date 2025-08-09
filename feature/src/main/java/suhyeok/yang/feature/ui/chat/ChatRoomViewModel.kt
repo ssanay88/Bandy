@@ -22,8 +22,16 @@ class ChatRoomViewModel(
 
     fun observeChatRoom(chatRoomId: String) {
         viewModelScope.launch {
-            chatRoomRepository.observeMessages(chatRoomId).collectLatest { messages ->
-                _uiState.update { it.copy(messages = messages) }
+            chatRoomRepository.observeMessages(chatRoomId).collectLatest { result ->
+                _uiState.update {
+                    when(result) {
+                        is DataResourceResult.Success -> {
+                            it.copy(messages = result.data)
+                        }
+
+                        else -> it
+                    }
+                }
             }
         }
     }
