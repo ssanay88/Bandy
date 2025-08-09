@@ -3,6 +3,7 @@ package suhyeok.yang.shared.common.util
 import com.yang.business.enums.AgeGroup
 import com.yang.business.enums.Gender
 import com.yang.business.enums.Instrument
+import com.yang.business.enums.PostingType
 import com.yang.business.enums.SkillLevel
 
 /**
@@ -115,4 +116,20 @@ fun Gender.toStr(): String =
         Gender.ALL -> ALL_LABEL
         Gender.MALE -> MALE_LABEL
         Gender.FEMALE -> FEMALE_LABEL
+    }
+
+/**
+ * Posting Type
+ */
+const val FREE_LABEL = "자유"
+const val TIP_LABEL = "팁"
+const val ADVERTISE_LABEL = "홍보"
+const val QNA_LABEL = "QnA"
+
+fun PostingType.toStr() =
+    when (this) {
+        PostingType.FREE -> FREE_LABEL
+        PostingType.TIP -> TIP_LABEL
+        PostingType.ADVERTISE -> ADVERTISE_LABEL
+        PostingType.QNA -> QNA_LABEL
     }

@@ -47,6 +47,7 @@ import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.SectionDivider
 import suhyeok.yang.shared.common.component.SectionTitleText
 import suhyeok.yang.shared.common.util.throttleClick
+import suhyeok.yang.shared.common.util.toStr
 import suhyeok.yang.shared.ui.theme.Gray
 import suhyeok.yang.shared.ui.theme.LightGray
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
@@ -233,12 +234,7 @@ fun BestPostingItemView(rank: Int, posting: Posting, onPostingClick: (String) ->
             textAlign = TextAlign.Center
         )
         Text(
-            text = when (posting.postingType) {
-                PostingType.FREE -> stringResource(R.string.free_type_posting)
-                PostingType.TIP -> stringResource(R.string.tip_type_posting)
-                PostingType.ADVERTISE -> stringResource(R.string.advertise_type_posting)
-                PostingType.QNA -> stringResource(R.string.qna_type_posting)
-            },
+            text = posting.postingType.toStr(),
             modifier = Modifier.weight(0.15f),
             textAlign = TextAlign.Center,
             fontFamily = SuitFontFamily,

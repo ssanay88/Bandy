@@ -35,10 +35,6 @@
 
     <!-- Home Screen -->
     <string name="best_posting_section_title">인기 게시물</string>
-    <string name="free_type_posting">자유</string>
-    <string name="tip_type_posting">팁</string>
-    <string name="advertise_type_posting">홍보</string>
-    <string name="qna_type_posting">홍보</string>
     <string name="popular_band_section_title">현재 인기 밴드</string>
     <string name="posting_info_view_count_text">조회수 : %1$s</string>
 
