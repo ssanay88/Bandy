@@ -6,7 +6,7 @@ import com.yang.business.repository.ChatRoomRepository
 import kotlinx.coroutines.flow.Flow
 
 class ObserveMessageUseCase(private val chatRoomRepository: ChatRoomRepository) {
-    operator fun invoke(chatRoomId: String): Flow<DataResourceResult<List<Message>>> {
+    suspend operator fun invoke(chatRoomId: String): Flow<DataResourceResult<List<Message>>> {
         return chatRoomRepository.observeMessages(chatRoomId)
     }
 }

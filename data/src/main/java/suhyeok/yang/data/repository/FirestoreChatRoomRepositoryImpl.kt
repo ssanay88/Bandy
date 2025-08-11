@@ -49,9 +49,7 @@ class FirestoreChatRoomRepositoryImpl(val targetResource: ChatRoomDataSource): C
         emit(DataResourceResult.Failure(it))
     }
 
-    override fun observeMessages(chatRoomId: String): Flow<DataResourceResult<List<Message>>> = flow {
-        emit(targetResource.observeMessages(chatRoomId))
-    }
+    override suspend fun observeMessages(chatRoomId: String): Flow<DataResourceResult<List<Message>>> = targetResource.observeMessages(chatRoomId)
 
     override suspend fun markMessagesAsRead(chatRoomId: String, userId: String): Flow<DataResourceResult<Unit>> = flow {
         emit(targetResource.markMessagesAsRead(chatRoomId, userId))
