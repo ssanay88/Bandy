@@ -72,4 +72,7 @@ sealed interface NestedScreenRoute {
 
     @Serializable
     data class ChatRoomScreen(var chatRoomId: String ="") : NestedScreenRoute
+
+    @Serializable
+    object CreatePostingScreen : NestedScreenRoute
 }

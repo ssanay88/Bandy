@@ -15,6 +15,7 @@ import suhyeok.yang.bandy.NestedScreenRoute
 import suhyeok.yang.feature.factory.BandInfoViewModelFactory
 import suhyeok.yang.feature.factory.ChatViewModelFactory
 import suhyeok.yang.feature.factory.CreateBandViewModelFactory
+import suhyeok.yang.feature.factory.CreatePostingViewModelFactory
 import suhyeok.yang.feature.factory.CreateRecruitingMemberViewModelFactory
 import suhyeok.yang.feature.factory.FirestoreSettingViewModelFactory
 import suhyeok.yang.feature.factory.HomeViewModelFactory
@@ -44,6 +45,8 @@ import suhyeok.yang.feature.ui.chat.ChatViewModel
 import suhyeok.yang.feature.viewmodel.FirestoreSettingViewModel
 import suhyeok.yang.feature.ui.home.HomeViewModel
 import suhyeok.yang.feature.ui.myband.MyBandViewModel
+import suhyeok.yang.feature.ui.posting.CreatePostingScreen
+import suhyeok.yang.feature.ui.posting.CreatePostingViewModel
 import suhyeok.yang.feature.ui.posting.PostingDetailViewModel
 import suhyeok.yang.feature.ui.profile.PostingHistoryScreen
 import suhyeok.yang.feature.ui.profile.PostingHistoryViewModel
@@ -110,6 +113,9 @@ fun BandyNavGraph(
     val postingDetailFactory =
         PostingDetailViewModelFactory(postingUseCases, userSessionUseCases, userUseCases)
     val postingDetailViewModel: PostingDetailViewModel = viewModel(factory = postingDetailFactory)
+
+    val createPostingFactory = CreatePostingViewModelFactory(postingUseCases, userSessionUseCases)
+    val createPostingViewModel: CreatePostingViewModel = viewModel(factory = createPostingFactory)
 
     val postingHistoryFactory = PostingHistoryViewModelFactory(userSessionUseCases, postingHistoryUseCases)
     val postingHistoryViewModel: PostingHistoryViewModel = viewModel(factory = postingHistoryFactory)
@@ -268,6 +274,11 @@ fun BandyNavGraph(
         }
         composable<NestedScreenRoute.NotificationScreen> {
             NotificationScreen()
+        }
+        composable<NestedScreenRoute.CreatePostingScreen> {
+            CreatePostingScreen(
+                createPostingViewModel
+            )
         }
     }
 }

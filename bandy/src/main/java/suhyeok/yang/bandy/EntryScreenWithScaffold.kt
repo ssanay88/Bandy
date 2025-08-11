@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import suhyeok.yang.bandy.main_nav.BandyNavGraph
 import suhyeok.yang.feature.appbar.TopAppBar
 import suhyeok.yang.feature.fb.FloatingButton
 import suhyeok.yang.feature.topBarAsRouteName
+import suhyeok.yang.shared.common.component.FilledButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,15 +41,34 @@ fun EntryScreenWithScaffold() {
         recruitScreenRoute
     )
 
+    val screensWithCustomActionsTopBar = listOf(
+        NestedScreenRoute.CreatePostingScreen.toString()
+    )
+
+
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
+            val customActions = when (currentRoute) {
+                in screensWithCustomActionsTopBar -> {
+                    FilledButton(
+                        modifier = Modifier,
+                        onClick = {  },
+                        content = { Text(text = "완료") }
+                    )
+                }
+
+                else -> {}
+            }
+
             TopAppBar(
                 topBarItem = topBarItem,
                 onLogoIconClick = { navController.navigate(MainScreenRoute.HomeScreen) },
                 onChatIconClick = { navController.navigate(MainScreenRoute.ChatScreen) },
                 onNotiIconClick = { navController.navigate(NestedScreenRoute.NotificationScreen) },
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                customActions = { customActions }
             )
         },
         bottomBar = {

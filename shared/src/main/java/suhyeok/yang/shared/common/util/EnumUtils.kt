@@ -133,3 +133,12 @@ fun PostingType.toStr() =
         PostingType.ADVERTISE -> ADVERTISE_LABEL
         PostingType.QNA -> QNA_LABEL
     }
+
+fun String.toPostingType() =
+    when (this) {
+        FREE_LABEL -> PostingType.FREE
+        TIP_LABEL -> PostingType.TIP
+        ADVERTISE_LABEL -> PostingType.ADVERTISE
+        QNA_LABEL -> PostingType.QNA
+        else -> PostingType.FREE
+    }

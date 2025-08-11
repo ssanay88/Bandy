@@ -85,6 +85,12 @@ val NavBackStackEntry.topBarAsRouteName: TopBarItem
                     topBarType = TopBarType.BACK_ONLY
                 )
             }
+            routeName.contains("CreatePostingScreen") -> {
+                TopBarItem(
+                    topBarType = TopBarType.TITLE_WITH_CUSTOM_ACTIONS,
+                    titleResId = R.string.create_posting_screen_title
+                )
+            }
 
             else -> throw IllegalArgumentException("Unknown route name: $routeName")
         }

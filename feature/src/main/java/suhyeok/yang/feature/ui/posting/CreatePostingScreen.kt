@@ -13,38 +13,59 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
+import suhyeok.yang.feature.R
 import suhyeok.yang.shared.common.component.RoundedCornerSpinner
 import suhyeok.yang.shared.common.component.ThinDivider
+import suhyeok.yang.shared.common.util.toPostingType
 import suhyeok.yang.shared.common.util.toStr
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.White
 
-@Preview(showBackground = true)
 @Composable
 fun CreatePostingScreen(
-
+    viewModel: CreatePostingViewModel
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier.fillMaxSize().padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        SelectPostingTypeSection()
+        SelectPostingTypeSection(
+            onPostingTypeChanged = { selectedPostingType ->
+                viewModel.selectPostingType(selectedPostingType)
+            }
+        )
 
-        InputPostingTitleSection()
+        InputPostingTitleSection(
+            postingTitle = uiState.postingTitle,
+            onPostingTitleChanged = { newPostingTitle ->
+                viewModel.setPostingTitle(newPostingTitle)
+            }
+        )
 
         ThinDivider()
 
-        InputPostingContentSection()
+        InputPostingContentSection(
+            postingContent = uiState.postingContent,
+            onPostingContentChanged = { newPostingContent ->
+                viewModel.setPostingContent(newPostingContent)
+            }
+        )
     }
 }
 
 @Composable
-fun SelectPostingTypeSection() {
+fun SelectPostingTypeSection(
+    onPostingTypeChanged: (PostingType) -> Unit
+) {
     val postingTypes = PostingType.entries.map { it.toStr() }.toList()
 
     Row(
@@ -54,7 +75,9 @@ fun SelectPostingTypeSection() {
             modifier = Modifier.width(150.dp).height(50.dp),
             items = postingTypes,
             selectedItemIdx = 0,
-            onValueChange = {}
+            onValueChange = { selectedPostingType ->
+                onPostingTypeChanged(selectedPostingType.toPostingType())
+            }
         )
     }
     
@@ -62,14 +85,19 @@ fun SelectPostingTypeSection() {
 }
 
 @Composable
-fun InputPostingTitleSection() {
+fun InputPostingTitleSection(
+    postingTitle: String,
+    onPostingTitleChanged: (String) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
         TextField(
-            value = "",
+            value = postingTitle,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {},
+            onValueChange = { inputTitle ->
+                onPostingTitleChanged(inputTitle)
+            },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -78,7 +106,7 @@ fun InputPostingTitleSection() {
             ),
             placeholder = {
                 Text(
-                    text = "제목을 입력해주세요.",
+                    text = stringResource(R.string.create_posting_input_title_message),
                     fontFamily = SuitFontFamily,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -88,14 +116,19 @@ fun InputPostingTitleSection() {
 }
 
 @Composable
-fun InputPostingContentSection() {
+fun InputPostingContentSection(
+    postingContent: String,
+    onPostingContentChanged: (String) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxSize()
     ) {
         TextField(
             modifier = Modifier.fillMaxSize(),
-            value = "",
-            onValueChange = {},
+            value = postingContent,
+            onValueChange = { inputContent ->
+                onPostingContentChanged(inputContent)
+            },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -104,7 +137,7 @@ fun InputPostingContentSection() {
             ),
             placeholder = {
                 Text(
-                    text = "내용을 입력해주세요.",
+                    text = stringResource(R.string.create_posting_input_content_message),
                     fontFamily = SuitFontFamily,
                     style = MaterialTheme.typography.bodyLarge
                 )
