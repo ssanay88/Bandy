@@ -9,5 +9,5 @@ data class MessageDTO(
     val _chatRoomId: String = "",
     val _content: String = "",
     val _timestamp: String = "",
-    val _unreadUserIds: List<String> = emptyList()
+    val _readUserIds: List<String> = emptyList()
 )

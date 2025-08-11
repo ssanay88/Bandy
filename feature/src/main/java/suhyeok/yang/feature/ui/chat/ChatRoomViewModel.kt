@@ -24,7 +24,7 @@ class ChatRoomViewModel(
         viewModelScope.launch {
             chatRoomRepository.observeMessages(chatRoomId).collectLatest { result ->
                 _uiState.update {
-                    when(result) {
+                    when (result) {
                         is DataResourceResult.Success -> {
                             it.copy(messages = result.data)
                         }
@@ -52,7 +52,7 @@ class ChatRoomViewModel(
             chatRoomId = chatRoomId,
             content = content,
             timestamp = LocalDateTime.now(),
-            unreadUserIds = emptyList()
+            readUserIds = listOf(senderId)
         )
 
         viewModelScope.launch {

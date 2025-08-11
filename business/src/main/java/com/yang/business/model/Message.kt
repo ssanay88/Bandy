@@ -8,5 +8,5 @@ data class Message(
     val chatRoomId: String,
     val content: String,
     val timestamp: LocalDateTime,
-    val unreadUserIds: List<String>
+    val readUserIds: List<String>
 )
