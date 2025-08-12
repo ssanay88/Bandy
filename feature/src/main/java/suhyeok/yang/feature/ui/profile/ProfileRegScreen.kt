@@ -1,5 +1,6 @@
 package suhyeok.yang.feature.ui.profile
 
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -226,12 +227,17 @@ fun ProfileRegScreen(
 
 @Composable
 fun ProfileImageRegistSection(selectedProfileImgUrl: String, onProfileSelect: (String) -> Unit) {
+    val context = LocalContext.current
+
     val pickMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
+                val contentResolver = context.contentResolver
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
                 onProfileSelect(uri.toString())
-            } else {
-                Log.d("tngur", "uri : null")
             }
         }
 

@@ -1,5 +1,6 @@
 package suhyeok.yang.feature.ui.band
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -169,9 +170,18 @@ fun BandImageRegistSection(
     selectedBandProfileImageUrl: String = "",
     onProfileSelect: (String) -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     val pickMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uri?.let { onProfileSelect(it.toString()) }
+            if (uri != null) {
+                val contentResolver = context.contentResolver
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                onProfileSelect(uri.toString())
+            }
         }
 
     Row(
@@ -208,9 +218,18 @@ fun BandCoverImageRegistSection(
     selectedBandCoverImageUrl: String = "",
     onCoverSelect: (String) -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     val pickMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uri?.let { onCoverSelect(it.toString()) }
+            if (uri != null) {
+                val contentResolver = context.contentResolver
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                onCoverSelect(uri.toString())
+            }
         }
 
     Column {
