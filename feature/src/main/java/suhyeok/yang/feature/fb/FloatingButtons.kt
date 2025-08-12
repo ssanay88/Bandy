@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -28,15 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import suhyeok.yang.feature.R
 import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.ui.theme.Primary
+import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.White
 
 @Composable
-fun FloatingButton(
+fun RecruitFloatingButton(
     onCreateBandClick: () -> Unit,
     onRecruitMemberClick: () -> Unit
 ) {
@@ -45,7 +48,6 @@ fun FloatingButton(
     Column(
         horizontalAlignment = Alignment.End
     ) {
-
         if (fabExpanded) {
             FabItemView(
                 title = stringResource(R.string.create_band_text),
@@ -87,8 +89,44 @@ fun FloatingButton(
 }
 
 @Composable
+fun HomeFloatingButton(
+    onCreatePostingClick: () -> Unit
+) {
+    FloatingActionButton(
+        modifier = Modifier.height(dimensionResource(R.dimen.home_floating_button_height)),
+        containerColor = Primary,
+        contentColor = White,
+        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_round_8dp)),
+        elevation = FloatingActionButtonDefaults.elevation(dimensionResource(R.dimen.elevation_8dp)),
+        onClick = {}
+    ) {
+        Row(
+            modifier = Modifier.padding(dimensionResource(R.dimen.floating_button_item_view_padding)).throttleClick { onCreatePostingClick() },
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier.size(dimensionResource(R.dimen.floating_button_item_view_icon_size)),
+                painter = painterResource(id = R.drawable.ic_posting),
+                contentDescription = null,
+                tint = White
+            )
+            Text(
+                modifier = Modifier.padding(start = dimensionResource(R.dimen.floating_button_item_view_icon_text_space)),
+                text = stringResource(R.string.create_posting_text),
+                fontFamily = SuitFontFamily,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = White
+            )
+        }
+    }
+}
+
+@Composable
 fun FabItemView(
     title: String,
+    titleStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     iconResId: Int,
     onClick: () -> Unit
 ) {
@@ -116,7 +154,8 @@ fun FabItemView(
             Text(
                 modifier = Modifier.padding(start = dimensionResource(R.dimen.floating_button_item_view_icon_text_space)),
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = SuitFontFamily,
+                style = titleStyle,
                 fontWeight = FontWeight.Bold,
                 color = White
             )

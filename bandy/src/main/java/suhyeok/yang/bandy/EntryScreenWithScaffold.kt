@@ -13,7 +13,8 @@ import androidx.navigation.compose.rememberNavController
 import com.yang.business.model.TopBarItem
 import suhyeok.yang.bandy.main_nav.BandyNavGraph
 import suhyeok.yang.feature.appbar.TopAppBar
-import suhyeok.yang.feature.fb.FloatingButton
+import suhyeok.yang.feature.fb.HomeFloatingButton
+import suhyeok.yang.feature.fb.RecruitFloatingButton
 import suhyeok.yang.feature.topBarAsRouteName
 import suhyeok.yang.shared.common.component.FilledButton
 
@@ -37,15 +38,9 @@ fun EntryScreenWithScaffold() {
         MainScreenRoute.ProfileScreen.toString()
     )
 
-    val screenWithFloatingButton = listOf(
-        recruitScreenRoute
-    )
-
     val screensWithCustomActionsTopBar = listOf(
         NestedScreenRoute.CreatePostingScreen.toString()
     )
-
-
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -77,11 +72,21 @@ fun EntryScreenWithScaffold() {
             }
         },
         floatingActionButton = {
-            if (currentRoute in screenWithFloatingButton) {
-                FloatingButton(
-                    onCreateBandClick = { navController.navigate(NestedScreenRoute.CreateBandScreen) },
-                    onRecruitMemberClick = { navController.navigate(NestedScreenRoute.CreateRecruitingMemberScreen) }
-                )
+            when (currentRoute) {
+                recruitScreenRoute -> {
+                    RecruitFloatingButton(
+                        onCreateBandClick = { navController.navigate(NestedScreenRoute.CreateBandScreen) },
+                        onRecruitMemberClick = { navController.navigate(NestedScreenRoute.CreateRecruitingMemberScreen) }
+                    )
+                }
+
+                MainScreenRoute.HomeScreen.toString() -> {
+                    HomeFloatingButton(
+                        onCreatePostingClick = { navController.navigate(NestedScreenRoute.CreatePostingScreen) }
+                    )
+                }
+
+                else -> {}
             }
         }
     ) { innerPadding ->

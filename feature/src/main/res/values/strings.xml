@@ -16,6 +16,7 @@
     <string name="back_text">뒤로가기</string>
     <string name="cancel_text">취소</string>
     <string name="confirm_text">확인</string>
+    <string name="create_posting_text">글쓰기</string>
     <string name="create_band_text">밴드 생성</string>
     <string name="recruit_member_text">멤버 모집</string>
 
