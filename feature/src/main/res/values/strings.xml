@@ -90,6 +90,7 @@
 
     <!-- Chat Screen -->
     <string name="send_message_button_text">전송</string>
+    <string name="message_timestamp_formatter">M월 d일 a h:mm</string>
     <!-- Profile Screen -->
     <string name="my_posting_history_tab_text">작성한 글(%1s개)</string>
     <string name="commented_posting_history_tab_text">댓글 단 글(%1s개)</string>

@@ -121,6 +121,11 @@
     <dimen name="chat_room_info_view_padding">10dp</dimen>
     <dimen name="chat_room_info_last_message_view_top_padding">8dp</dimen>
 
+    <!-- Chat Room Screen -->
+    <dimen name="chat_room_message_item_view_padding">30dp</dimen>
+    <dimen name="chat_room_message_item_view_sender_profile_end_padding">8dp</dimen>
+    <dimen name="chat_room_message_item_view_sender_profile_size">30dp</dimen>
+
     <!-- Profile Screen   -->
     <dimen name="profile_info_section_height">120dp</dimen>
     <dimen name="profile_info_image_size">80dp</dimen>
