@@ -8,6 +8,7 @@ data class ChatUiState(
     override val overallLoading: Boolean = false,
     override val globalError: BandyException? = null,
 
-    val chatRooms: List<ChatRoom> = emptyList()
+    val chatRooms: List<ChatRoom> = emptyList(),
+    val currentUserId: String = ""
 
 ) : UiState(overallLoading, globalError)

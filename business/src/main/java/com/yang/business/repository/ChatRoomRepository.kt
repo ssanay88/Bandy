@@ -14,7 +14,7 @@ interface ChatRoomRepository {
 
     // Message-related methods
     suspend fun sendMessage(chatRoomId: String, message: Message): Flow<DataResourceResult<Unit>>
-    fun observeMessages(chatRoomId: String): Flow<List<Message>>
+    suspend fun observeMessages(chatRoomId: String): Flow<DataResourceResult<List<Message>>>
     suspend fun markMessagesAsRead(chatRoomId: String, userId: String): Flow<DataResourceResult<Unit>>
     suspend fun getUnreadMessageCount(chatRoomId: String, userId: String): Flow<Int>
     suspend fun getChatParticipants(chatRoomId: String): Flow<List<User>>

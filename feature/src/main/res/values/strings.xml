@@ -57,7 +57,6 @@
     <string name="recruit_member_posting_input_title_message">제목을 입력해주세요</string>
     <string name="recruit_member_posting_input_content_message">내용을 입력해주세요</string>
 
-
     <!-- Recruit Member Detail Screen   -->
     <string name="recruit_member_detail_info_target_instrument_title">모집 악기</string>
     <string name="recruit_member_detail_info_target_age_title">나이</string>
@@ -85,6 +84,9 @@
     <!-- Band Detail Info Screen -->
     <string name="my_band_profile_image_descript">my band profile image</string>
 
+    <!-- Chat Screen -->
+    <string name="send_message_button_text">전송</string>
+    <string name="message_timestamp_formatter">M월 d일 a h:mm</string>
     <!-- Profile Screen -->
     <string name="my_posting_history_tab_text">작성한 글(%1s개)</string>
     <string name="commented_posting_history_tab_text">댓글 단 글(%1s개)</string>
@@ -125,6 +127,7 @@
     <string name="search_member_dialog_search_text">닉네임으로 검색</string>
     <string name="search_member_dialog_close_text">닫기</string>
     <string name="band_name_input_message">밴드명을 입력해주세요</string>
+
     <!-- Manage Band Screen -->
     <string name="manage_member_icon_description">밴드 멤버 관리 아이콘</string>
     <string name="delegate_leader_text">밴드장 위임</string>

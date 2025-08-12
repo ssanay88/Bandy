@@ -21,8 +21,8 @@ class ChatViewModel(
     private val chatRoomUseCases: ChatRoomUseCases
 ) : ViewModel() {
 
-    private val _chatUiState = MutableStateFlow(ChatUiState())
-    val chatUiState = _chatUiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ChatUiState())
+    val uiState = _uiState.asStateFlow()
 
     init {
         loadUsersChatRooms()
@@ -32,25 +32,29 @@ class ChatViewModel(
     fun loadUsersChatRooms() {
         viewModelScope.launch {
             userSessionUseCases.getUserSession().flatMapLatest { userSession ->
-                Log.d("tngur","userSession: $userSession")
                 chatRoomUseCases.readChatRoomUseCase(userId = userSession.userId).onEach { result ->
-                    _chatUiState.update {
+                    _uiState.update {
                         when (result) {
                             is DataResourceResult.Success -> {
                                 it.copy(
                                     overallLoading = false,
-                                    chatRooms = result.data
+                                    chatRooms = result.data,
+                                    currentUserId = userSession.userId
                                 )
                             }
                             is DataResourceResult.Failure -> {
                                 it.copy(
-                                    overallLoading = false
+                                    overallLoading = false,
+                                    currentUserId = userSession.userId
                                 )
                             }
                             is DataResourceResult.Loading -> {
-                                it.copy(overallLoading = true)
+                                it.copy(
+                                    overallLoading = true,
+                                    currentUserId = userSession.userId
+                                )
                             }
-                            else -> { it }
+                            else -> { it.copy(currentUserId = userSession.userId) }
                         }
                     }
                 }

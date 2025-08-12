@@ -226,7 +226,7 @@ fun MessageDTO.toBusinessMessage() = Message(
     chatRoomId = this._chatRoomId,
     content = this._content,
     timestamp = DateTimeUtils.toLocalDateTime(this._timestamp),
-    unreadUserIds = this._unreadUserIds
+    readUserIds = this._readUserIds
 )
 
 fun List<MessageDTO>.toBusinessMessageList() =
@@ -238,7 +238,7 @@ fun Message.toFirestoreMessageDTO() = mapOf(
     "_chatRoomId" to this.chatRoomId,
     "_content" to this.content,
     "_timestamp" to DateTimeUtils.toIsoString(this.timestamp),
-    "_unreadUserIds" to this.unreadUserIds
+    "_readUserIds" to this.readUserIds
 )
 
 fun List<Message>.toFirestoreMessageDTOList() =

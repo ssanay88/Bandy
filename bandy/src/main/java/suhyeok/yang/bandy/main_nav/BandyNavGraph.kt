@@ -13,6 +13,7 @@ import suhyeok.yang.feature.ui.chat.ChatScreen
 import suhyeok.yang.bandy.MainScreenRoute
 import suhyeok.yang.bandy.NestedScreenRoute
 import suhyeok.yang.feature.factory.BandInfoViewModelFactory
+import suhyeok.yang.feature.factory.ChatRoomViewModelFactory
 import suhyeok.yang.feature.factory.ChatViewModelFactory
 import suhyeok.yang.feature.factory.CreateBandViewModelFactory
 import suhyeok.yang.feature.factory.CreatePostingViewModelFactory
@@ -41,6 +42,8 @@ import suhyeok.yang.feature.ui.recruit.RecruitingMemberScreen
 import suhyeok.yang.feature.ui.band.BandInfoScreen
 import suhyeok.yang.feature.ui.band.BandInfoViewModel
 import suhyeok.yang.feature.ui.band.CreateBandViewModel
+import suhyeok.yang.feature.ui.chat.ChatRoomScreen
+import suhyeok.yang.feature.ui.chat.ChatRoomViewModel
 import suhyeok.yang.feature.ui.chat.ChatViewModel
 import suhyeok.yang.feature.viewmodel.FirestoreSettingViewModel
 import suhyeok.yang.feature.ui.home.HomeViewModel
@@ -79,6 +82,8 @@ fun BandyNavGraph(
         (applicationContext as ApplicationContainerProvider).provideApplicationContainer().homeTopBannerUseCases
     val chatRoomUseCases =
         (applicationContext as ApplicationContainerProvider).provideApplicationContainer().chatRoomUseCases
+    val chatRoomRepository =
+        (applicationContext as ApplicationContainerProvider).provideApplicationContainer().chatRoomRepository
     val userSessionUseCases =
         (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userSessionUseCases
 
@@ -103,6 +108,9 @@ fun BandyNavGraph(
 
     val chatFactory = ChatViewModelFactory(userSessionUseCases, chatRoomUseCases)
     val chatViewModel: ChatViewModel = viewModel(factory = chatFactory)
+
+    val chatRoomFactory = ChatRoomViewModelFactory(chatRoomRepository)
+    val chatRoomViewModel: ChatRoomViewModel = viewModel(factory = chatRoomFactory)
 
     val bandInfoFactory = BandInfoViewModelFactory(bandUseCases)
     val bandInfoViewModel: BandInfoViewModel = viewModel(factory = bandInfoFactory)
@@ -208,8 +216,8 @@ fun BandyNavGraph(
         composable<MainScreenRoute.ChatScreen> {
             ChatScreen(
                 viewModel = chatViewModel,
-                onChatRoomClick = {
-                    navController.navigate(NestedScreenRoute.ChatRoomScreen)
+                onChatRoomClick = { chatRoomId, currentUserId ->
+                    navController.navigate(NestedScreenRoute.ChatRoomScreen(chatRoomId, currentUserId))
                 }
             )
         }
@@ -235,6 +243,11 @@ fun BandyNavGraph(
         composable<NestedScreenRoute.RecruitingMemberScreen> { navBackStackEntry ->
             val recruitPostingId = navBackStackEntry.toRoute<NestedScreenRoute.RecruitingMemberScreen>().recruitingPostingId
             RecruitingMemberScreen(recruitPostingId, navController, recruitingMemberViewModel)
+        }
+        composable<NestedScreenRoute.ChatRoomScreen> { navBackStackEntry ->
+            val chatRoomId = navBackStackEntry.toRoute<NestedScreenRoute.ChatRoomScreen>().chatRoomId
+            val currentUserId = navBackStackEntry.toRoute<NestedScreenRoute.ChatRoomScreen>().currentUserId
+            ChatRoomScreen(chatRoomId, currentUserId, chatRoomViewModel)
         }
         composable<NestedScreenRoute.ProfileUpdateScreen> {
             ProfileUpdateScreen(
