@@ -283,7 +283,7 @@ fun UserNameRegistSection(
             onValueChange = { userName ->
                 onUserNameChanged(userName)
             },
-            label = { Text(stringResource(R.string.user_name)) },
+            placeholder = { Text(stringResource(R.string.user_name)) },
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -302,7 +302,7 @@ fun NicknameRegistSection(
             onValueChange = { newNickname ->
                 onNicknameChanged(newNickname)
             },
-            label = { Text(stringResource(R.string.nickname)) },
+            placeholder = { Text(stringResource(R.string.nickname)) },
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -557,7 +557,7 @@ fun IntroduceRegistSection(
             onValueChange = { changedDescription ->
                 onIntroduceChanged(changedDescription)
             },
-            label = { Text(stringResource(R.string.introduce)) }
+            placeholder = { Text(stringResource(R.string.introduce)) }
         )
     }
 }

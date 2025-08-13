@@ -102,7 +102,7 @@ fun BandNameUpdateSection() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text(stringResource(R.string.band_name_regist_text_field_title)) },
+            placeholder = { Text(stringResource(R.string.band_name_regist_text_field_title)) },
             modifier = Modifier.fillMaxWidth()
         )
     }

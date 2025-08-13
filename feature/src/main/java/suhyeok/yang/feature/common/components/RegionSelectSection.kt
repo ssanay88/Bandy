@@ -72,7 +72,7 @@ fun RegionSelectSection(
                 modifier = Modifier.weight(0.5f),
                 items = sidoList,
                 selectedItemIdx = sidoList.indexOf(initSido),
-                label = stringResource(R.string.region),
+                label = stringResource(R.string.sido),
                 onValueChange = {newSido ->
                     onSidoChanged(newSido)
                     sigunguList = context.resources.getStringArray(getSigunguArrayResId(newSido)).toList()
@@ -85,7 +85,7 @@ fun RegionSelectSection(
                 modifier = Modifier.weight(0.5f),
                 items = sigunguList,
                 selectedItemIdx = sigunguList.indexOf(initSigungu),
-                label = stringResource(R.string.region),
+                label = stringResource(R.string.sigungu),
                 onValueChange = {
                     onSigunguChanged(it)
                 }

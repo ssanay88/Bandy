@@ -6,6 +6,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -31,18 +35,21 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,6 +66,9 @@ import suhyeok.yang.shared.common.component.CircleImageView
 import suhyeok.yang.shared.common.component.LeftIconText
 import suhyeok.yang.shared.common.component.RightIconText
 import suhyeok.yang.shared.common.util.throttleClick
+import suhyeok.yang.shared.ui.theme.Black
+import suhyeok.yang.shared.ui.theme.Gray
+import suhyeok.yang.shared.ui.theme.LightGray
 import suhyeok.yang.shared.ui.theme.Primary
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.White
@@ -73,6 +83,10 @@ fun CreateBandScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val bandNameEmptyMessage = stringResource(R.string.band_name_input_message)
+
+    LaunchedEffect(Unit) {
+        viewModel.resetCreateBandUiState()
+    }
 
     Column {
         Column(
@@ -161,7 +175,6 @@ fun CreateBandScreen(
             }
         )
     }
-
 }
 
 @Preview(showBackground = true)
@@ -235,7 +248,19 @@ fun BandCoverImageRegistSection(
     Column {
         TitleText(text = stringResource(R.string.band_cover_image_regist_title))
 
-        Box(modifier = Modifier) {
+        Box(modifier = Modifier.background(color = LightGray)) {
+
+            if (selectedBandCoverImageUrl.isEmpty()) {
+                Text(
+                    text = "커버 사진 없음",
+                    modifier = Modifier.align(Alignment.Center),
+                    fontFamily = SuitFontFamily,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Gray,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
             AsyncImage(
                 model = selectedBandCoverImageUrl,
                 contentDescription = stringResource(R.string.default_profile_image_descript),
@@ -280,7 +305,7 @@ fun BandNameRegistSection(
             onValueChange = { bandName ->
                 onBandNameChanged(bandName)
             },
-            label = { Text(stringResource(R.string.band_name_regist_text_field_title)) },
+            placeholder = { Text(stringResource(R.string.band_name_regist_text_field_title)) },
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -315,6 +340,7 @@ fun MemberAddSection(
     ) {
         selectedMemberList.forEach {
             MemberInfoItemView(it)
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.space_5dp)))
         }
         AddMemberButton(vm, uiState, selectedMemberList, addNewMember)
     }
@@ -378,21 +404,30 @@ fun AddMemberDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.search_member_dialog_title)) },
+        title = {
+            Text(
+                text = stringResource(R.string.search_member_dialog_title),
+                fontFamily = SuitFontFamily,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+                },
         text = {
-            Column {
-                OutlinedTextField(
-                    value = nickname,
-                    onValueChange = {
-                        nickname = it
-                        viewModel.searchByNickname(nickname)
-                    },
-                    label = { Text(text = stringResource(R.string.search_member_dialog_search_text)) }
-                )
+            LazyColumn {
+                item {
+                    OutlinedTextField(
+                        value = nickname,
+                        onValueChange = {
+                            nickname = it
+                            viewModel.searchByNickname(nickname)
+                        },
+                        label = { Text(text = stringResource(R.string.search_member_dialog_search_text)) }
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.space_10dp)))
+                item { Spacer(modifier = Modifier.height(dimensionResource(R.dimen.space_10dp))) }
 
-                uiState.matchedUsers.forEach { user ->
+                items(uiState.matchedUsers.take(10)) { user ->
                     Text(
                         text = user.nickName,
                         modifier = Modifier
@@ -415,14 +450,16 @@ fun AddMemberDialog(
     )
 }
 
-
+@Preview(showBackground = true)
 @Composable
 fun MemberInfoItemView(user: User = MockData.mockUsers.random()) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = dimensionResource(R.dimen.padding_10dp)),
-        verticalAlignment = Alignment.CenterVertically
+            .border(width = 1.dp, color = Black)
+            .clip(RoundedCornerShape(8.dp))
+            .padding(vertical = dimensionResource(R.dimen.padding_10dp), horizontal = dimensionResource(R.dimen.padding_5dp)),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CircleImageView(
             modifier = Modifier,
@@ -444,7 +481,8 @@ fun MemberInfoItemView(user: User = MockData.mockUsers.random()) {
                 fontFamily = SuitFontFamily,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(0.6f)
+                modifier = Modifier.weight(0.6f),
+                textAlign = TextAlign.Center
             )
 
             Text(
@@ -453,7 +491,8 @@ fun MemberInfoItemView(user: User = MockData.mockUsers.random()) {
                 overflow = TextOverflow.Ellipsis,
                 fontFamily = SuitFontFamily,
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.weight(0.4f)
+                modifier = Modifier.weight(0.4f),
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -472,7 +511,7 @@ fun BandIntroduceRegistSection(
                 .heightIn(min = dimensionResource(R.dimen.band_introduce_text_field_min_height)),
             value = bandIntroduce,
             onValueChange = { onBandIntroduceChanged(it) },
-            label = { Text(stringResource(R.string.band_introduce_regist_text_field_title)) }
+            placeholder = { Text(stringResource(R.string.band_introduce_regist_text_field_title)) }
         )
     }
 }
@@ -486,7 +525,9 @@ fun BandLinkRegistSection(
     spotifyLink: String,
     onSpotifyLinkChanged: (String) -> Unit
 ) {
-    Column {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_5dp))
+    ) {
         TitleText(text = stringResource(R.string.band_link_regist_text_field_title))
         LinkTextField(
             platformTitle = stringResource(R.string.youtube_platform_text),
@@ -539,7 +580,7 @@ fun LinkTextField(
             maxLines = 1,
             value = linkText,
             onValueChange = { onValueChange(it) },
-            label = { Text(stringResource(R.string.platform_text_field_label, platformTitle)) }
+            placeholder = { Text(stringResource(R.string.platform_text_field_label, platformTitle)) }
         )
     }
 

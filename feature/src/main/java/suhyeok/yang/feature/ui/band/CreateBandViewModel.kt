@@ -192,4 +192,21 @@ class CreateBandViewModel(
             _uiState.value.bandName.isEmpty() -> CreateBandValidationResult.BandNameEmpty
             else -> CreateBandValidationResult.Success
         }
+
+    fun resetCreateBandUiState() {
+        _uiState.update {
+            it.copy(
+                bandProfileImageUrl = "",
+                bandCoverImageUrl = "",
+                bandName = "",
+                bandSido = "",
+                bandSigungu = "",
+                bandMemberList = emptyList(),
+                bandIntroduce = "",
+                bandYoutubeLink = "",
+                bandInstagramLink = "",
+                bandSpotifyLink = ""
+            )
+        }
+    }
 }
