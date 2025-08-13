@@ -16,11 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
 import suhyeok.yang.feature.R
+import suhyeok.yang.shared.common.component.FilledButton
 import suhyeok.yang.shared.common.component.RoundedCornerSpinner
 import suhyeok.yang.shared.common.component.ThinDivider
 import suhyeok.yang.shared.common.util.toPostingType
@@ -38,7 +41,8 @@ fun CreatePostingScreen(
         modifier = Modifier.fillMaxSize().padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        SelectPostingTypeSection(
+        PostingTopSection(
+            onCreatePosting = { viewModel.createPosting() },
             onPostingTypeChanged = { selectedPostingType ->
                 viewModel.selectPostingType(selectedPostingType)
             }
@@ -63,25 +67,41 @@ fun CreatePostingScreen(
 }
 
 @Composable
-fun SelectPostingTypeSection(
+fun PostingTopSection(
+    onCreatePosting: () -> Unit,
     onPostingTypeChanged: (PostingType) -> Unit
 ) {
     val postingTypes = PostingType.entries.map { it.toStr() }.toList()
 
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         RoundedCornerSpinner(
-            modifier = Modifier.width(150.dp).height(50.dp),
+            modifier = Modifier
+                .width(dimensionResource(R.dimen.create_posting_posting_type_width))
+                .height(dimensionResource(R.dimen.create_posting_posting_type_height)),
             items = postingTypes,
             selectedItemIdx = 0,
             onValueChange = { selectedPostingType ->
                 onPostingTypeChanged(selectedPostingType.toPostingType())
             }
         )
-    }
-    
 
+        FilledButton(
+            modifier = Modifier.width(dimensionResource(R.dimen.create_posting_upload_width)),
+            onClick = { onCreatePosting() },
+            content = {
+                Text(
+                    text = stringResource(R.string.create_posting_upload_btn_text),
+                    fontFamily = SuitFontFamily,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        )
+    }
 }
 
 @Composable

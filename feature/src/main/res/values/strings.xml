@@ -109,6 +109,7 @@
     <!-- Create Posting Screen -->
     <string name="create_posting_input_title_message">제목을 입력해주세요</string>
     <string name="create_posting_input_content_message">내용을 입력해주세요</string>
+    <string name="create_posting_upload_btn_text">등록하기</string>
 
     <!-- Create Band Screen -->
     <string name="band_cover_image_regist_title">커버 사진</string>
