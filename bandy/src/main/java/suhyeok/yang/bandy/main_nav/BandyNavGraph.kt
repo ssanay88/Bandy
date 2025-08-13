@@ -290,7 +290,8 @@ fun BandyNavGraph(
         }
         composable<NestedScreenRoute.CreatePostingScreen> {
             CreatePostingScreen(
-                createPostingViewModel
+                createPostingViewModel,
+                onCreatePostingComplete = { navController.navigate(MainScreenRoute.HomeScreen) }
             )
         }
     }

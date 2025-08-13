@@ -1,25 +1,28 @@
 package suhyeok.yang.feature.ui.posting
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
 import suhyeok.yang.feature.R
@@ -28,41 +31,65 @@ import suhyeok.yang.shared.common.component.RoundedCornerSpinner
 import suhyeok.yang.shared.common.component.ThinDivider
 import suhyeok.yang.shared.common.util.toPostingType
 import suhyeok.yang.shared.common.util.toStr
+import suhyeok.yang.shared.ui.theme.Primary
 import suhyeok.yang.shared.ui.theme.SuitFontFamily
 import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun CreatePostingScreen(
-    viewModel: CreatePostingViewModel
+    viewModel: CreatePostingViewModel,
+    onCreatePostingComplete: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val createPostingState by viewModel.createPostingState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        PostingTopSection(
-            onCreatePosting = { viewModel.createPosting() },
-            onPostingTypeChanged = { selectedPostingType ->
-                viewModel.selectPostingType(selectedPostingType)
-            }
-        )
+        Column(
+            modifier = Modifier.fillMaxSize().padding(dimensionResource(R.dimen.padding_10dp)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_8dp))
+        ) {
+            PostingTopSection(
+                onCreatePosting = { viewModel.createPosting() },
+                onPostingTypeChanged = { selectedPostingType ->
+                    viewModel.selectPostingType(selectedPostingType)
+                }
+            )
 
-        InputPostingTitleSection(
-            postingTitle = uiState.postingTitle,
-            onPostingTitleChanged = { newPostingTitle ->
-                viewModel.setPostingTitle(newPostingTitle)
-            }
-        )
+            InputPostingTitleSection(
+                postingTitle = uiState.postingTitle,
+                onPostingTitleChanged = { newPostingTitle ->
+                    viewModel.setPostingTitle(newPostingTitle)
+                }
+            )
 
-        ThinDivider()
+            ThinDivider()
 
-        InputPostingContentSection(
-            postingContent = uiState.postingContent,
-            onPostingContentChanged = { newPostingContent ->
-                viewModel.setPostingContent(newPostingContent)
+            InputPostingContentSection(
+                postingContent = uiState.postingContent,
+                onPostingContentChanged = { newPostingContent ->
+                    viewModel.setPostingContent(newPostingContent)
+                }
+            )
+        }
+
+        when (createPostingState) {
+            is CreatePostingState.Uploading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(dimensionResource(suhyeok.yang.shared.R.dimen.loading_icon_size)),
+                    color = Primary,
+                    strokeWidth = dimensionResource(suhyeok.yang.shared.R.dimen.loading_icon_stroke_width)
+                )
             }
-        )
+
+            is CreatePostingState.Complete -> {
+                onCreatePostingComplete()
+            }
+
+            else -> {}
+        }
     }
 }
 
