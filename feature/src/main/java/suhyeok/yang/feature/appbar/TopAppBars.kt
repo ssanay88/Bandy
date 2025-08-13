@@ -59,7 +59,6 @@ fun TopAppBar(
     onChatIconClick: () -> Unit = {},
     onNotiIconClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
-    customActions: @Composable () -> Unit = {}
 ) {
     when (topBarItem.topBarType) {
         TopBarType.DEFAULT -> {
@@ -81,17 +80,6 @@ fun TopAppBar(
                 titleResId = topBarItem.titleResId,
                 onBackClick = onBackClick
             )
-        }
-
-        TopBarType.TITLE_WITH_CUSTOM_ACTIONS ->{
-            BackOnlyAppBar(
-                onBackClick = onBackClick
-            )
-//            TitleWithCustomActionsAppBar(
-//                titleResId = topBarItem.titleResId,
-//                onBackClick = onBackClick,
-//                customActions = customActions
-//            )
         }
     }
 }
@@ -171,33 +159,6 @@ fun BackWithTitleAppBar(
                 contentDescription = stringResource(R.string.top_app_bar_back_icon_descript)
             )
         }
-    )
-}
-
-@Composable
-fun TitleWithCustomActionsAppBar(
-    titleResId: Int,
-    onBackClick: () -> Unit,
-    customActions: @Composable () -> Unit,
-) {
-    BaseAppBar(
-        title = {
-            Text(
-                text = stringResource(titleResId),
-                fontFamily = SuitFontFamily,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-        },
-        navigationIcon = {
-            Icon(
-                modifier = Modifier.throttleClick { onBackClick() },
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.top_app_bar_back_icon_descript)
-            )
-        },
-        actions = { customActions() }
-
     )
 }
 

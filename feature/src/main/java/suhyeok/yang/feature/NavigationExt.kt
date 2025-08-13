@@ -87,7 +87,7 @@ val NavBackStackEntry.topBarAsRouteName: TopBarItem
             }
             routeName.contains("CreatePostingScreen") -> {
                 TopBarItem(
-                    topBarType = TopBarType.TITLE_WITH_CUSTOM_ACTIONS,
+                    topBarType = TopBarType.BACK_WITH_TITLE,
                     titleResId = R.string.create_posting_screen_title
                 )
             }

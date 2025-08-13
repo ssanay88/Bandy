@@ -38,32 +38,15 @@ fun EntryScreenWithScaffold() {
         MainScreenRoute.ProfileScreen.toString()
     )
 
-    val screensWithCustomActionsTopBar = listOf(
-        NestedScreenRoute.CreatePostingScreen.toString()
-    )
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            val customActions = when (currentRoute) {
-                in screensWithCustomActionsTopBar -> {
-                    FilledButton(
-                        modifier = Modifier,
-                        onClick = {  },
-                        content = { Text(text = "완료") }
-                    )
-                }
-
-                else -> {}
-            }
-
             TopAppBar(
                 topBarItem = topBarItem,
                 onLogoIconClick = { navController.navigate(MainScreenRoute.HomeScreen) },
                 onChatIconClick = { navController.navigate(MainScreenRoute.ChatScreen) },
                 onNotiIconClick = { navController.navigate(NestedScreenRoute.NotificationScreen) },
-                onBackClick = { navController.popBackStack() },
-                customActions = { customActions }
+                onBackClick = { navController.popBackStack() }
             )
         },
         bottomBar = {
