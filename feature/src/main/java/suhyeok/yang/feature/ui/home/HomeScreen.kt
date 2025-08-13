@@ -85,13 +85,19 @@ fun HomeScreen(
 
             item { SectionDivider() }
 
-            item { BestPostingSection(uiState.postingList, onPostingClick) }
+            item {
+                BestPostingSection(
+                    bestPostingList = uiState.postingList.sortedByDescending { it.viewCount }
+                        .take(5),
+                    onPostingClick = onPostingClick
+                )
+            }
 
             item { SectionDivider() }
 
             // TODO 일정 갯수로 데이터 불러오도록 수정
             items(uiState.postingList) { posting ->
-                PostingItemView(posting ,onPostingClick)
+                PostingItemView(posting, onPostingClick)
             }
         }
     }
@@ -103,16 +109,17 @@ fun HomeScreen(
 fun TopBannerSection(
     itemList: List<HomeTopBanner>
 ) {
-    val initialPage = (Int.MAX_VALUE / 2).let { it - (it  % itemList.size) }
+    val initialPage = (Int.MAX_VALUE / 2).let { it - (it % itemList.size) }
     val pagerState = rememberPagerState(initialPage = initialPage) { Int.MAX_VALUE }
-    val infiniteItemList = { index: Int -> itemList[index % itemList.size]}
+    val infiniteItemList = { index: Int -> itemList[index % itemList.size] }
 
     LaunchedEffect(pagerState) {
         while (true) {
             delay(TOP_BANNER_AUTO_SCROLL_DELAY)
 
             if (!pagerState.isScrollInProgress) {
-                val nextPage = (pagerState.currentPage + 1).let { if (it !in 0..Int.MAX_VALUE) initialPage else it }
+                val nextPage =
+                    (pagerState.currentPage + 1).let { if (it !in 0..Int.MAX_VALUE) initialPage else it }
                 runCatching {
                     pagerState.animateScrollToPage(nextPage)
                 }.onFailure {
@@ -138,7 +145,10 @@ fun TopBannerSection(
 
         Box(
             modifier = Modifier
-                .padding(bottom = dimensionResource(R.dimen.top_banner_indicator_outside_padding), end = dimensionResource(R.dimen.top_banner_indicator_outside_padding))
+                .padding(
+                    bottom = dimensionResource(R.dimen.top_banner_indicator_outside_padding),
+                    end = dimensionResource(R.dimen.top_banner_indicator_outside_padding)
+                )
                 .align(Alignment.BottomEnd)
         ) {
             TopBannerIndicator(
@@ -147,7 +157,10 @@ fun TopBannerSection(
                 modifier = Modifier
                     .clip(RoundedCornerShape(dimensionResource(R.dimen.top_banner_indicator_corner)))
                     .background(Gray.copy(alpha = 0.8f))
-                    .padding(vertical = dimensionResource(R.dimen.top_banner_indicator_inside_vertical_padding), horizontal = dimensionResource(R.dimen.top_banner_indicator_inside_horizontal_padding))
+                    .padding(
+                        vertical = dimensionResource(R.dimen.top_banner_indicator_inside_vertical_padding),
+                        horizontal = dimensionResource(R.dimen.top_banner_indicator_inside_horizontal_padding)
+                    )
             )
         }
     }
@@ -209,7 +222,7 @@ fun BestPostingSection(bestPostingList: List<Posting>, onPostingClick: (String) 
         )
 
         var rank = 1
-        bestPostingList.take(5).forEach { posting ->
+        bestPostingList.forEach { posting ->
             BestPostingItemView(rank++, posting, onPostingClick)
         }
 

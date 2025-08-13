@@ -34,7 +34,7 @@ class FirestorePostingDataSourceImpl: PostingDataSource {
             .await()
 
         val postingDTOList = postingSnapshot.toObjects(PostingDTO::class.java)
-        DataResourceResult.Success(postingDTOList.toBusinessPostingList())
+        DataResourceResult.Success(postingDTOList.toBusinessPostingList().sortedByDescending { it.createdAt })
     }.getOrElse {
         DataResourceResult.Failure(it)
     }
