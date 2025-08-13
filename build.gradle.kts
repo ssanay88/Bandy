@@ -7,5 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.google.ksp) apply false
+    alias(libs.plugins.hilt.plugin) apply false
     alias(libs.plugins.secrets.gradle.plugin) apply false
 }

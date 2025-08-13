@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.hilt.plugin)
     alias(libs.plugins.secrets.gradle.plugin)
 }
 
@@ -84,5 +86,9 @@ dependencies {
 
     // naver Login
     implementation(libs.oauth)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
 }

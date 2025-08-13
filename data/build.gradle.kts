@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.hilt.plugin)
 }
 
 android {
@@ -54,4 +56,8 @@ dependencies {
 
     // naver Login
     implementation(libs.oauth)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }
