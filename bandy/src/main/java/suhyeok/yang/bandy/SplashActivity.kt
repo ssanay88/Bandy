@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import suhyeok.yang.feature.factory.SplashActivityViewModelFactory
@@ -19,6 +20,7 @@ import suhyeok.yang.feature.viewmodel.SplashUiState
 import suhyeok.yang.shared.di.ApplicationContainerProvider
 import suhyeok.yang.shared.ui.theme.BandyTheme
 
+@AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
 
     private lateinit var viewModel: SplashActivityViewModel
