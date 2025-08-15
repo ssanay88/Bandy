@@ -331,18 +331,6 @@ fun UserSession.toDataStoreUserSessionEntity() = UserSessionEntity(
     _bandId = this.bandId
 )
 
-fun User.toUserSession() = UserSession(
-    isLogged = true,
-    userId = this.userId,
-    userName = this.userName,
-    userNickname = this.nickName,
-    userProfileImage = this.profileImageUrl,
-    userDescription = this.userDescription,
-    userInstrument = this.instrument,
-    userRegion = this.region,
-    isLeader = this.isLeader,
-    isBand = this.bandId.isNotEmpty(),
-    bandId = this.bandId
-)
+
 
 

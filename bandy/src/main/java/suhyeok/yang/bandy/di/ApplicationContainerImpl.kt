@@ -1,6 +1,7 @@
 package suhyeok.yang.bandy.di
 
 import android.content.Context
+import com.yang.business.repository.AuthRepository
 import com.yang.business.repository.BandRepository
 import com.yang.business.repository.ChatRoomRepository
 import com.yang.business.repository.HomeTopBannerRepository
@@ -9,6 +10,8 @@ import com.yang.business.repository.PostingRepository
 import com.yang.business.repository.RecruitPostingRepository
 import com.yang.business.repository.UserRepository
 import com.yang.business.repository.UserSessionRepository
+import com.yang.business.usecase.auth.AuthUseCases
+import com.yang.business.usecase.auth.LoginWithNaverUseCase
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.band.CreateBandUseCase
 import com.yang.business.usecase.band.DeleteBandUseCase
@@ -58,6 +61,7 @@ import com.yang.business.usecase.usersession.ClearUserSessionUseCase
 import com.yang.business.usecase.usersession.GetUserSessionUseCase
 import com.yang.business.usecase.usersession.UpdateUserSessionUseCase
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import suhyeok.yang.data.datasource.AuthDataSource
 import suhyeok.yang.data.datasource.BandDataSource
 import suhyeok.yang.data.datasource.ChatRoomDataSource
 import suhyeok.yang.data.datasource.HomeTopBannerDataSource
@@ -66,12 +70,14 @@ import suhyeok.yang.data.datasource.RecruitPostingDataSource
 import suhyeok.yang.data.datasource.UserDataSource
 import suhyeok.yang.data.datasource.UserSessionDataSource
 import suhyeok.yang.data.local.datastore.UserSessionDataSourceImpl
+import suhyeok.yang.data.remote.auth.AuthDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreBandDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreChatRoomDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreHomeTopBannerDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestorePostingDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreRecruitPostingDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreUserDataSourceImpl
+import suhyeok.yang.data.repository.AuthRepositoryImpl
 import suhyeok.yang.data.repository.DatastoreUserSessionRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreBandRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreChatRoomRepositoryImpl
@@ -108,6 +114,9 @@ class ApplicationContainerImpl(
     private val userSessionRepository: UserSessionRepository = DatastoreUserSessionRepositoryImpl(localUserSessionDataSource)
 
     private val postingHistoryRepository: PostingHistoryRepository = FirestorePostingHistoryRepositoryImpl(remotePostingDataSource)
+
+    private val authDataSource: AuthDataSource = AuthDataSourceImpl()
+    private val authRepository: AuthRepository = AuthRepositoryImpl(authDataSource, context)
 
     override val userUseCases = UserUseCases(
         readUser = ReadUserUseCase(userRepository),
@@ -176,5 +185,7 @@ class ApplicationContainerImpl(
         deleteMessageUseCase = DeleteMessageUseCase(chatRoomRepository)
     )
 
-
+    override val authUseCases = AuthUseCases(
+        loginWithNaverUseCase = LoginWithNaverUseCase(authRepository)
+    )
 }

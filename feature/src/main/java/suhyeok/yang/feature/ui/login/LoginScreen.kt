@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.collectLatest
-import suhyeok.yang.data.login.LoginManager
 import suhyeok.yang.feature.R
 import suhyeok.yang.shared.common.component.LoginButton
 import suhyeok.yang.shared.common.component.LoginButtonText
@@ -39,7 +38,7 @@ import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun LoginScreen(
-    context: Context
+    viewModel: LoginViewModel
 ) {
     Column(
         modifier = Modifier.fillMaxSize().background(Secondary),
@@ -48,7 +47,11 @@ fun LoginScreen(
         Spacer(modifier = Modifier.weight(0.3f))
         BandyLogoImageSection()
         Spacer(modifier = Modifier.weight(0.7f))
-        LoginButtonsSection(context)
+        LoginButtonsSection(
+            onNaverLoginClick = {
+                viewModel.loginWithNaver()
+            }
+        )
     }
 }
 
@@ -66,7 +69,7 @@ fun BandyLogoImageSection() {
 
 @Composable
 fun LoginButtonsSection(
-    context: Context
+    onNaverLoginClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -78,7 +81,7 @@ fun LoginButtonsSection(
     ) {
         LoginText()
         // KakaoLoginButton(onLoginSuccess)
-        NaverLoginButton(context)
+        NaverLoginButton(onNaverLoginClick)
     }
 }
 
@@ -109,11 +112,11 @@ fun LoginText() {
 //}
 
 @Composable
-fun NaverLoginButton(context: Context) {
+fun NaverLoginButton(onNaverLoginClick: () -> Unit) {
     LoginButton(
         backgroundColor = NaverColor,
         onClick = {
-            LoginManager.naverLogin(context)
+            onNaverLoginClick()
         },
         content = {
             Box(

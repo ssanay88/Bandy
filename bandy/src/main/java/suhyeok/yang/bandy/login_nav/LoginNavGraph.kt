@@ -40,8 +40,9 @@ fun LoginNavGraph(
     val applicationContext = LocalContext.current.applicationContext
     val userUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userUseCases
     val userSessionUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userSessionUseCases
+    val authUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().authUseCases
 
-    val loginFactory = LoginViewModelFactory(userSessionUseCases)
+    val loginFactory = LoginViewModelFactory(userSessionUseCases, authUseCases)
     val loginViewModel: LoginViewModel = viewModel(factory = loginFactory)
 
     val profileRegFactory = ProfileRegViewModelFactory(userUseCases, userSessionUseCases)
@@ -56,17 +57,21 @@ fun LoginNavGraph(
         is LoginState.FirstLogin -> {
             navController.navigate(SubScreenRoute.ProfileRegScreen(newUserId = newUserId))
         }
+
         is LoginState.HasProfile -> {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
             (context as? ComponentActivity)?.finish()
         }
+
         is LoginState.Failure -> {
 
         }
+
         is LoginState.Loading -> {
             LoadingScreen()
         }
+
         else -> {}
     }
 
@@ -79,7 +84,7 @@ fun LoginNavGraph(
     ) {
         composable<SubScreenRoute.LoginScreen> {
             LoginScreen(
-                context = context
+                loginViewModel
             )
         }
         composable<SubScreenRoute.ProfileRegScreen> {navBackStackEntry ->
