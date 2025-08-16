@@ -12,6 +12,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.persistentCacheSettings
 import com.google.firebase.ktx.Firebase
 import com.navercorp.nid.NaverIdLoginSDK
+import dagger.hilt.android.HiltAndroidApp
 import suhyeok.yang.bandy.di.ApplicationContainerImpl
 import suhyeok.yang.shared.di.ApplicationContainer
 import suhyeok.yang.shared.di.ApplicationContainerProvider
@@ -20,6 +21,7 @@ const val COIL_MEMORY_CACHE_SIZE_PERCENT = 0.15
 const val COIL_DISK_CACHE_DIR_NAME = "coil_disk_cache"
 const val COIL_DISK_CACHE_MAX_SIZE = 1024 * 1024 * 50
 
+@HiltAndroidApp
 class BandyApplication: Application(), ApplicationContainerProvider, SingletonImageLoader.Factory {
     private lateinit var appContainer: ApplicationContainer
 
