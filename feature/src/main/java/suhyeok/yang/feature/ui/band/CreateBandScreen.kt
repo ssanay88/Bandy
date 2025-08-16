@@ -63,6 +63,7 @@ import suhyeok.yang.feature.common.components.PrimaryColorRoundedButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
 import suhyeok.yang.feature.ui.profile.TitleText
 import suhyeok.yang.shared.common.component.CircleImageView
+import suhyeok.yang.shared.common.component.DebounceOutlinedTextField
 import suhyeok.yang.shared.common.component.LeftIconText
 import suhyeok.yang.shared.common.component.RightIconText
 import suhyeok.yang.shared.common.util.throttleClick
@@ -415,13 +416,15 @@ fun AddMemberDialog(
         text = {
             LazyColumn {
                 item {
-                    OutlinedTextField(
+                    DebounceOutlinedTextField(
                         value = nickname,
                         onValueChange = {
                             nickname = it
-                            viewModel.searchByNickname(nickname)
                         },
-                        label = { Text(text = stringResource(R.string.search_member_dialog_search_text)) }
+                        label = { Text(text = stringResource(R.string.search_member_dialog_search_text)) },
+                        onDebounceValueChange = { searchNickname ->
+                            viewModel.searchByNickname(searchNickname)
+                        }
                     )
                 }
 
