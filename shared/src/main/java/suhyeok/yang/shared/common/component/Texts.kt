@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,8 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import suhyeok.yang.shared.R
 import suhyeok.yang.shared.ui.theme.BackgroundGray
 import suhyeok.yang.shared.ui.theme.Black
@@ -147,4 +156,46 @@ fun RightIconText(
         )
         icon()
     }
+}
+
+@OptIn(FlowPreview::class)
+@Composable
+fun DebounceOutlinedTextField(
+    value: String,
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit,
+    onDebounceValueChange: (String) -> Unit,
+    debounceInterval: Long = 500L,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    singleLine: Boolean = false,
+) {
+    val debounceFlow = remember { MutableStateFlow(value) }
+
+    LaunchedEffect(onDebounceValueChange) {
+        debounceFlow
+            .debounce(debounceInterval)
+            .distinctUntilChanged()
+            .collect { debouncedValue ->
+                onDebounceValueChange(debouncedValue)
+            }
+    }
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = { newValue ->
+            onValueChange(newValue)
+            debounceFlow.value = newValue
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        modifier = modifier,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        singleLine = singleLine
+    )
+
 }
