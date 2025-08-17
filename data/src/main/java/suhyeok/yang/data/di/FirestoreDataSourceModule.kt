@@ -26,29 +26,29 @@ abstract class FirestoreDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun provideUserDataSource(firestoreUserDataSourceImpl: FirestoreUserDataSourceImpl): UserDataSource
+    abstract fun bindUserDataSource(firestoreUserDataSourceImpl: FirestoreUserDataSourceImpl): UserDataSource
 
     @Binds
     @Singleton
-    abstract fun provideBandDataSource(firestoreBandDataSourceImpl: FirestoreBandDataSourceImpl): BandDataSource
+    abstract fun bindBandDataSource(firestoreBandDataSourceImpl: FirestoreBandDataSourceImpl): BandDataSource
 
     @Binds
     @Singleton
-    abstract fun provideHomeTopBannerDataSource(firestoreHomeTopBannerDataSourceImpl: FirestoreHomeTopBannerDataSourceImpl): HomeTopBannerDataSource
+    abstract fun bindHomeTopBannerDataSource(firestoreHomeTopBannerDataSourceImpl: FirestoreHomeTopBannerDataSourceImpl): HomeTopBannerDataSource
 
     @Binds
     @Singleton
-    abstract fun providePostingDataSource(firestorePostingDataSourceImpl: FirestorePostingDataSourceImpl): PostingDataSource
+    abstract fun bindPostingDataSource(firestorePostingDataSourceImpl: FirestorePostingDataSourceImpl): PostingDataSource
 
     @Binds
     @Singleton
-    abstract fun provideRecruitPostingDataSource(firestoreRecruitPostingDataSourceImpl: FirestoreRecruitPostingDataSourceImpl): RecruitPostingDataSource
+    abstract fun bindRecruitPostingDataSource(firestoreRecruitPostingDataSourceImpl: FirestoreRecruitPostingDataSourceImpl): RecruitPostingDataSource
 
     @Binds
     @Singleton
-    abstract fun provideChatRoomDataSource(firestoreChatRoomDataSourceImpl: FirestoreChatRoomDataSourceImpl): ChatRoomDataSource
+    abstract fun bindChatRoomDataSource(firestoreChatRoomDataSourceImpl: FirestoreChatRoomDataSourceImpl): ChatRoomDataSource
 
     @Binds
     @Singleton
-    abstract fun provideUserSessionDataSource(userSessionDataSourceImpl: UserSessionDataSourceImpl): UserSessionDataSource
+    abstract fun bindUserSessionDataSource(userSessionDataSourceImpl: UserSessionDataSourceImpl): UserSessionDataSource
 }
