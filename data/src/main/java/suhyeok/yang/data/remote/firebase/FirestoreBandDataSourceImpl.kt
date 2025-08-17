@@ -12,9 +12,10 @@ import suhyeok.yang.data.mapper.toBusinessBand
 import suhyeok.yang.data.mapper.toBusinessBandList
 import suhyeok.yang.data.mapper.toFirestoreBandDTO
 import suhyeok.yang.data.remote.dto.BandDTO
+import javax.inject.Inject
 import kotlin.jvm.java
 
-class FirestoreBandDataSourceImpl: BandDataSource {
+class FirestoreBandDataSourceImpl @Inject constructor(): BandDataSource {
 
     companion object {
         const val BAND_COLLECTION = "bands"

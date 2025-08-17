@@ -8,8 +8,9 @@ import kotlinx.coroutines.tasks.await
 import suhyeok.yang.data.datasource.HomeTopBannerDataSource
 import suhyeok.yang.data.mapper.toBusinessHomeTopBannerList
 import suhyeok.yang.data.remote.dto.HomeTopBannerDTO
+import javax.inject.Inject
 
-class FirestoreHomeTopBannerDataSourceImpl: HomeTopBannerDataSource {
+class FirestoreHomeTopBannerDataSourceImpl @Inject constructor(): HomeTopBannerDataSource {
 
     companion object {
         const val HOME_TOP_BANNER_COLLECTION = "homeTopBanners"
