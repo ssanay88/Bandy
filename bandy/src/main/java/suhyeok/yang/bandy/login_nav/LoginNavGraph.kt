@@ -40,9 +40,8 @@ fun LoginNavGraph(
     val applicationContext = LocalContext.current.applicationContext
     val userUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userUseCases
     val userSessionUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userSessionUseCases
-    val authUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().authUseCases
 
-    val loginFactory = LoginViewModelFactory(userSessionUseCases, authUseCases)
+    val loginFactory = LoginViewModelFactory(userSessionUseCases)
     val loginViewModel: LoginViewModel = viewModel(factory = loginFactory)
 
     val profileRegFactory = ProfileRegViewModelFactory(userUseCases, userSessionUseCases)
