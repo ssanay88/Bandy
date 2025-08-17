@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import suhyeok.yang.data.datasource.UserDataSource
+import javax.inject.Inject
 
-class FirestoreUserRepositoryImpl(val targetDataSource: UserDataSource): UserRepository {
+class FirestoreUserRepositoryImpl @Inject constructor(val targetDataSource: UserDataSource): UserRepository {
     override suspend fun readUser(userId: String): Flow<DataResourceResult<User>> = flow {
         emit(DataResourceResult.Loading)
         emit(targetDataSource.readUser(userId))

@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import suhyeok.yang.data.datasource.BandDataSource
+import javax.inject.Inject
 
-class FirestoreBandRepositoryImpl(val targetDataSource: BandDataSource): BandRepository {
+class FirestoreBandRepositoryImpl @Inject constructor(val targetDataSource: BandDataSource): BandRepository {
     override suspend fun createBand(newBand: Band): Flow<DataResourceResult<Unit>> = flow {
         emit(DataResourceResult.Loading)
         emit(targetDataSource.createBand(newBand))

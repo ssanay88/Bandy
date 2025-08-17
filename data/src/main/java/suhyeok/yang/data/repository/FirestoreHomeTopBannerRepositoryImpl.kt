@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import suhyeok.yang.data.datasource.HomeTopBannerDataSource
+import javax.inject.Inject
 
-class FirestoreHomeTopBannerRepositoryImpl(
+class FirestoreHomeTopBannerRepositoryImpl @Inject constructor(
     val targetDataSource: HomeTopBannerDataSource
 ): HomeTopBannerRepository {
     override suspend fun readHomeTopBanner(): Flow<DataResourceResult<List<HomeTopBanner>>> = flow {
