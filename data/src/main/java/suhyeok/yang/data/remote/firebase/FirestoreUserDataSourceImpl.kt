@@ -9,8 +9,9 @@ import suhyeok.yang.data.datasource.UserDataSource
 import suhyeok.yang.data.mapper.toBusinessUser
 import suhyeok.yang.data.mapper.toFirestoreUserDTO
 import suhyeok.yang.data.remote.dto.UserDTO
+import javax.inject.Inject
 
-class FirestoreUserDataSourceImpl: UserDataSource {
+class FirestoreUserDataSourceImpl @Inject constructor(): UserDataSource {
 
     companion object {
         const val USER_COLLECTION = "users"

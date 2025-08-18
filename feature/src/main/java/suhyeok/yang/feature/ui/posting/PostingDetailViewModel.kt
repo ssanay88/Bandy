@@ -12,6 +12,7 @@ import com.yang.business.model.User
 import com.yang.business.usecase.posting.PostingUseCases
 import com.yang.business.usecase.user.UserUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,8 +21,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-class PostingDetailViewModel(
+@HiltViewModel
+class PostingDetailViewModel @Inject constructor(
     private val postingUserCases: PostingUseCases,
     private val userSessionUseCases: UserSessionUseCases,
     private val userUseCases: UserUseCases

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.Instrument
 import suhyeok.yang.feature.R
@@ -35,12 +36,12 @@ import suhyeok.yang.shared.ui.theme.SuitFontFamily
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel,
     onUpdateProfileClick: () -> Unit,
     onPostingsHistoryClick: () -> Unit,
     onManageBandClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
+    val viewModel: ProfileViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(

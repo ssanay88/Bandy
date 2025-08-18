@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
 import suhyeok.yang.feature.R
@@ -37,9 +38,9 @@ import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun CreatePostingScreen(
-    viewModel: CreatePostingViewModel,
     onCreatePostingComplete: () -> Unit
 ) {
+    val viewModel: CreatePostingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val createPostingState by viewModel.createPostingState.collectAsStateWithLifecycle()
 

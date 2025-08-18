@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import suhyeok.yang.data.datasource.PostingDataSource
+import javax.inject.Inject
 
-class FirestorePostingHistoryRepositoryImpl(val targetDataSource: PostingDataSource): PostingHistoryRepository {
+class FirestorePostingHistoryRepositoryImpl @Inject constructor(val targetDataSource: PostingDataSource): PostingHistoryRepository {
     override suspend fun readMyPosting(userId: String): Flow<DataResourceResult<List<Posting>>> = flow {
         emit(DataResourceResult.Loading)
         emit(targetDataSource.readMyPosting(userId))

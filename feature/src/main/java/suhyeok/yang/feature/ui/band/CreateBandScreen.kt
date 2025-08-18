@@ -53,6 +53,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.User
@@ -63,6 +64,7 @@ import suhyeok.yang.feature.common.components.PrimaryColorRoundedButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
 import suhyeok.yang.feature.ui.profile.TitleText
 import suhyeok.yang.shared.common.component.CircleImageView
+import suhyeok.yang.shared.common.component.DebounceOutlinedTextField
 import suhyeok.yang.shared.common.component.LeftIconText
 import suhyeok.yang.shared.common.component.RightIconText
 import suhyeok.yang.shared.common.util.throttleClick
@@ -75,11 +77,11 @@ import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun CreateBandScreen(
-    viewModel: CreateBandViewModel,
     onCancelClick: () -> Unit,
     onCreateBandClick: () -> Unit
 ) {
     val context = LocalContext.current
+    val viewModel: CreateBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val bandNameEmptyMessage = stringResource(R.string.band_name_input_message)
@@ -415,13 +417,15 @@ fun AddMemberDialog(
         text = {
             LazyColumn {
                 item {
-                    OutlinedTextField(
+                    DebounceOutlinedTextField(
                         value = nickname,
                         onValueChange = {
                             nickname = it
-                            viewModel.searchByNickname(nickname)
                         },
-                        label = { Text(text = stringResource(R.string.search_member_dialog_search_text)) }
+                        label = { Text(text = stringResource(R.string.search_member_dialog_search_text)) },
+                        onDebounceValueChange = { searchNickname ->
+                            viewModel.searchByNickname(searchNickname)
+                        }
                     )
                 }
 

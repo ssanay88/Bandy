@@ -8,6 +8,7 @@ import com.yang.business.model.Posting
 import com.yang.business.model.PostingAuthorInfo
 import com.yang.business.usecase.posting.PostingUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.UUID
+import javax.inject.Inject
 
-class CreatePostingViewModel(
+@HiltViewModel
+class CreatePostingViewModel @Inject constructor(
     private val postingUseCases: PostingUseCases,
     private val userSessionUseCases: UserSessionUseCases
 ) : ViewModel() {

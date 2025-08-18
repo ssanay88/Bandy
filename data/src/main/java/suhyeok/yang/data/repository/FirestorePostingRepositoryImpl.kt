@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import suhyeok.yang.data.datasource.PostingDataSource
+import javax.inject.Inject
 
-class FirestorePostingRepositoryImpl(val targetDataSource: PostingDataSource) : PostingRepository {
+class FirestorePostingRepositoryImpl @Inject constructor(val targetDataSource: PostingDataSource) : PostingRepository {
     override suspend fun createPosting(newPosting: Posting): Flow<DataResourceResult<Unit>> = flow {
         emit(DataResourceResult.Loading)
         emit(targetDataSource.createPosting(newPosting))

@@ -13,11 +13,14 @@ import com.yang.business.usecase.chatroom.ChatRoomUseCases
 import com.yang.business.usecase.posting.PostingUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
 import com.yang.business.usecase.user.UserUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import suhyeok.yang.feature.MockData
+import javax.inject.Inject
 
-class FirestoreSettingViewModel(
+@HiltViewModel
+class FirestoreSettingViewModel @Inject constructor(
     private val userUseCases: UserUseCases,
     private val bandUseCases: BandUseCases,
     private val postingUseCases: PostingUseCases,

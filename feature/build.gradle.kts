@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.hilt.plugin)
 }
 
 android {
@@ -37,7 +39,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
     implementation(project(":shared"))
     implementation(project(":business"))
 
@@ -59,4 +60,8 @@ dependencies {
     // Serialization
     implementation(libs.jetbrains.kotlinx.serialization.json)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
 }

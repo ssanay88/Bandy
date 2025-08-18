@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.ChatRoom
@@ -39,9 +40,9 @@ import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun ChatScreen(
-    viewModel: ChatViewModel,
     onChatRoomClick: (String, String) -> Unit
 ) {
+    val viewModel: ChatViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {

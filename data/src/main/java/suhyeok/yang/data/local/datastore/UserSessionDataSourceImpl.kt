@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.yang.business.model.UserSession
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import suhyeok.yang.data.datasource.UserSessionDataSource
@@ -13,9 +14,11 @@ import suhyeok.yang.data.datastore.UserPreferencesKeys
 import suhyeok.yang.data.local.dto.UserSessionEntity
 import suhyeok.yang.data.mapper.toBusinessUserSession
 import suhyeok.yang.data.mapper.toDataStoreUserSessionEntity
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserSessionDataSourceImpl(
-    private val context: Context
+class UserSessionDataSourceImpl @Inject constructor(
+    @ApplicationContext private val context: Context
 ) : UserSessionDataSource {
 
     companion object {

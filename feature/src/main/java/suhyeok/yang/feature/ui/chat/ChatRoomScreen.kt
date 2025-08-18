@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
 import com.yang.business.model.Message
@@ -57,9 +58,9 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ChatRoomScreen(
     chatRoomId: String,
-    currentUserId: String,
-    viewModel: ChatRoomViewModel
+    currentUserId: String
 ) {
+    val viewModel: ChatRoomViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var messageInputText by remember { mutableStateOf("") }
     var inputHeight by remember { mutableStateOf(0) }

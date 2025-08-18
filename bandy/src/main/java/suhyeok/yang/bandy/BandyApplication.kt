@@ -12,26 +12,19 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.persistentCacheSettings
 import com.google.firebase.ktx.Firebase
 import com.navercorp.nid.NaverIdLoginSDK
-import suhyeok.yang.bandy.di.ApplicationContainerImpl
-import suhyeok.yang.shared.di.ApplicationContainer
-import suhyeok.yang.shared.di.ApplicationContainerProvider
+import dagger.hilt.android.HiltAndroidApp
 
 const val COIL_MEMORY_CACHE_SIZE_PERCENT = 0.15
 const val COIL_DISK_CACHE_DIR_NAME = "coil_disk_cache"
 const val COIL_DISK_CACHE_MAX_SIZE = 1024 * 1024 * 50
 
-class BandyApplication: Application(), ApplicationContainerProvider, SingletonImageLoader.Factory {
-    private lateinit var appContainer: ApplicationContainer
+@HiltAndroidApp
+class BandyApplication: Application(), SingletonImageLoader.Factory {
 
     override fun onCreate() {
         super.onCreate()
-        appContainer = ApplicationContainerImpl(context = this)
         setUpFirestoreLocalSinkCache()
         initNaverLogin()
-    }
-
-    override fun provideApplicationContainer(): ApplicationContainer {
-        return appContainer
     }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader = ImageLoader.Builder(context)

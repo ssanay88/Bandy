@@ -6,13 +6,16 @@ import com.yang.business.common.DataResourceResult
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecruitingMemberViewModel(
+@HiltViewModel
+class RecruitingMemberViewModel @Inject constructor(
     val userSessionUseCases: UserSessionUseCases,
     val bandUseCases: BandUseCases,
     val recruitPostingUseCases: RecruitPostingUseCases

@@ -1,24 +1,29 @@
 package suhyeok.yang.feature.ui.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import com.yang.business.common.DataResourceResult
-import com.yang.business.model.User
+import com.yang.business.common.toUserSession
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import suhyeok.yang.data.login.LoginManager
-import suhyeok.yang.data.mapper.toUserSession
+import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
+import kotlin.coroutines.resume
 
-class LoginViewModel(
-    private val userSessionUseCases: UserSessionUseCases
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val userSessionUseCases: UserSessionUseCases,
 ) : ViewModel() {
-
-    init {
-        observeLoginResult()
-    }
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Init)
     val loginState = _loginState.asStateFlow()
@@ -26,48 +31,90 @@ class LoginViewModel(
     private val _newUserId = MutableStateFlow("")
     val newUserId = _newUserId.asStateFlow()
 
-
-    fun observeLoginResult() {
+    fun loginWithNaver(context: Context) {
         viewModelScope.launch {
-            LoginManager.loginResult.collectLatest { result ->
-                when (result) {
-                    is DataResourceResult.Success -> {
-                        val loginResponse = result.data
-                        // 1. 토큰으로 Naver ID 받아오기
-                        _newUserId.value = loginResponse.profileId
+            _loginState.value = LoginState.Loading
 
-                        // 2. ID로 DB에서 등록된 유저인지 확인
-                        userSessionUseCases.checkUserRegisteredUseCase(loginResponse.profileId).collectLatest { result ->
-                            when (result) {
-                                is DataResourceResult.Success -> {
-                                    userSessionUseCases.updateUserSession(result.data.toUserSession())
-                                    // 메인 화면으로 이동
-                                    _loginState.value = LoginState.HasProfile
-                                }
+            val loginResult = runCatching {
+                loginWithNaverSDK(context)
+            }.getOrElse {
+                _loginState.value = LoginState.Failure
+                return@launch
+            }
 
-                                is DataResourceResult.Failure -> {
-                                    // 프로필 등록 화면으로 이동
-                                    _loginState.value = LoginState.FirstLogin
-                                }
+            when (loginResult) {
+                is DataResourceResult.Success -> {
+                    loginResult.data.profile?.id?.let { profileId ->
+                        checkUserRegistered(profileId)
+                    }
+                }
 
-                                is DataResourceResult.Loading -> {
-                                    _loginState.value = LoginState.Loading
-                                }
+                is DataResourceResult.Failure -> {
+                    _loginState.value = LoginState.Failure
+                }
 
-                                else -> {
-                                    _loginState.value = LoginState.Loading
-                                }
-                            }
+                is DataResourceResult.Loading -> {
+                    _loginState.value = LoginState.Loading
+                }
+
+                else -> {}
+            }
+        }
+
+    }
+
+    private suspend fun loginWithNaverSDK(context: Context): DataResourceResult<NidProfileResponse> =
+        suspendCancellableCoroutine { continuation ->
+            NaverIdLoginSDK.authenticate(context, object : OAuthLoginCallback {
+                override fun onError(errorCode: Int, message: String) {
+                    continuation.resume(DataResourceResult.Failure(Throwable("$errorCode $message")))
+                }
+
+                override fun onFailure(httpStatus: Int, message: String) {
+                    continuation.resume(DataResourceResult.Failure(Throwable(message)))
+                }
+
+                override fun onSuccess() {
+                    NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
+                        override fun onError(errorCode: Int, message: String) {
+                            continuation.resume(DataResourceResult.Failure(Throwable("$errorCode $message")))
                         }
 
+                        override fun onFailure(httpStatus: Int, message: String) {
+                            continuation.resume(DataResourceResult.Failure(Throwable(message)))
+                        }
+
+                        override fun onSuccess(result: NidProfileResponse) {
+                            continuation.resume(DataResourceResult.Success(result))
+                        }
+
+                    })
+                }
+            })
+        }
+
+    private fun checkUserRegistered(profileId: String) {
+        viewModelScope.launch {
+            userSessionUseCases.checkUserRegisteredUseCase(profileId).collectLatest { registeredResult ->
+                when (registeredResult) {
+                    is DataResourceResult.Success -> {
+                        userSessionUseCases.updateUserSession(registeredResult.data.toUserSession())
+                        // 메인 화면으로 이동
+                        _loginState.value = LoginState.HasProfile
                     }
+
                     is DataResourceResult.Failure -> {
-                        _loginState.value = LoginState.Failure
+                        // 프로필 등록 화면으로 이동
+                        _loginState.value = LoginState.FirstLogin
                     }
+
                     is DataResourceResult.Loading -> {
                         _loginState.value = LoginState.Loading
                     }
-                    else -> {}
+
+                    else -> {
+                        _loginState.value = LoginState.Loading
+                    }
                 }
             }
         }

@@ -24,8 +24,9 @@ import suhyeok.yang.data.mapper.toFirestoreMessageDTO
 import suhyeok.yang.data.remote.dto.ChatRoomDTO
 import suhyeok.yang.data.remote.dto.MessageDTO
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-class FirestoreChatRoomDataSourceImpl : ChatRoomDataSource {
+class FirestoreChatRoomDataSourceImpl @Inject constructor(): ChatRoomDataSource {
 
     companion object {
         const val CHAT_ROOM_COLLECTION = "chatRooms"

@@ -10,8 +10,9 @@ import suhyeok.yang.data.mapper.toBusinessRecruitPosting
 import suhyeok.yang.data.mapper.toBusinessRecruitPostingList
 import suhyeok.yang.data.mapper.toFirestoreRecruitPostingDTO
 import suhyeok.yang.data.remote.dto.RecruitPostingDTO
+import javax.inject.Inject
 
-class FirestoreRecruitPostingDataSourceImpl: RecruitPostingDataSource {
+class FirestoreRecruitPostingDataSourceImpl @Inject constructor(): RecruitPostingDataSource {
 
     companion object {
         const val RECRUIT_POSTING_COLLECTION = "recruitPostings"

@@ -7,13 +7,16 @@ import com.yang.business.model.Region
 import com.yang.business.model.UserSession
 import com.yang.business.usecase.user.UserUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileUpdateViewModel(
+@HiltViewModel
+class ProfileUpdateViewModel @Inject constructor(
     private val userSessionUseCases: UserSessionUseCases,
     private val userUseCases: UserUseCases
 ) : ViewModel() {

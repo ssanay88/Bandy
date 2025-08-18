@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.enums.Instrument
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel(
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
     private val userSessionUseCases: UserSessionUseCases
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())

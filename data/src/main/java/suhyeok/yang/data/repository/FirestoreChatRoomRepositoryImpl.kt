@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import suhyeok.yang.data.datasource.ChatRoomDataSource
+import javax.inject.Inject
 
-class FirestoreChatRoomRepositoryImpl(val targetResource: ChatRoomDataSource): ChatRoomRepository {
+class FirestoreChatRoomRepositoryImpl @Inject constructor(val targetResource: ChatRoomDataSource): ChatRoomRepository {
     override suspend fun createChatRoom(newChatRoom: ChatRoom): Flow<DataResourceResult<Unit>> = flow {
         emit(DataResourceResult.Loading)
         emit(targetResource.createChatRoom(newChatRoom))

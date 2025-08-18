@@ -18,6 +18,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.yang.business.enums.AgeGroup
@@ -43,9 +44,9 @@ import java.time.LocalDateTime
 @Composable
 fun RecruitingMemberScreen(
     recruitPostingId: String,
-    navController: NavController,
-    viewModel: RecruitingMemberViewModel
+    navController: NavController
 ) {
+    val viewModel: RecruitingMemberViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
