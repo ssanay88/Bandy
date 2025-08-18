@@ -11,14 +11,17 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import com.yang.business.common.DataResourceResult
 import com.yang.business.common.toUserSession
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val userSessionUseCases: UserSessionUseCases,
 ) : ViewModel() {
 

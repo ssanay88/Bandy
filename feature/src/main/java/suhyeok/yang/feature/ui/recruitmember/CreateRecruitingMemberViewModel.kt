@@ -13,6 +13,7 @@ import com.yang.business.model.Region
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -20,8 +21,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.UUID
+import javax.inject.Inject
 
-class CreateRecruitingMemberViewModel(
+@HiltViewModel
+class CreateRecruitingMemberViewModel @Inject constructor(
     val userSessionUseCases: UserSessionUseCases,
     val bandUseCases: BandUseCases,
     val recruitPostingUseCases: RecruitPostingUseCases

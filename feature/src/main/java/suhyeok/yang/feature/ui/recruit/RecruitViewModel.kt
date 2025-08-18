@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -12,8 +13,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecruitViewModel(
+@HiltViewModel
+class RecruitViewModel @Inject constructor(
     val bandUseCases: BandUseCases,
     val recruitPostingUseCases: RecruitPostingUseCases
 ) : ViewModel() {

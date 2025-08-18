@@ -3,13 +3,16 @@ package suhyeok.yang.feature.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashActivityViewModel(
+@HiltViewModel
+class SplashActivityViewModel @Inject constructor(
     private val userSessionUseCases: UserSessionUseCases
 ) : ViewModel() {
 

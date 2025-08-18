@@ -9,6 +9,7 @@ import com.yang.business.model.User
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.user.UserUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -18,8 +19,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
+import javax.inject.Inject
 
-class CreateBandViewModel(
+@HiltViewModel
+class CreateBandViewModel @Inject constructor(
     private val userUseCases: UserUseCases,
     private val bandUseCases: BandUseCases,
     private val userSessionUseCase: UserSessionUseCases
