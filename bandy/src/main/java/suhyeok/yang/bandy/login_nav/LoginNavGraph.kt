@@ -11,25 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import suhyeok.yang.bandy.MainActivity
 import suhyeok.yang.bandy.SubScreenRoute
-import suhyeok.yang.feature.factory.LoginViewModelFactory
-import suhyeok.yang.feature.factory.ProfileRegViewModelFactory
 import suhyeok.yang.feature.ui.login.LoginScreen
 import suhyeok.yang.feature.ui.profile.ProfileRegScreen
 import suhyeok.yang.feature.ui.login.LoginState
 import suhyeok.yang.feature.ui.login.LoginViewModel
 import suhyeok.yang.feature.ui.profile.ProfileRegViewModel
 import suhyeok.yang.shared.common.component.LoadingScreen
-import suhyeok.yang.shared.di.ApplicationContainerProvider
 
 @Composable
 fun LoginNavGraph(
@@ -37,17 +32,9 @@ fun LoginNavGraph(
     navController: NavHostController,
     startDestination: SubScreenRoute = SubScreenRoute.LoginScreen
 ) {
-    val applicationContext = LocalContext.current.applicationContext
-    val userUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userUseCases
-    val userSessionUseCases = (applicationContext as ApplicationContainerProvider).provideApplicationContainer().userSessionUseCases
-
-    val loginFactory = LoginViewModelFactory(userSessionUseCases)
-    val loginViewModel: LoginViewModel = viewModel(factory = loginFactory)
-
-    val profileRegFactory = ProfileRegViewModelFactory(userUseCases, userSessionUseCases)
-    val profileRegViewModel: ProfileRegViewModel = viewModel(factory = profileRegFactory)
-
     val context = LocalContext.current
+    val loginViewModel: LoginViewModel = hiltViewModel()
+    val profileRegViewModel: ProfileRegViewModel = hiltViewModel()
 
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
     val newUserId by loginViewModel.newUserId.collectAsStateWithLifecycle()

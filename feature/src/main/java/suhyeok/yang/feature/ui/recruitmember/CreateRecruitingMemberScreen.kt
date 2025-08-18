@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.yang.business.enums.AgeGroup
@@ -52,10 +53,10 @@ import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun CreateRecruitingMemberScreen(
-    viewModel: CreateRecruitingMemberViewModel,
     onCancelClick: () -> Unit,
     onCreateRecruitingClick: () -> Unit
 ) {
+    val viewModel: CreateRecruitingMemberViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 

@@ -29,6 +29,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.enums.Instrument
@@ -44,10 +45,10 @@ import suhyeok.yang.shared.common.util.toStr
 
 @Composable
 fun ProfileUpdateScreen(
-    viewModel: ProfileUpdateViewModel,
     onCancelClick: () -> Unit,
     onUpdateClick: () -> Unit
 ) {
+    val viewModel: ProfileUpdateViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 

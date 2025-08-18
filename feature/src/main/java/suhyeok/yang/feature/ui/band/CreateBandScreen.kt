@@ -53,6 +53,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.User
@@ -76,11 +77,11 @@ import suhyeok.yang.shared.ui.theme.White
 
 @Composable
 fun CreateBandScreen(
-    viewModel: CreateBandViewModel,
     onCancelClick: () -> Unit,
     onCreateBandClick: () -> Unit
 ) {
     val context = LocalContext.current
+    val viewModel: CreateBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val bandNameEmptyMessage = stringResource(R.string.band_name_input_message)

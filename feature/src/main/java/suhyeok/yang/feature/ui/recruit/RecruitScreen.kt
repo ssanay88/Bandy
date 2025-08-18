@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.Band
@@ -65,11 +66,11 @@ const val ITEM_VIEW_CHIPS_MAX_LINES = 2
 
 @Composable
 fun RecruitScreen(
-    viewModel: RecruitViewModel,
     currentTab: RecruitScreenTab,
     onBandInfoClick: (String) -> Unit,
     onRecruitingMemberClick: (String) -> Unit
 ) {
+    val viewModel: RecruitViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val currentTabIndex = when (currentTab) {

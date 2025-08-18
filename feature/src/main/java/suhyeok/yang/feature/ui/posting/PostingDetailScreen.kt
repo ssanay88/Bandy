@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
 import com.yang.business.model.Comment
@@ -64,9 +65,9 @@ import java.util.UUID
 
 @Composable
 fun PostingDetailScreen(
-    postingId: String,
-    viewModel: PostingDetailViewModel
+    postingId: String
 ) {
+    val viewModel: PostingDetailViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val currentUserId by viewModel.currentUserId.collectAsStateWithLifecycle()
     val commentAuthorMap by viewModel.commentAuthorMap.collectAsStateWithLifecycle()

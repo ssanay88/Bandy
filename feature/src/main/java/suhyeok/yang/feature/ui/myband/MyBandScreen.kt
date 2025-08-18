@@ -19,6 +19,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.ui.common.BandDetailInfoSection
@@ -33,9 +34,9 @@ const val BAND_MEMBER_NAME_MAX_LINE = 1
 
 @Composable
 fun MyBandScreen(
-    viewModel: MyBandViewModel,
     onSuggestFindBandClick: () -> Unit,
 ) {
+    val viewModel: MyBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when {

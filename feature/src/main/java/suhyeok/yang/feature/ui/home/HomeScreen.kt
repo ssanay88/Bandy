@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.yang.business.model.Band
@@ -59,10 +60,10 @@ const val TOP_BANNER_VIEW_PORT_SIZE = 3
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
     onPopularBandClick: (String) -> Unit,
     onPostingClick: (String) -> Unit
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     if (uiState.overallLoading) {

@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.model.Posting
 import suhyeok.yang.feature.MockData
@@ -20,9 +21,9 @@ import suhyeok.yang.feature.ui.recruit.TabLayout
 
 @Composable
 fun PostingHistoryScreen(
-    viewModel: PostingHistoryViewModel,
     onPostingClick: (String) -> Unit
 ) {
+    val viewModel: PostingHistoryViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
