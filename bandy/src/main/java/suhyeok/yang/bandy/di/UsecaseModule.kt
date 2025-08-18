@@ -161,10 +161,10 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideUserSessionUseCases(userSessionRepository: UserSessionRepository): UserSessionUseCases {
+    fun provideUserSessionUseCases(userSessionRepository: UserSessionRepository, userRepository: UserRepository): UserSessionUseCases {
         return UserSessionUseCases(
             getUserSession = GetUserSessionUseCase(userSessionRepository),
-            checkUserRegisteredUseCase = CheckUserRegisteredUseCase(userSessionRepository),
+            checkUserRegisteredUseCase = CheckUserRegisteredUseCase(userRepository),
             updateUserSession = UpdateUserSessionUseCase(userSessionRepository),
             clearUserSession = ClearUserSessionUseCase(userSessionRepository)
         )
