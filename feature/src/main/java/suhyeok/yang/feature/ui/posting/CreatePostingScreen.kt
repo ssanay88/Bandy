@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yang.business.enums.PostingType
 import suhyeok.yang.feature.R
 import suhyeok.yang.shared.common.component.FilledButton
+import suhyeok.yang.shared.common.component.LoadingCircularProgressIndicator
 import suhyeok.yang.shared.common.component.RoundedCornerSpinner
 import suhyeok.yang.shared.common.component.ThinDivider
 import suhyeok.yang.shared.common.util.toPostingType
@@ -78,11 +79,7 @@ fun CreatePostingScreen(
 
         when (createPostingState) {
             is CreatePostingState.Uploading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(dimensionResource(suhyeok.yang.shared.R.dimen.loading_icon_size)),
-                    color = Primary,
-                    strokeWidth = dimensionResource(suhyeok.yang.shared.R.dimen.loading_icon_stroke_width)
-                )
+                LoadingCircularProgressIndicator()
             }
 
             is CreatePostingState.Complete -> {
