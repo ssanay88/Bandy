@@ -36,14 +36,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil3.compose.AsyncImage
 import com.yang.business.model.Band
 import com.yang.business.model.HomeTopBanner
 import com.yang.business.model.Posting
 import com.yang.business.enums.PostingType
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.PostingItemView
+import suhyeok.yang.feature.nav.NavKeys
 import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.SectionDivider
 import suhyeok.yang.shared.common.component.SectionTitleText
@@ -60,11 +64,24 @@ const val TOP_BANNER_VIEW_PORT_SIZE = 3
 
 @Composable
 fun HomeScreen(
+    navController: NavController,
     onPopularBandClick: (String) -> Unit,
     onPostingClick: (String) -> Unit
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    val postingCreated = savedStateHandle?.getStateFlow(NavKeys.CREATE_POSTING_COMPLETE_KEY, false)
+
+    LaunchedEffect(Unit) {
+        postingCreated?.collectLatest { created ->
+            if (created) {
+                viewModel.refreshPostingList()
+                savedStateHandle.remove<Boolean>(NavKeys.CREATE_POSTING_COMPLETE_KEY)
+            }
+        }
+    }
 
     if (uiState.overallLoading) {
         LoadingScreen()
@@ -303,8 +320,6 @@ fun PopularBandItemView(onPopularBandClick: (String) -> Unit, band: Band) {
             .width(dimensionResource(R.dimen.popular_band_item_view_width))
             .height(dimensionResource(R.dimen.popular_band_item_view_height))
             .throttleClick {
-                // TODO 선택한 밴드 상세 페이지로 이동
-                // BandDetailInfoPage(band)
                 onPopularBandClick(band.bandId)
             }
     ) {

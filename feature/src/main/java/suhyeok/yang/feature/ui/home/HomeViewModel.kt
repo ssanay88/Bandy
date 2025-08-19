@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -131,6 +132,38 @@ class HomeViewModel @Inject constructor(
 
             }.collect()
 
+        }
+    }
+
+    fun refreshPostingList() {
+        viewModelScope.launch {
+            postingUseCases.readPosting().collectLatest { result ->
+                _uiState.update {
+                    when (result) {
+                        is DataResourceResult.Success -> {
+                            it.copy(
+                                postingList = result.data,
+                                isPostingLoading = false
+                            )
+                        }
+
+                        is DataResourceResult.Failure -> {
+                            it.copy(
+                                postingErrorMessage = result.exception.message,
+                                isPostingLoading = false
+                            )
+                        }
+
+                        is DataResourceResult.Loading -> {
+                            it.copy(isPostingLoading = true)
+                        }
+
+                        else -> {
+                            it
+                        }
+                    }
+                }
+            }
         }
     }
 }

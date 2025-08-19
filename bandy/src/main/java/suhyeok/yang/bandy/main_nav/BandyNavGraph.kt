@@ -11,6 +11,7 @@ import com.yang.business.enums.RecruitScreenTab
 import suhyeok.yang.feature.ui.chat.ChatScreen
 import suhyeok.yang.bandy.MainScreenRoute
 import suhyeok.yang.bandy.NestedScreenRoute
+import suhyeok.yang.feature.nav.NavKeys
 import suhyeok.yang.feature.ui.band.CreateBandScreen
 import suhyeok.yang.feature.ui.recruitmember.CreateRecruitingMemberScreen
 import suhyeok.yang.feature.ui.home.HomeScreen
@@ -59,6 +60,7 @@ fun BandyNavGraph(
         // MainScreen
         composable<MainScreenRoute.HomeScreen> { navBackStackEntry ->
             HomeScreen(
+                navController = navController,
                 onPopularBandClick = { bandId: String ->
                     navController.navigate(
                         NestedScreenRoute.BandInfoScreen(
@@ -169,7 +171,17 @@ fun BandyNavGraph(
         }
         composable<NestedScreenRoute.CreatePostingScreen> {
             CreatePostingScreen(
-                onCreatePostingComplete = { navController.navigate(MainScreenRoute.HomeScreen) }
+                onCreatePostingComplete = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(NavKeys.CREATE_POSTING_COMPLETE_KEY, true)
+
+                    navController.navigate(MainScreenRoute.HomeScreen) {
+                        popUpTo(MainScreenRoute.HomeScreen) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }
