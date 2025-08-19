@@ -43,10 +43,10 @@ secretsGradlePlugin = "2.0.1"
 
 # Hilt
 hilt = "2.57"
+hiltNavigationCompose = "1.2.0"
 
 # Ksp
 ksp = "2.2.0-2.0.2"
-hiltNavigationCompose = "1.2.0"
 
 
 

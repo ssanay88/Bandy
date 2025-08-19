@@ -12,7 +12,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
 import suhyeok.yang.data.repository.DatastoreUserSessionRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreBandRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreChatRoomRepositoryImpl
@@ -21,6 +20,7 @@ import suhyeok.yang.data.repository.FirestorePostingHistoryRepositoryImpl
 import suhyeok.yang.data.repository.FirestorePostingRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreRecruitPostingRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreUserRepositoryImpl
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
