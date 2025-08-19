@@ -37,6 +37,7 @@ import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.CancelButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
 import suhyeok.yang.shared.common.component.FilledButton
+import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.OutlinedSpinner
 import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.common.util.toInstrument
@@ -55,76 +56,81 @@ fun ProfileUpdateScreen(
     val instrumentUnselectedMessage = stringResource(R.string.profile_update_select_instrument_message)
     val nicknameEmptyMessage = stringResource(R.string.profile_update_input_nickname_message)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = dimensionResource(R.dimen.profile_reg_screen_horizontal_padding),
-                vertical = dimensionResource(R.dimen.profile_reg_screen_vertical_padding)
-            )
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.SpaceBetween,
-    ) {
-        ProfileImageUpdateSection(
-            uiState.myProfileImageUrl,
-            onProfileImageChanged = { selectedImageUrl ->
-                viewModel.updateMyProfileImageUrl(selectedImageUrl)
-            }
-        )
-
-        NicknameUpdateSection(
-            uiState.myProfileNickname,
-            onNicknameChanged = { inputNickname ->
-                viewModel.updateMyProfileNickname(inputNickname)
-            }
-        )
-
-        InstrumentUpdateSection(
-            uiState.myProfileInstrument,
-            onInstrumentChanged = { selectedInstrument ->
-                viewModel.updateMyProfileInstrument(selectedInstrument)
-            }
-        )
-
-        RegionSelectSection(
-            uiState.myProfileSido,
-            uiState.myProfileSigungu,
-            onSidoChanged = { selectedSido ->
-                viewModel.updateMyProfileSido(selectedSido)
-            },
-            onSigunguChanged = { selectedSigungu ->
-                viewModel.updateMyProfileSigungu(selectedSigungu)
-            }
-        )
-
-        IntroduceUpdateSection(
-            uiState.myProfileIntroduce,
-            onIntroduceChanged = { inputIntroduce ->
-                viewModel.updateMyProfileIntroduce(inputIntroduce)
-            }
-        )
-
-        UpdateButtonSection(
-            onCancelClick = {
-                viewModel.resetProfileChanges()
-                onCancelClick()
-            },
-            onUpdateProfileClick = {
-                when (viewModel.validateUpdatedProfileInfo()) {
-                    is ProfileUpdateValidationResult.InstrumentUnselected -> {
-                        Toast.makeText(context, instrumentUnselectedMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    is ProfileUpdateValidationResult.NicknameEmpty -> {
-                        Toast.makeText(context, nicknameEmptyMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    is ProfileUpdateValidationResult.Success -> {
-                        viewModel.updateMyProfile()
-                        onUpdateClick()
-                    }
+    if (uiState.overallLoading) {
+        LoadingScreen()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    horizontal = dimensionResource(R.dimen.profile_reg_screen_horizontal_padding),
+                    vertical = dimensionResource(R.dimen.profile_reg_screen_vertical_padding)
+                )
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            ProfileImageUpdateSection(
+                uiState.myProfileImageUrl,
+                onProfileImageChanged = { selectedImageUrl ->
+                    viewModel.updateMyProfileImageUrl(selectedImageUrl)
                 }
+            )
 
-            })
+            NicknameUpdateSection(
+                uiState.myProfileNickname,
+                onNicknameChanged = { inputNickname ->
+                    viewModel.updateMyProfileNickname(inputNickname)
+                }
+            )
+
+            InstrumentUpdateSection(
+                uiState.myProfileInstrument,
+                onInstrumentChanged = { selectedInstrument ->
+                    viewModel.updateMyProfileInstrument(selectedInstrument)
+                }
+            )
+
+            RegionSelectSection(
+                uiState.myProfileSido,
+                uiState.myProfileSigungu,
+                onSidoChanged = { selectedSido ->
+                    viewModel.updateMyProfileSido(selectedSido)
+                },
+                onSigunguChanged = { selectedSigungu ->
+                    viewModel.updateMyProfileSigungu(selectedSigungu)
+                }
+            )
+
+            IntroduceUpdateSection(
+                uiState.myProfileIntroduce,
+                onIntroduceChanged = { inputIntroduce ->
+                    viewModel.updateMyProfileIntroduce(inputIntroduce)
+                }
+            )
+
+            UpdateButtonSection(
+                onCancelClick = {
+                    viewModel.resetProfileChanges()
+                    onCancelClick()
+                },
+                onUpdateProfileClick = {
+                    when (viewModel.validateUpdatedProfileInfo()) {
+                        is ProfileUpdateValidationResult.InstrumentUnselected -> {
+                            Toast.makeText(context, instrumentUnselectedMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        is ProfileUpdateValidationResult.NicknameEmpty -> {
+                            Toast.makeText(context, nicknameEmptyMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        is ProfileUpdateValidationResult.Success -> {
+                            viewModel.updateMyProfile()
+                            onUpdateClick()
+                        }
+                    }
+
+                })
+        }
     }
+
 }
 
 @Composable
