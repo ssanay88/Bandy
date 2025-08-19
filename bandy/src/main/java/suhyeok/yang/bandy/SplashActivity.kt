@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -13,12 +14,11 @@ import suhyeok.yang.feature.screen.SplashScreen
 import suhyeok.yang.feature.viewmodel.SplashActivityViewModel
 import suhyeok.yang.feature.viewmodel.SplashUiState
 import suhyeok.yang.shared.ui.theme.BandyTheme
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
 
-    @Inject lateinit var viewModel: SplashActivityViewModel
+    private val viewModel by viewModels<SplashActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
