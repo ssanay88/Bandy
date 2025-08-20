@@ -80,6 +80,7 @@ fun BandyNavGraph(
         composable<MainScreenRoute.RecruitScreen> { navBackStackEntry ->
             val currentTab = navBackStackEntry.toRoute<MainScreenRoute.RecruitScreen>().currentTab
             RecruitScreen(
+                navController = navController,
                 currentTab = currentTab,
                 onBandInfoClick = { bandId ->
                     navController.navigate(
@@ -162,7 +163,17 @@ fun BandyNavGraph(
             CreateRecruitingMemberScreen(
                 onCancelClick = { navController.popBackStack() },
                 onCreateRecruitingClick = {
-                    navController.navigate(MainScreenRoute.RecruitScreen(RecruitScreenTab.MEMBER_RECRUIT_TAB))
+                    navController.apply {
+                        previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set(NavKeys.CREATE_RECRUITING_POSTING_COMPLETE_KEY, true)
+
+                        navigate(MainScreenRoute.RecruitScreen(RecruitScreenTab.MEMBER_RECRUIT_TAB)) {
+                            popUpTo(MainScreenRoute.RecruitScreen(RecruitScreenTab.MEMBER_RECRUIT_TAB)) {
+                                inclusive = true
+                            }
+                        }
+                    }
                 }
             )
         }

@@ -24,6 +24,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -40,14 +41,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.yang.business.model.Band
 import com.yang.business.enums.Instrument
 import com.yang.business.enums.RecruitScreenTab
 import com.yang.business.model.RecruitPosting
 import com.yang.business.model.Region
+import kotlinx.coroutines.flow.collectLatest
 import suhyeok.yang.feature.MockData
 import suhyeok.yang.feature.R
+import suhyeok.yang.feature.nav.NavKeys
 import suhyeok.yang.shared.common.component.LightPrimaryRoundText
 import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.WhiteRoundedCornerCard
@@ -66,6 +70,7 @@ const val ITEM_VIEW_CHIPS_MAX_LINES = 2
 
 @Composable
 fun RecruitScreen(
+    navController: NavController,
     currentTab: RecruitScreenTab,
     onBandInfoClick: (String) -> Unit,
     onRecruitingMemberClick: (String) -> Unit
@@ -73,6 +78,18 @@ fun RecruitScreen(
     val viewModel: RecruitViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    val recruitingPostingCreated = savedStateHandle?.getStateFlow(NavKeys.CREATE_RECRUITING_POSTING_COMPLETE_KEY, false)
+
+    LaunchedEffect(Unit) {
+        recruitingPostingCreated?.collectLatest { created ->
+            if (created) {
+                viewModel.loadRecruitingMemberList()
+                savedStateHandle.remove<Boolean>(NavKeys.CREATE_RECRUITING_POSTING_COMPLETE_KEY)
+            }
+        }
+    }
     val currentTabIndex = when (currentTab) {
         RecruitScreenTab.BAND_RECRUIT_TAB -> 0
         RecruitScreenTab.MEMBER_RECRUIT_TAB -> 1
