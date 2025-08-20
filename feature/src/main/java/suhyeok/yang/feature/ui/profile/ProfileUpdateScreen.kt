@@ -1,11 +1,7 @@
 package suhyeok.yang.feature.ui.profile
 
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +32,7 @@ import com.yang.business.enums.Instrument
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.CancelButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
+import suhyeok.yang.feature.common.components.rememberPhotoPicker
 import suhyeok.yang.shared.common.component.FilledButton
 import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.OutlinedSpinner
@@ -138,19 +135,7 @@ fun ProfileImageUpdateSection(
     myProfileImageUri: String,
     onProfileImageChanged: (String) -> Unit
 ) {
-    val context = LocalContext.current
-
-    val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                val contentResolver = context.contentResolver
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                onProfileImageChanged(uri.toString())
-            }
-        }
+    val photoPicker = rememberPhotoPicker(onProfileImageChanged)
 
     Row(
         modifier = Modifier.fillMaxSize(),
@@ -158,7 +143,7 @@ fun ProfileImageUpdateSection(
     ) {
         Box(
             modifier = Modifier.throttleClick {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                photoPicker.pickImage()
             }
         ) {
             AsyncImage(

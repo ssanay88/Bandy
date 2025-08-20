@@ -1,10 +1,6 @@
 package suhyeok.yang.feature.ui.band
 
-import android.content.Intent
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -62,6 +58,7 @@ import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.CancelButton
 import suhyeok.yang.feature.common.components.PrimaryColorRoundedButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
+import suhyeok.yang.feature.common.components.rememberPhotoPicker
 import suhyeok.yang.feature.ui.profile.TitleText
 import suhyeok.yang.shared.common.component.CircleImageView
 import suhyeok.yang.shared.common.component.DebounceOutlinedTextField
@@ -185,19 +182,8 @@ fun BandImageRegistSection(
     selectedBandProfileImageUrl: String = "",
     onProfileSelect: (String) -> Unit = {}
 ) {
-    val context = LocalContext.current
 
-    val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                val contentResolver = context.contentResolver
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                onProfileSelect(uri.toString())
-            }
-        }
+    val photoPicker = rememberPhotoPicker(onProfileSelect)
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -205,7 +191,7 @@ fun BandImageRegistSection(
     ) {
         Box(
             modifier = Modifier.throttleClick {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                photoPicker.pickImage()
             }
         ) {
             AsyncImage(
@@ -233,19 +219,7 @@ fun BandCoverImageRegistSection(
     selectedBandCoverImageUrl: String = "",
     onCoverSelect: (String) -> Unit = {}
 ) {
-    val context = LocalContext.current
-
-    val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                val contentResolver = context.contentResolver
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                onCoverSelect(uri.toString())
-            }
-        }
+    val photoPicker = rememberPhotoPicker(onCoverSelect)
 
     Column {
         TitleText(text = stringResource(R.string.band_cover_image_regist_title))
@@ -276,7 +250,7 @@ fun BandCoverImageRegistSection(
                     containerColor = Primary
                 ),
                 onClick = {
-                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    photoPicker.pickImage()
                 }
             ) {
                 Text(
