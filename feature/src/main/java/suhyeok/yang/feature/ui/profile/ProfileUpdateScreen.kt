@@ -1,11 +1,7 @@
 package suhyeok.yang.feature.ui.profile
 
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +32,9 @@ import com.yang.business.enums.Instrument
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.CancelButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
+import suhyeok.yang.feature.common.components.rememberPhotoPicker
 import suhyeok.yang.shared.common.component.FilledButton
+import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.OutlinedSpinner
 import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.common.util.toInstrument
@@ -55,76 +53,81 @@ fun ProfileUpdateScreen(
     val instrumentUnselectedMessage = stringResource(R.string.profile_update_select_instrument_message)
     val nicknameEmptyMessage = stringResource(R.string.profile_update_input_nickname_message)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = dimensionResource(R.dimen.profile_reg_screen_horizontal_padding),
-                vertical = dimensionResource(R.dimen.profile_reg_screen_vertical_padding)
-            )
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.SpaceBetween,
-    ) {
-        ProfileImageUpdateSection(
-            uiState.myProfileImageUrl,
-            onProfileImageChanged = { selectedImageUrl ->
-                viewModel.updateMyProfileImageUrl(selectedImageUrl)
-            }
-        )
-
-        NicknameUpdateSection(
-            uiState.myProfileNickname,
-            onNicknameChanged = { inputNickname ->
-                viewModel.updateMyProfileNickname(inputNickname)
-            }
-        )
-
-        InstrumentUpdateSection(
-            uiState.myProfileInstrument,
-            onInstrumentChanged = { selectedInstrument ->
-                viewModel.updateMyProfileInstrument(selectedInstrument)
-            }
-        )
-
-        RegionSelectSection(
-            uiState.myProfileSido,
-            uiState.myProfileSigungu,
-            onSidoChanged = { selectedSido ->
-                viewModel.updateMyProfileSido(selectedSido)
-            },
-            onSigunguChanged = { selectedSigungu ->
-                viewModel.updateMyProfileSigungu(selectedSigungu)
-            }
-        )
-
-        IntroduceUpdateSection(
-            uiState.myProfileIntroduce,
-            onIntroduceChanged = { inputIntroduce ->
-                viewModel.updateMyProfileIntroduce(inputIntroduce)
-            }
-        )
-
-        UpdateButtonSection(
-            onCancelClick = {
-                viewModel.resetProfileChanges()
-                onCancelClick()
-            },
-            onUpdateProfileClick = {
-                when (viewModel.validateUpdatedProfileInfo()) {
-                    is ProfileUpdateValidationResult.InstrumentUnselected -> {
-                        Toast.makeText(context, instrumentUnselectedMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    is ProfileUpdateValidationResult.NicknameEmpty -> {
-                        Toast.makeText(context, nicknameEmptyMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    is ProfileUpdateValidationResult.Success -> {
-                        viewModel.updateMyProfile()
-                        onUpdateClick()
-                    }
+    if (uiState.overallLoading) {
+        LoadingScreen()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    horizontal = dimensionResource(R.dimen.profile_reg_screen_horizontal_padding),
+                    vertical = dimensionResource(R.dimen.profile_reg_screen_vertical_padding)
+                )
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            ProfileImageUpdateSection(
+                uiState.myProfileImageUrl,
+                onProfileImageChanged = { selectedImageUrl ->
+                    viewModel.updateMyProfileImageUrl(selectedImageUrl)
                 }
+            )
 
-            })
+            NicknameUpdateSection(
+                uiState.myProfileNickname,
+                onNicknameChanged = { inputNickname ->
+                    viewModel.updateMyProfileNickname(inputNickname)
+                }
+            )
+
+            InstrumentUpdateSection(
+                uiState.myProfileInstrument,
+                onInstrumentChanged = { selectedInstrument ->
+                    viewModel.updateMyProfileInstrument(selectedInstrument)
+                }
+            )
+
+            RegionSelectSection(
+                uiState.myProfileSido,
+                uiState.myProfileSigungu,
+                onSidoChanged = { selectedSido ->
+                    viewModel.updateMyProfileSido(selectedSido)
+                },
+                onSigunguChanged = { selectedSigungu ->
+                    viewModel.updateMyProfileSigungu(selectedSigungu)
+                }
+            )
+
+            IntroduceUpdateSection(
+                uiState.myProfileIntroduce,
+                onIntroduceChanged = { inputIntroduce ->
+                    viewModel.updateMyProfileIntroduce(inputIntroduce)
+                }
+            )
+
+            UpdateButtonSection(
+                onCancelClick = {
+                    viewModel.resetProfileChanges()
+                    onCancelClick()
+                },
+                onUpdateProfileClick = {
+                    when (viewModel.validateUpdatedProfileInfo()) {
+                        is ProfileUpdateValidationResult.InstrumentUnselected -> {
+                            Toast.makeText(context, instrumentUnselectedMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        is ProfileUpdateValidationResult.NicknameEmpty -> {
+                            Toast.makeText(context, nicknameEmptyMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        is ProfileUpdateValidationResult.Success -> {
+                            viewModel.updateMyProfile()
+                            onUpdateClick()
+                        }
+                    }
+
+                })
+        }
     }
+
 }
 
 @Composable
@@ -132,19 +135,7 @@ fun ProfileImageUpdateSection(
     myProfileImageUri: String,
     onProfileImageChanged: (String) -> Unit
 ) {
-    val context = LocalContext.current
-
-    val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                val contentResolver = context.contentResolver
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                onProfileImageChanged(uri.toString())
-            }
-        }
+    val photoPicker = rememberPhotoPicker(onProfileImageChanged)
 
     Row(
         modifier = Modifier.fillMaxSize(),
@@ -152,7 +143,7 @@ fun ProfileImageUpdateSection(
     ) {
         Box(
             modifier = Modifier.throttleClick {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                photoPicker.pickImage()
             }
         ) {
             AsyncImage(

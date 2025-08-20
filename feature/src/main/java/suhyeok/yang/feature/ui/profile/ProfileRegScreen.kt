@@ -1,11 +1,7 @@
 package suhyeok.yang.feature.ui.profile
 
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -64,6 +60,7 @@ import com.yang.business.model.User
 import suhyeok.yang.feature.R
 import suhyeok.yang.feature.common.components.BackButton
 import suhyeok.yang.feature.common.components.RegionSelectSection
+import suhyeok.yang.feature.common.components.rememberPhotoPicker
 import suhyeok.yang.shared.common.component.FilledButton
 import suhyeok.yang.shared.common.component.LoadingScreen
 import suhyeok.yang.shared.common.component.OutlinedSpinner
@@ -227,19 +224,8 @@ fun ProfileRegScreen(
 
 @Composable
 fun ProfileImageRegistSection(selectedProfileImgUrl: String, onProfileSelect: (String) -> Unit) {
-    val context = LocalContext.current
 
-    val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                val contentResolver = context.contentResolver
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                onProfileSelect(uri.toString())
-            }
-        }
+    val photoPicker = rememberPhotoPicker(onProfileSelect)
 
     Row(
         modifier = Modifier.fillMaxSize(),
@@ -247,7 +233,7 @@ fun ProfileImageRegistSection(selectedProfileImgUrl: String, onProfileSelect: (S
     ) {
         Box(
             modifier = Modifier.throttleClick {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                photoPicker.pickImage()
             }
         ) {
             AsyncImage(

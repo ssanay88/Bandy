@@ -31,12 +31,14 @@ class ProfileUpdateViewModel @Inject constructor(
 
     fun loadMyProfileInfo() {
         viewModelScope.launch {
+            _uiState.update { it.copy(overallLoading = true) }
             userSessionUseCases.getUserSession().collectLatest { userSession ->
                 _uiState.update {
                     with(userSession) {
                         initialUserSession = userSession.copy()
 
                         it.copy(
+                            overallLoading = false,
                             myProfileImageUrl = userProfileImage,
                             myProfileNickname = userNickname,
                             myProfileInstrument = userInstrument,
