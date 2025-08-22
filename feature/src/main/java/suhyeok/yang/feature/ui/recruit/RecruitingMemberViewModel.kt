@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
 import com.yang.business.usecase.band.BandUseCases
+import com.yang.business.usecase.chatroom.ChatRoomUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
 import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,14 +13,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import suhyeok.yang.feature.common.ChatRoomManager
 import javax.inject.Inject
 
 @HiltViewModel
 class RecruitingMemberViewModel @Inject constructor(
+    val recruitPostingUseCases: RecruitPostingUseCases,
+    val chatRoomUseCases: ChatRoomUseCases,
     val userSessionUseCases: UserSessionUseCases,
-    val bandUseCases: BandUseCases,
-    val recruitPostingUseCases: RecruitPostingUseCases
 ) : ViewModel() {
+
+    @Inject lateinit var chatRoomManager: ChatRoomManager
+
     private val _uiState = MutableStateFlow(RecruitingMemberUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -68,6 +73,20 @@ class RecruitingMemberViewModel @Inject constructor(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun chatWithRecruitingBandLeader(chatRoomTitle: String, chatRoomImageUrl: String, bandLeaderId: String) {
+        viewModelScope.launch {
+            val newChatRoom = chatRoomManager.createNewChatRoom(
+                chatRoomName = chatRoomTitle,
+                roomImageUrl = chatRoomImageUrl,
+                participants = listOf()
+            )
+
+            chatRoomUseCases.createChatRoomUseCase(newChatRoom).collectLatest {
+
             }
         }
     }

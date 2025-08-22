@@ -128,7 +128,9 @@ fun BandyNavGraph(
         }
         composable<NestedScreenRoute.RecruitingMemberScreen> { navBackStackEntry ->
             val recruitPostingId = navBackStackEntry.toRoute<NestedScreenRoute.RecruitingMemberScreen>().recruitingPostingId
-            RecruitingMemberScreen(recruitPostingId, navController)
+            RecruitingMemberScreen(recruitPostingId, navController) {
+                navController.navigate(MainScreenRoute.ChatScreen)
+            }
         }
         composable<NestedScreenRoute.ChatRoomScreen> { navBackStackEntry ->
             val chatRoomId = navBackStackEntry.toRoute<NestedScreenRoute.ChatRoomScreen>().chatRoomId
