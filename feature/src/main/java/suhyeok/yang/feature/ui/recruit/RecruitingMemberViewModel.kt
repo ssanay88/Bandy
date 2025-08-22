@@ -3,10 +3,9 @@ package suhyeok.yang.feature.ui.recruit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
-import com.yang.business.usecase.band.BandUseCases
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.chatroom.ChatRoomUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class RecruitingMemberViewModel @Inject constructor(
     val recruitPostingUseCases: RecruitPostingUseCases,
     val chatRoomUseCases: ChatRoomUseCases,
-    val userSessionUseCases: UserSessionUseCases,
+    val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     @Inject lateinit var chatRoomManager: ChatRoomManager

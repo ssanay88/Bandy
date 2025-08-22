@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
 import com.yang.business.model.Band
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.band.BandUseCases
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyBandViewModel @Inject constructor(
     val bandUseCases: BandUseCases,
-    val userSessionUseCase: UserSessionUseCases
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyBandUiState())
     val uiState = _uiState.asStateFlow()

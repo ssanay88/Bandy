@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.chatroom.ChatRoomUseCases
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
-    private val userSessionUseCases: UserSessionUseCases,
+    private val dataStoreRepository: DataStoreRepository,
     private val chatRoomUseCases: ChatRoomUseCases
 ) : ViewModel() {
 

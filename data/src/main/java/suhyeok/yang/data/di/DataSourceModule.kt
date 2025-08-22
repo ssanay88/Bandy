@@ -10,7 +10,6 @@ import suhyeok.yang.data.datasource.HomeTopBannerDataSource
 import suhyeok.yang.data.datasource.PostingDataSource
 import suhyeok.yang.data.datasource.RecruitPostingDataSource
 import suhyeok.yang.data.datasource.UserDataSource
-import suhyeok.yang.data.local.datastore.UserSessionDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreBandDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreChatRoomDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreHomeTopBannerDataSourceImpl
@@ -21,7 +20,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class FirestoreDataSourceModule {
+abstract class DataSourceModule {
 
     @Binds
     @Singleton

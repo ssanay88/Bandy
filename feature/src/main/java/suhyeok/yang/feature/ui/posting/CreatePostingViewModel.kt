@@ -6,8 +6,8 @@ import com.yang.business.common.DataResourceResult
 import com.yang.business.enums.PostingType
 import com.yang.business.model.Posting
 import com.yang.business.model.PostingAuthorInfo
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.posting.PostingUseCases
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreatePostingViewModel @Inject constructor(
     private val postingUseCases: PostingUseCases,
-    private val userSessionUseCases: UserSessionUseCases
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CreatePostingUiState())
     val uiState = _uiState.asStateFlow()

@@ -2,6 +2,7 @@ package suhyeok.yang.data.di
 
 import com.yang.business.repository.BandRepository
 import com.yang.business.repository.ChatRoomRepository
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.repository.HomeTopBannerRepository
 import com.yang.business.repository.PostingHistoryRepository
 import com.yang.business.repository.PostingRepository
@@ -22,7 +23,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class FirestoreRepositoryModule {
+abstract class RepositoryModule {
 
     @Binds
     @Singleton
@@ -52,4 +53,7 @@ abstract class FirestoreRepositoryModule {
     @Singleton
     abstract fun bindPostingHistoryRepository(firestorePostingRepositoryImpl: FirestorePostingHistoryRepositoryImpl): PostingHistoryRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindDataStoreRepository(dataStoreRepository: DataStoreRepository): DataStoreRepository
 }

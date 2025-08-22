@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
 import com.yang.business.common.toUserSession
 import com.yang.business.model.User
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.user.UserUseCases
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileRegViewModel @Inject constructor(
     private val userUseCases: UserUseCases,
-    private val userSessionUseCase: UserSessionUseCases
+    private val dataStoreRepository: DataStoreRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileRegUiState())
     val uiState = _uiState.asStateFlow()

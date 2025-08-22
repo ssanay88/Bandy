@@ -10,7 +10,7 @@ import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import com.yang.business.common.DataResourceResult
 import com.yang.business.common.toUserSession
-import com.yang.business.usecase.usersession.UserSessionUseCases
+import com.yang.business.repository.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +22,7 @@ import kotlin.coroutines.resume
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userSessionUseCases: UserSessionUseCases,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Init)

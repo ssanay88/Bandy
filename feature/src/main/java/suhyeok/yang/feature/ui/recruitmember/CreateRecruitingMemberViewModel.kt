@@ -10,9 +10,9 @@ import com.yang.business.enums.RecruitingStatus
 import com.yang.business.enums.SkillLevel
 import com.yang.business.model.RecruitPosting
 import com.yang.business.model.Region
+import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.recruitposting.RecruitPostingUseCases
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,9 +25,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateRecruitingMemberViewModel @Inject constructor(
-    val userSessionUseCases: UserSessionUseCases,
     val bandUseCases: BandUseCases,
-    val recruitPostingUseCases: RecruitPostingUseCases
+    val recruitPostingUseCases: RecruitPostingUseCases,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateRecruitingMemberUiState())
