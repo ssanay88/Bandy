@@ -7,7 +7,6 @@ import com.yang.business.repository.PostingHistoryRepository
 import com.yang.business.repository.PostingRepository
 import com.yang.business.repository.RecruitPostingRepository
 import com.yang.business.repository.UserRepository
-import com.yang.business.repository.UserSessionRepository
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.band.CreateBandUseCase
 import com.yang.business.usecase.band.DeleteBandUseCase
@@ -52,11 +51,6 @@ import com.yang.business.usecase.user.ReadUserUseCase
 import com.yang.business.usecase.user.SearchUserByNicknameUseCase
 import com.yang.business.usecase.user.UpdateUserUseCase
 import com.yang.business.usecase.user.UserUseCases
-import com.yang.business.usecase.usersession.CheckUserRegisteredUseCase
-import com.yang.business.usecase.usersession.ClearUserSessionUseCase
-import com.yang.business.usecase.usersession.GetUserSessionUseCase
-import com.yang.business.usecase.usersession.UpdateUserSessionUseCase
-import com.yang.business.usecase.usersession.UserSessionUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -159,14 +153,4 @@ object UseCaseModule {
         )
     }
 
-    @Provides
-    @Singleton
-    fun provideUserSessionUseCases(userSessionRepository: UserSessionRepository, userRepository: UserRepository): UserSessionUseCases {
-        return UserSessionUseCases(
-            getUserSession = GetUserSessionUseCase(userSessionRepository),
-            checkUserRegisteredUseCase = CheckUserRegisteredUseCase(userRepository),
-            updateUserSession = UpdateUserSessionUseCase(userSessionRepository),
-            clearUserSession = ClearUserSessionUseCase(userSessionRepository)
-        )
-    }
 }

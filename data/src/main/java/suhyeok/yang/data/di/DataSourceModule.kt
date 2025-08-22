@@ -10,7 +10,6 @@ import suhyeok.yang.data.datasource.HomeTopBannerDataSource
 import suhyeok.yang.data.datasource.PostingDataSource
 import suhyeok.yang.data.datasource.RecruitPostingDataSource
 import suhyeok.yang.data.datasource.UserDataSource
-import suhyeok.yang.data.datasource.UserSessionDataSource
 import suhyeok.yang.data.local.datastore.UserSessionDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreBandDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreChatRoomDataSourceImpl
@@ -48,7 +47,4 @@ abstract class FirestoreDataSourceModule {
     @Singleton
     abstract fun bindChatRoomDataSource(firestoreChatRoomDataSourceImpl: FirestoreChatRoomDataSourceImpl): ChatRoomDataSource
 
-    @Binds
-    @Singleton
-    abstract fun bindUserSessionDataSource(userSessionDataSourceImpl: UserSessionDataSourceImpl): UserSessionDataSource
 }

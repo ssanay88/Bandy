@@ -7,12 +7,10 @@ import com.yang.business.repository.PostingHistoryRepository
 import com.yang.business.repository.PostingRepository
 import com.yang.business.repository.RecruitPostingRepository
 import com.yang.business.repository.UserRepository
-import com.yang.business.repository.UserSessionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import suhyeok.yang.data.repository.DatastoreUserSessionRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreBandRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreChatRoomRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreHomeTopBannerRepositoryImpl
@@ -49,10 +47,6 @@ abstract class FirestoreRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindChatRoomRepository(firestoreChatRoomRepositoryImpl: FirestoreChatRoomRepositoryImpl): ChatRoomRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindUserSessionRepository(datastoreUserSessionRepositoryImpl: DatastoreUserSessionRepositoryImpl): UserSessionRepository
 
     @Binds
     @Singleton
