@@ -102,6 +102,36 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override val userGender: Flow<String> = context.dataStore.data.map { perf ->
+        perf[UserPreferencesKeys.USER_GENDER] ?: ""
+    }
+
+    override suspend fun setUserGender(userGender: String) {
+        context.dataStore.edit { pref ->
+            pref[UserPreferencesKeys.USER_GENDER] = userGender
+        }
+    }
+
+    override val userSkillLevel: Flow<String> = context.dataStore.data.map { pref ->
+        pref[UserPreferencesKeys.USER_SKILL_LEVEL] ?: ""
+    }
+
+    override suspend fun setUserSkillLevel(userSkillLevel: String) {
+        context.dataStore.edit { pref ->
+            pref[UserPreferencesKeys.USER_SKILL_LEVEL] = userSkillLevel
+        }
+    }
+
+    override val userBirthDate: Flow<String> = context.dataStore.data.map { pref ->
+        pref[UserPreferencesKeys.USER_BIRTH_DATE] ?: ""
+    }
+
+    override suspend fun setUserBirthDate(userBirthDate: String) {
+        context.dataStore.edit { pref ->
+            pref[UserPreferencesKeys.USER_BIRTH_DATE] = userBirthDate
+        }
+    }
+
     override val isLeader: Flow<Boolean> = context.dataStore.data.map { pref ->
         pref[UserPreferencesKeys.IS_LEADER] ?: false
     }

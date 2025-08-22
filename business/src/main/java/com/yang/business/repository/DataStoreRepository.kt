@@ -27,6 +27,15 @@ interface DataStoreRepository {
     val userRegion: Flow<String>
     suspend fun setUserRegion(userRegion: String)
 
+    val userGender: Flow<String>
+    suspend fun setUserGender(userGender: String)
+
+    val userSkillLevel: Flow<String>
+    suspend fun setUserSkillLevel(userSkillLevel: String)
+
+    val userBirthDate: Flow<String>
+    suspend fun setUserBirthDate(userBirthDate: String)
+
     val isLeader: Flow<Boolean>
     suspend fun setIsLeader(isLeader: Boolean)
 
