@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +45,10 @@ fun ProfileScreen(
     val viewModel: ProfileViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.isBandLeader()
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -55,6 +60,7 @@ fun ProfileScreen(
         DescriptionSection(uiState.userDescription)
         SectionDivider()
         ProfileMenuSection(
+            isBandLeader = uiState.isBandLeader,
             onUpdateProfileClick = onUpdateProfileClick,
             onPostingsHistoryClick = onPostingsHistoryClick,
             onManageBandClick = onManageBandClick,
@@ -141,13 +147,12 @@ fun DescriptionSection(userDescription: String) {
 
 @Composable
 fun ProfileMenuSection(
+    isBandLeader: Boolean,
     onUpdateProfileClick: () -> Unit,
     onPostingsHistoryClick: () -> Unit,
     onManageBandClick: () -> Unit,
     onNotificationClick: () -> Unit
 ) {
-    val isBandLeader = true // TODO DB에 저장한 유저의 정보로 판단하도록 수정 필요
-
     Column(
         modifier = Modifier.padding(dimensionResource(R.dimen.padding_10dp))
     ) {

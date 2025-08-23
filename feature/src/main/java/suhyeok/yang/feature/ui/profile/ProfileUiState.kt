@@ -12,5 +12,6 @@ data class ProfileUiState(
     val userNickname: String = "",
     val userInstrument: Instrument = Instrument.VOCAL,
     val userDescription: String = "",
+    val isBandLeader: Boolean = false
 
 ) : UiState(overallLoading, globalError)

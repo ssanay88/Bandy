@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import suhyeok.yang.shared.common.util.toInstrument
 import javax.inject.Inject
@@ -31,6 +32,14 @@ class ProfileViewModel @Inject constructor(
                     userInstrument = userInstrument.first().toInstrument(),
                     userDescription = userDescription.first()
                 )
+            }
+        }
+    }
+
+    fun isBandLeader() {
+        viewModelScope.launch {
+            with(dataStoreRepository) {
+                if (isBand.first() && isLeader.first()) _uiState.update { it.copy(isBandLeader = true) }
             }
         }
     }
