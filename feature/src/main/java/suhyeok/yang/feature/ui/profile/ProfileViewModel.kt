@@ -6,8 +6,9 @@ import com.yang.business.repository.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import suhyeok.yang.shared.common.util.toInstrument
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,12 +24,12 @@ class ProfileViewModel @Inject constructor(
 
     fun initMyProfile() {
         viewModelScope.launch {
-            userSessionUseCases.getUserSession().collectLatest { userSession ->
+            with(dataStoreRepository) {
                 _uiState.value = _uiState.value.copy(
-                    profileImageUrl = userSession.userProfileImage,
-                    userNickname = userSession.userNickname,
-                    userInstrument = userSession.userInstrument,
-                    userDescription = userSession.userDescription
+                    profileImageUrl = userProfileImage.first(),
+                    userNickname = userNickname.first(),
+                    userInstrument = userInstrument.first().toInstrument(),
+                    userDescription = userDescription.first()
                 )
             }
         }

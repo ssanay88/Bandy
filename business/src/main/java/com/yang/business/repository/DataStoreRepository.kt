@@ -24,8 +24,11 @@ interface DataStoreRepository {
     val userInstrument: Flow<String>
     suspend fun setUserInstrument(userInstrument: String)
 
-    val userRegion: Flow<String>
-    suspend fun setUserRegion(userRegion: String)
+    val userSido: Flow<String>
+    suspend fun setUserSido(userSido: String)
+
+    val userSigungu: Flow<String>
+    suspend fun setUserSigungu(userSigungu: String)
 
     val userGender: Flow<String>
     suspend fun setUserGender(userGender: String)

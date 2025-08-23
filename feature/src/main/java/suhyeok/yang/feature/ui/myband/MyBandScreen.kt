@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -39,9 +40,16 @@ fun MyBandScreen(
     val viewModel: MyBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.checkHasBand()
+    }
+
     when {
         uiState.isMyBandLoading -> LoadingScreen()
-        uiState.hasBand -> uiState.myBand?.let { BandDetailInfoSection(it) }
+        uiState.hasBand -> {
+            viewModel.loadMyBandData()
+            uiState.myBand?.let { BandDetailInfoSection(it) }
+        }
         else -> SuggestFindBandScreen(onSuggestFindBandClick)
     }
 }

@@ -92,13 +92,23 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override val userRegion: Flow<String> = context.dataStore.data.map { pref ->
-        pref[UserPreferencesKeys.USER_REGION] ?: ""
+    override val userSido: Flow<String> = context.dataStore.data.map { pref ->
+        pref[UserPreferencesKeys.USER_SIDO] ?: ""
     }
 
-    override suspend fun setUserRegion(userRegion: String) {
+    override suspend fun setUserSido(userSido: String) {
         context.dataStore.edit { pref ->
-            pref[UserPreferencesKeys.USER_REGION] = userRegion
+            pref[UserPreferencesKeys.USER_SIDO] = userSido
+        }
+    }
+
+    override val userSigungu: Flow<String> = context.dataStore.data.map { pref ->
+        pref[UserPreferencesKeys.USER_SIGUNGU] ?: ""
+    }
+
+    override suspend fun setUserSigungu(userSigungu: String) {
+        context.dataStore.edit { pref ->
+            pref[UserPreferencesKeys.USER_SIGUNGU] = userSigungu
         }
     }
 

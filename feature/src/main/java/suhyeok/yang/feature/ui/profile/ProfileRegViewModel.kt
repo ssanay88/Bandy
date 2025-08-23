@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
-import com.yang.business.common.toUserSession
 import com.yang.business.model.User
 import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.user.UserUseCases
@@ -12,9 +11,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import suhyeok.yang.shared.common.util.toStr
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,7 +52,24 @@ class ProfileRegViewModel @Inject constructor(
 
     fun updateUserSession(user: User) {
         viewModelScope.launch {
-            userSessionUseCase.updateUserSession(user.toUserSession())
+            dataStoreRepository.apply {
+                setUserId(user.userId)
+                setUserName(user.nickName)
+                setUserProfileImage(user.profileImageUrl)
+                setUserInstrument(user.instrument.toStr())
+                setUserDescription(user.userDescription)
+                setUserSido(user.region.sido)
+                setUserSigungu(user.region.sigungu)
+                setUserGender(user.gender.toStr())
+                setUserSkillLevel(user.skillLevel.toStr())
+                setUserBirthDate(user.birthDate.toString())
+            }
+        }
+    }
+
+    fun setLoggedIn() {
+        viewModelScope.launch {
+            dataStoreRepository.setIsLoggedIn(true)
         }
     }
 

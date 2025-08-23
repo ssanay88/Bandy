@@ -3,50 +3,42 @@ package suhyeok.yang.feature.ui.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.enums.Instrument
-import com.yang.business.model.Region
 import com.yang.business.model.UserSession
 import com.yang.business.repository.DataStoreRepository
-import com.yang.business.usecase.user.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import suhyeok.yang.shared.common.util.toInstrument
+import suhyeok.yang.shared.common.util.toStr
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileUpdateViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository,
-    private val userUseCases: UserUseCases
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUpdateUiState())
     val uiState = _uiState.asStateFlow()
 
     private lateinit var initialUserSession: UserSession
 
-    init {
-        loadMyProfileInfo()
-    }
-
     fun loadMyProfileInfo() {
         viewModelScope.launch {
             _uiState.update { it.copy(overallLoading = true) }
-            userSessionUseCases.getUserSession().collectLatest { userSession ->
-                _uiState.update {
-                    with(userSession) {
-                        initialUserSession = userSession.copy()
 
-                        it.copy(
-                            overallLoading = false,
-                            myProfileImageUrl = userProfileImage,
-                            myProfileNickname = userNickname,
-                            myProfileInstrument = userInstrument,
-                            myProfileSido = userRegion.sido,
-                            myProfileSigungu = userRegion.sigungu,
-                            myProfileIntroduce = userDescription
-                        )
-                    }
+            with(dataStoreRepository) {
+                _uiState.update { uiState ->
+                    uiState.copy(
+                        overallLoading = false,
+                        myProfileImageUrl = userProfileImage.first(),
+                        myProfileNickname = userNickname.first(),
+                        myProfileInstrument = userInstrument.first().toInstrument(),
+                        myProfileSido = userSido.first(),
+                        myProfileSigungu = userSigungu.first(),
+                        myProfileIntroduce = userDescription.first()
+                    )
                 }
             }
         }
@@ -70,18 +62,14 @@ class ProfileUpdateViewModel @Inject constructor(
     fun updateMyProfile() {
         viewModelScope.launch {
             // Usersession 변경
-            userSessionUseCases.updateUserSession(
-                initialUserSession.copy(
-                    userProfileImage = _uiState.value.myProfileImageUrl,
-                    userNickname = _uiState.value.myProfileNickname,
-                    userInstrument = _uiState.value.myProfileInstrument,
-                    userRegion = Region(
-                        sido = _uiState.value.myProfileSido,
-                        sigungu = _uiState.value.myProfileSigungu
-                    ),
-                    userDescription = _uiState.value.myProfileIntroduce
-                )
-            )
+            dataStoreRepository.apply {
+                setUserProfileImage(_uiState.value.myProfileImageUrl)
+                setUserNickname(_uiState.value.myProfileNickname)
+                setUserInstrument(_uiState.value.myProfileInstrument.toStr())
+                setUserSido(_uiState.value.myProfileSido)
+                setUserSigungu(_uiState.value.myProfileSigungu)
+                setUserDescription(_uiState.value.myProfileIntroduce)
+            }
         }
     }
 

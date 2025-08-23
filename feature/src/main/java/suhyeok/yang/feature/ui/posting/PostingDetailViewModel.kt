@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -97,9 +98,7 @@ class PostingDetailViewModel @Inject constructor(
 
     fun getCurrentUserId() {
         viewModelScope.launch {
-            userSessionUseCases.getUserSession().collectLatest { userSession ->
-                _currentUserId.update { userSession.userId }
-            }
+            _currentUserId.update { dataStoreRepository.userId.first() }
         }
     }
 

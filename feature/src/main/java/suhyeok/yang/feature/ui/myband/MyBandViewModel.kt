@@ -3,63 +3,69 @@ package suhyeok.yang.feature.ui.myband
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
-import com.yang.business.model.Band
 import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.band.BandUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MyBandViewModel @Inject constructor(
-    val bandUseCases: BandUseCases,
+    private val bandUseCases: BandUseCases,
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyBandUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        checkHasBand()
-    }
-
     fun checkHasBand() {
         viewModelScope.launch {
-            userSessionUseCase.getUserSession().collectLatest { userSession ->
-                bandUseCases.readBand(userSession.bandId).collectLatest { result ->
-                    _uiState.update {
-                        when (result) {
-                            is DataResourceResult.Success -> {
-                                it.copy(
-                                    hasBand = true,
-                                    myBand = result.data,
-                                    isMyBandLoading = false
-                                )
-                            }
+            _uiState.update {
+                if (dataStoreRepository.bandId.first().isEmpty()) {
+                    it.copy(hasBand = false)
+                } else {
+                    it.copy(hasBand = true)
+                }
+            }
+        }
+    }
 
-                            is DataResourceResult.Failure -> {
-                                it.copy(
-                                    myBandErrorMessage = result.exception.message,
-                                    isMyBandLoading = false
-                                )
-                            }
-
-                            is DataResourceResult.Loading -> {
-                                it.copy(isMyBandLoading = true)
-                            }
-
-                            else -> {
-                                it
-                            }
-
+    fun loadMyBandData() {
+        viewModelScope.launch {
+            val myBandId = dataStoreRepository.bandId.first()
+            bandUseCases.readBand(myBandId).collectLatest { result ->
+                _uiState.update {
+                    when (result) {
+                        is DataResourceResult.Success -> {
+                            it.copy(
+                                myBand = result.data,
+                                isMyBandLoading = false
+                            )
                         }
+
+                        is DataResourceResult.Failure -> {
+                            it.copy(
+                                myBandErrorMessage = result.exception.message,
+                                isMyBandLoading = false
+                            )
+                        }
+
+                        is DataResourceResult.Loading -> {
+                            it.copy(isMyBandLoading = true)
+                        }
+
+                        else -> {
+                            it
+                        }
+
                     }
                 }
             }
         }
+
     }
 }

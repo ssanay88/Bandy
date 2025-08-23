@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -31,36 +32,34 @@ class CreatePostingViewModel @Inject constructor(
 
     fun createPosting() {
         viewModelScope.launch {
-            userSessionUseCases.getUserSession().collectLatest { userSession ->
-                val newPosting = Posting(
-                    postingId = "posting_${UUID.randomUUID()}",
-                    title = uiState.value.postingTitle,
-                    content = uiState.value.postingContent,
-                    postingType = uiState.value.postingType,
-                    postingAuthorInfo = PostingAuthorInfo(
-                        authorId = userSession.userId,
-                        authorNickName = userSession.userNickname,
-                        authorProfileImageUrl = userSession.userProfileImage
-                    ),
-                    viewCount = 0,
-                    commentCount = 0,
-                    createdAt = LocalDateTime.now(),
-                    updatedAt = LocalDateTime.now(),
-                    comments = emptyList()
-                )
-                postingUseCases.createPosting(newPosting).collectLatest { result ->
-                    when (result) {
-                        is DataResourceResult.Loading -> {
-                            _createPostingState.value = CreatePostingState.Uploading
-                        }
-                        is DataResourceResult.Success -> {
-                            _createPostingState.value = CreatePostingState.Complete
-                        }
-                        is DataResourceResult.Failure -> {
-                            _createPostingState.value = CreatePostingState.Fail(result.exception.message)
-                        }
-                        else -> {}
+            val newPosting = Posting(
+                postingId = "posting_${UUID.randomUUID()}",
+                title = uiState.value.postingTitle,
+                content = uiState.value.postingContent,
+                postingType = uiState.value.postingType,
+                postingAuthorInfo = PostingAuthorInfo(
+                    authorId = dataStoreRepository.userId.first(),
+                    authorNickName = dataStoreRepository.userNickname.first(),
+                    authorProfileImageUrl = dataStoreRepository.userProfileImage.first()
+                ),
+                viewCount = 0,
+                commentCount = 0,
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now(),
+                comments = emptyList()
+            )
+            postingUseCases.createPosting(newPosting).collectLatest { result ->
+                when (result) {
+                    is DataResourceResult.Loading -> {
+                        _createPostingState.value = CreatePostingState.Uploading
                     }
+                    is DataResourceResult.Success -> {
+                        _createPostingState.value = CreatePostingState.Complete
+                    }
+                    is DataResourceResult.Failure -> {
+                        _createPostingState.value = CreatePostingState.Fail(result.exception.message)
+                    }
+                    else -> {}
                 }
             }
         }

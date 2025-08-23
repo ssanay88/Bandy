@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,12 +26,9 @@ class SplashActivityViewModel @Inject constructor(
     private fun checkUserLogin() {
         viewModelScope.launch {
             delay(1500L)
-
-            userSessionUseCases.getUserSession().collectLatest { userSession ->
-                when {
-                    userSession.isLogged -> _uiState.value = SplashUiState.NavigateToMainActivity
-                    !userSession.isLogged -> _uiState.value = SplashUiState.NavigateToLoginActivity
-                }
+            when (dataStoreRepository.isLoggedIn.first()) {
+                true -> _uiState.value = SplashUiState.NavigateToMainActivity
+                false -> _uiState.value = SplashUiState.NavigateToLoginActivity
             }
         }
     }

@@ -216,6 +216,7 @@ fun ProfileRegScreen(
                     viewModel.apply {
                         registerNewUser(newUser)
                         updateUserSession(newUser)
+                        setLoggedIn()
                     }
                 }
             })

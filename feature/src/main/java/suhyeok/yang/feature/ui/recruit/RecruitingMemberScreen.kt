@@ -44,7 +44,8 @@ import java.time.LocalDateTime
 @Composable
 fun RecruitingMemberScreen(
     recruitPostingId: String,
-    navController: NavController
+    navController: NavController,
+    onApplyClick: () -> Unit
 ) {
     val viewModel: RecruitingMemberViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -86,7 +87,10 @@ fun RecruitingMemberScreen(
                 }
                 RecruitingMemberButtonSection(
                     navController = navController,
-                    onApplyClick = {}
+                    onApplyClick = {
+                        viewModel.chatWithRecruitingBandLeader(uiState.title, uiState.postedBandImageUrl, uiState.authorId)
+                        onApplyClick()
+                    }
                 )
             }
         }
@@ -254,6 +258,8 @@ fun ApplyButton(modifier: Modifier = Modifier, onApplyClick: () -> Unit) {
     FilledButton(
         modifier = modifier,
         onClick = {
+            // 밴드장과 채팅방 생성
+            // 채팅방으로 이동
             onApplyClick()
         },
         content = {

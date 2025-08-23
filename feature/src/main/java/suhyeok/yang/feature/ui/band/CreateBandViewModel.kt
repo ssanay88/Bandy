@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,21 +36,20 @@ class CreateBandViewModel @Inject constructor(
 
     private fun initBandDefaultValues() {
         viewModelScope.launch {
-            userSessionUseCase.getUserSession().collectLatest { userSession ->
+            val loggedUserId = dataStoreRepository.userId.first()
+            _uiState.update {
+                it.copy(bandLeaderId = loggedUserId)
+            }
+
+            userUseCases.readUser(loggedUserId).collectLatest { result ->
                 _uiState.update {
-                    it.copy(bandLeaderId = userSession.userId)
-                }
+                    when (result) {
+                        is DataResourceResult.Success -> {
+                            it.copy(bandMemberList = it.bandMemberList + result.data)
+                        }
 
-                userUseCases.readUser(userSession.userId).collectLatest { result ->
-                    _uiState.update {
-                        when (result) {
-                            is DataResourceResult.Success -> {
-                                it.copy(bandMemberList = it.bandMemberList + result.data)
-                            }
-
-                            else -> {
-                                it
-                            }
+                        else -> {
+                            it
                         }
                     }
                 }
@@ -120,29 +119,25 @@ class CreateBandViewModel @Inject constructor(
         val newBand = uiStateToBand()
 
         viewModelScope.launch {
-            userSessionUseCase.getUserSession().firstOrNull()?.let { userSession ->
-                userSessionUseCase.updateUserSession(
-                    userSession.copy(
-                        isBand = true,
-                        bandId = newBand.bandId
-                    )
-                )
-
-                userUseCases.readUser(userSession.userId).onEach { result ->
-                    when (result) {
-                        is DataResourceResult.Success -> {
-                            userUseCases.updateUser(
-                                result.data.copy(
-                                    bandId = newBand.bandId,
-                                    isLeader = true
-                                )
-                            ).collect()
-                        }
-
-                        else -> {}
-                    }
-                }.collect()
+            dataStoreRepository.apply {
+                setIsBand(true)
+                setBandId(newBand.bandId)
             }
+
+            userUseCases.readUser(dataStoreRepository.userId.first()).onEach { result ->
+                when (result) {
+                    is DataResourceResult.Success -> {
+                        userUseCases.updateUser(
+                            result.data.copy(
+                                bandId = newBand.bandId,
+                                isLeader = true
+                            )
+                        ).collect()
+                    }
+
+                    else -> {}
+                }
+            }.collect()
         }
     }
 

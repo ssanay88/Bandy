@@ -12,6 +12,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import suhyeok.yang.data.datastore.DataStoreRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreBandRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreChatRoomRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreHomeTopBannerRepositoryImpl
@@ -55,5 +56,5 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindDataStoreRepository(dataStoreRepository: DataStoreRepository): DataStoreRepository
+    abstract fun bindDataStoreRepository(dataStoreRepositoryImpl: DataStoreRepositoryImpl): DataStoreRepository
 }

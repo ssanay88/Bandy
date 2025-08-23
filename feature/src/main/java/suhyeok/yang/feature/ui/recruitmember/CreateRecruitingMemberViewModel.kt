@@ -17,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -36,51 +37,52 @@ class CreateRecruitingMemberViewModel @Inject constructor(
     fun createRecruitingMemberPosting() {
         viewModelScope.launch {
             // 내 정보 불러오기 -> 밴드 정보 가져오기
-            userSessionUseCases.getUserSession().collectLatest { user ->
-                bandUseCases.readBand(user.bandId).collectLatest { result ->
-                    when (result) {
-                        is DataResourceResult.Success -> {
-                            val newRecruitingMemberPosting = with(_uiState.value) {
-                                RecruitPosting(
-                                    recruitPostingId = "recruitPostingId_${UUID.randomUUID()}",
-                                    title = recruitingInfoTitle,
-                                    content = recruitingInfoContent,
-                                    postedBandId = result.data.bandId,
-                                    postedBandName = result.data.bandName,
-                                    postedBandImageUrl = result.data.bandProfileImageUrl,
-                                    authorId = user.userId,
-                                    targetAgeGroups = targetAgeGroup.ifEmpty { listOf(AgeGroup.ALL_AGES) },
-                                    targetGender = targetGender,
-                                    targetRegion = Region(
-                                        sido = targetSido,
-                                        sigungu = targetSigungu
-                                    ),
-                                    targetSkillLevel = targetSkillLevel,
-                                    targetInstrument = targetInstrument,
-                                    recruitingStatus = RecruitingStatus.ACTIVE,
-                                    createdAt = LocalDateTime.now(),
-                                    updatedAt = LocalDateTime.now(),
-                                    viewCount = 0,
-                                    commentCount = 0
-                                    )
-                            }
-                            recruitPostingUseCases.createRecruitPosting(newRecruitingMemberPosting).collectLatest {result ->
-                                when (result) {
-                                    is DataResourceResult.Success -> {
-                                        _uiState.update { it.copy(overallLoading = false) }
-                                    }
-                                    is DataResourceResult.Failure -> {
-                                        _uiState.update { it.copy(overallLoading = false) }
-                                    }
-                                    is DataResourceResult.Loading -> {
-                                        _uiState.update { it.copy(overallLoading = true) }
-                                    }
-                                    else -> {}
+            val loggedUserId = dataStoreRepository.userId.first()
+            val loggedUserBandId = dataStoreRepository.bandId.first()
+
+            bandUseCases.readBand(loggedUserBandId).collectLatest { result ->
+                when (result) {
+                    is DataResourceResult.Success -> {
+                        val newRecruitingMemberPosting = with(_uiState.value) {
+                            RecruitPosting(
+                                recruitPostingId = "recruitPostingId_${UUID.randomUUID()}",
+                                title = recruitingInfoTitle,
+                                content = recruitingInfoContent,
+                                postedBandId = result.data.bandId,
+                                postedBandName = result.data.bandName,
+                                postedBandImageUrl = result.data.bandProfileImageUrl,
+                                authorId = loggedUserId,
+                                targetAgeGroups = targetAgeGroup.ifEmpty { listOf(AgeGroup.ALL_AGES) },
+                                targetGender = targetGender,
+                                targetRegion = Region(
+                                    sido = targetSido,
+                                    sigungu = targetSigungu
+                                ),
+                                targetSkillLevel = targetSkillLevel,
+                                targetInstrument = targetInstrument,
+                                recruitingStatus = RecruitingStatus.ACTIVE,
+                                createdAt = LocalDateTime.now(),
+                                updatedAt = LocalDateTime.now(),
+                                viewCount = 0,
+                                commentCount = 0
+                            )
+                        }
+                        recruitPostingUseCases.createRecruitPosting(newRecruitingMemberPosting).collectLatest {result ->
+                            when (result) {
+                                is DataResourceResult.Success -> {
+                                    _uiState.update { it.copy(overallLoading = false) }
                                 }
+                                is DataResourceResult.Failure -> {
+                                    _uiState.update { it.copy(overallLoading = false) }
+                                }
+                                is DataResourceResult.Loading -> {
+                                    _uiState.update { it.copy(overallLoading = true) }
+                                }
+                                else -> {}
                             }
                         }
-                        else -> {}
                     }
+                    else -> {}
                 }
             }
         }
