@@ -3,6 +3,7 @@ package suhyeok.yang.feature.ui.band
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yang.business.common.DataResourceResult
+import com.yang.business.common.UpdateRequestResult
 import com.yang.business.model.Band
 import com.yang.business.model.Region
 import com.yang.business.model.User
@@ -10,12 +11,14 @@ import com.yang.business.repository.DataStoreRepository
 import com.yang.business.usecase.band.BandUseCases
 import com.yang.business.usecase.user.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -30,27 +33,32 @@ class CreateBandViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CreateBandUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _updateRequestResult =
+        MutableStateFlow<UpdateRequestResult>(UpdateRequestResult.Initial)
+    val updateRequestResult = _updateRequestResult.asStateFlow()
+    private lateinit var loggedUserId: String
+
     init {
-        initBandDefaultValues()
+        viewModelScope.launch {
+            loggedUserId = dataStoreRepository.userId.first()
+            initBandDefaultValues()
+        }
     }
 
-    private fun initBandDefaultValues() {
-        viewModelScope.launch {
-            val loggedUserId = dataStoreRepository.userId.first()
+    private suspend fun initBandDefaultValues() {
+        _uiState.update {
+            it.copy(bandLeaderId = loggedUserId)
+        }
+
+        userUseCases.readUser(loggedUserId).collectLatest { result ->
             _uiState.update {
-                it.copy(bandLeaderId = loggedUserId)
-            }
+                when (result) {
+                    is DataResourceResult.Success -> {
+                        it.copy(bandMemberList = it.bandMemberList + result.data)
+                    }
 
-            userUseCases.readUser(loggedUserId).collectLatest { result ->
-                _uiState.update {
-                    when (result) {
-                        is DataResourceResult.Success -> {
-                            it.copy(bandMemberList = it.bandMemberList + result.data)
-                        }
-
-                        else -> {
-                            it
-                        }
+                    else -> {
+                        it
                     }
                 }
             }
@@ -85,7 +93,7 @@ class CreateBandViewModel @Inject constructor(
                         is DataResourceResult.Loading -> it.copy(overallLoading = true)
                         is DataResourceResult.Success -> it.copy(
                             overallLoading = false,
-                            matchedUsers = result.data
+                            matchedUsers = result.data.filter { it.userId != loggedUserId }
                         )
 
                         else -> {
@@ -97,48 +105,77 @@ class CreateBandViewModel @Inject constructor(
         }
     }
 
-    fun registerNewBand() {
+    fun createBandFlow() {
         val newBand = uiStateToBand()
 
         viewModelScope.launch {
-            bandUseCases.createBand(newBand).collectLatest { result ->
-                _uiState.update {
-                    when (result) {
-                        is DataResourceResult.Loading -> it.copy(overallLoading = true)
-                        is DataResourceResult.Success -> it.copy(overallLoading = false)
-                        else -> {
-                            it
-                        }
+            combine(
+                updateUserSession(newBand),
+                registerNewBand(newBand),
+                updateUsersWithBand(newBand)
+            ) { updateSessionResult, registerBandResult, updateUsersResult ->
+                val isAnyLoading = updateSessionResult is DataResourceResult.Loading ||
+                        registerBandResult is DataResourceResult.Loading ||
+                        updateUsersResult is DataResourceResult.Loading
+
+                val completeUpdate = updateSessionResult is DataResourceResult.Success &&
+                        registerBandResult is DataResourceResult.Success &&
+                        updateUsersResult is DataResourceResult.Success
+
+                val registerBandError = registerBandResult is DataResourceResult.Failure
+
+                val updateUsersError = updateUsersResult is DataResourceResult.Failure
+
+                when {
+                    isAnyLoading -> {
+                        _updateRequestResult.emit(UpdateRequestResult.Loading)
                     }
-                }
-            }
-        }
-    }
 
-    fun updateUserWithBand() {
-        val newBand = uiStateToBand()
+                    completeUpdate -> {
+                        _updateRequestResult.emit(UpdateRequestResult.Success)
+                    }
 
-        viewModelScope.launch {
-            dataStoreRepository.apply {
-                setIsBand(true)
-                setBandId(newBand.bandId)
-            }
-
-            userUseCases.readUser(dataStoreRepository.userId.first()).onEach { result ->
-                when (result) {
-                    is DataResourceResult.Success -> {
-                        userUseCases.updateUser(
-                            result.data.copy(
-                                bandId = newBand.bandId,
-                                isLeader = true
-                            )
-                        ).collect()
+                    updateUsersError || registerBandError -> {
+                        _updateRequestResult.emit(UpdateRequestResult.Failure("Update Failed"))
                     }
 
                     else -> {}
                 }
+
             }.collect()
         }
+
+    }
+
+    fun updateUserSession(newBand: Band): Flow<DataResourceResult<Unit>> = flow {
+        emit(DataResourceResult.Loading)
+
+        dataStoreRepository.apply {
+            setIsBand(true)
+            setBandId(newBand.bandId)
+            emit(DataResourceResult.Success(Unit))
+        }
+    }
+
+    suspend fun registerNewBand(newBand: Band): Flow<DataResourceResult<Unit>> =
+        bandUseCases.createBand(newBand)
+
+    fun updateUsersWithBand(newBand: Band): Flow<DataResourceResult<Unit>> = flow {
+        emit(DataResourceResult.Loading)
+
+        newBand.members.forEach { member ->
+            userUseCases.updateUser(member.copy(bandId = newBand.bandId, hasBand = true))
+                .first {
+                    it is DataResourceResult.Failure || it is DataResourceResult.Success
+                }.let { result ->
+                    if (result is DataResourceResult.Failure) {
+                        emit(result)
+                        return@flow
+                    }
+                }
+        }
+
+        emit(DataResourceResult.Success(Unit))
     }
 
     fun setBandProfileImageUrl(url: String) {

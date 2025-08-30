@@ -41,13 +41,12 @@ fun MyBandScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.checkHasBand()
+        viewModel.loadMyBandData()
     }
 
     when {
         uiState.isMyBandLoading -> LoadingScreen()
         uiState.hasBand -> {
-            viewModel.loadMyBandData()
             uiState.myBand?.let { BandDetailInfoSection(it) }
         }
         else -> SuggestFindBandScreen(onSuggestFindBandClick)

@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.yang.business.common.UpdateRequestResult
 import com.yang.business.model.User
 import suhyeok.yang.feature.MockData
 import suhyeok.yang.feature.R
@@ -63,6 +64,7 @@ import suhyeok.yang.feature.ui.profile.TitleText
 import suhyeok.yang.shared.common.component.CircleImageView
 import suhyeok.yang.shared.common.component.DebounceOutlinedTextField
 import suhyeok.yang.shared.common.component.LeftIconText
+import suhyeok.yang.shared.common.component.LoadingCircularProgressIndicator
 import suhyeok.yang.shared.common.component.RightIconText
 import suhyeok.yang.shared.common.util.throttleClick
 import suhyeok.yang.shared.ui.theme.Black
@@ -80,6 +82,8 @@ fun CreateBandScreen(
     val context = LocalContext.current
     val viewModel: CreateBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val updateRequestResult by viewModel.updateRequestResult.collectAsStateWithLifecycle()
+    var showLoadingProgress by remember { mutableStateOf(false) }
 
     val bandNameEmptyMessage = stringResource(R.string.band_name_input_message)
 
@@ -87,93 +91,109 @@ fun CreateBandScreen(
         viewModel.resetCreateBandUiState()
     }
 
-    Column {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(dimensionResource(R.dimen.padding_10dp))
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_24dp))
-        ) {
-            BandImageRegistSection(
-                selectedBandProfileImageUrl = uiState.bandProfileImageUrl,
-                onProfileSelect = { newBandProfileImageUrl ->
-                    viewModel.setBandProfileImageUrl(newBandProfileImageUrl)
-                }
-            )
-
-            BandCoverImageRegistSection(
-                selectedBandCoverImageUrl = uiState.bandCoverImageUrl,
-                onCoverSelect = { newBandCoverImageUrl ->
-                    viewModel.setBandCoverImageUrl(newBandCoverImageUrl)
-                }
-            )
-
-            BandNameRegistSection(
-                selectedBandName = uiState.bandName,
-                onBandNameChanged = { newBandName ->
-                    viewModel.setBandName(newBandName)
-                }
-            )
-
-            RegionSelectSection(
-                onSidoChanged = { viewModel.setBandSido(it) },
-                onSigunguChanged = { viewModel.setBandSigungu(it) }
-            )
-
-            BandMemberRegistSection(
-                vm = viewModel,
-                uiState = uiState,
-                selectedMemberList = uiState.bandMemberList,
-                addNewMember = { newMember ->
-                    viewModel.addBandMember(newMember)
-                }
-            )
-
-            BandIntroduceRegistSection(
-                bandIntroduce = uiState.bandIntroduce,
-                onBandIntroduceChanged = { newBandIntroduce ->
-                    viewModel.setBandIntroduce(newBandIntroduce)
-                }
-            )
-
-            BandLinkRegistSection(
-                youtubeLink = uiState.bandYoutubeLink,
-                onYoutubeLinkChanged = { newYoutubeLink ->
-                    viewModel.setBandYoutubeLink(newYoutubeLink)
-                },
-                instagramLink = uiState.bandInstagramLink,
-                onInstagramLinkChanged = { newInstagramLink ->
-                    viewModel.setBandInstagramLink(newInstagramLink)
-                },
-                spotifyLink = uiState.bandSpotifyLink,
-                onSpotifyLinkChanged = { newSpotifyLink ->
-                    viewModel.setBandSpotifyLink(newSpotifyLink)
-                }
-            )
+    when (updateRequestResult) {
+        UpdateRequestResult.Initial -> {
+            showLoadingProgress = false
         }
-        CreateBandScreenButtonSection(
-            onCancelClick = onCancelClick,
-            onCreateClick = {
-                when (viewModel.validateBandProfile()) {
-                    CreateBandValidationResult.BandNameEmpty -> Toast.makeText(
-                        context,
-                        bandNameEmptyMessage,
-                        Toast.LENGTH_SHORT
-                    ).show()
+        UpdateRequestResult.Loading -> {
+            showLoadingProgress = true
+        }
+        UpdateRequestResult.Success -> {
+            showLoadingProgress = false
+            onCreateBandClick()
+        }
+        is UpdateRequestResult.Failure -> {
+            showLoadingProgress = false
+        }
+    }
 
-                    CreateBandValidationResult.Success -> {
-                        onCreateBandClick()
-                        viewModel.apply {
-                            registerNewBand()
-                            updateUserWithBand()
+    Box {
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(dimensionResource(R.dimen.padding_10dp))
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_24dp))
+            ) {
+                BandImageRegistSection(
+                    selectedBandProfileImageUrl = uiState.bandProfileImageUrl,
+                    onProfileSelect = { newBandProfileImageUrl ->
+                        viewModel.setBandProfileImageUrl(newBandProfileImageUrl)
+                    }
+                )
+
+                BandCoverImageRegistSection(
+                    selectedBandCoverImageUrl = uiState.bandCoverImageUrl,
+                    onCoverSelect = { newBandCoverImageUrl ->
+                        viewModel.setBandCoverImageUrl(newBandCoverImageUrl)
+                    }
+                )
+
+                BandNameRegistSection(
+                    selectedBandName = uiState.bandName,
+                    onBandNameChanged = { newBandName ->
+                        viewModel.setBandName(newBandName)
+                    }
+                )
+
+                RegionSelectSection(
+                    onSidoChanged = { viewModel.setBandSido(it) },
+                    onSigunguChanged = { viewModel.setBandSigungu(it) }
+                )
+
+                BandMemberRegistSection(
+                    vm = viewModel,
+                    uiState = uiState,
+                    selectedMemberList = uiState.bandMemberList,
+                    addNewMember = { newMember ->
+                        viewModel.addBandMember(newMember)
+                    }
+                )
+
+                BandIntroduceRegistSection(
+                    bandIntroduce = uiState.bandIntroduce,
+                    onBandIntroduceChanged = { newBandIntroduce ->
+                        viewModel.setBandIntroduce(newBandIntroduce)
+                    }
+                )
+
+                BandLinkRegistSection(
+                    youtubeLink = uiState.bandYoutubeLink,
+                    onYoutubeLinkChanged = { newYoutubeLink ->
+                        viewModel.setBandYoutubeLink(newYoutubeLink)
+                    },
+                    instagramLink = uiState.bandInstagramLink,
+                    onInstagramLinkChanged = { newInstagramLink ->
+                        viewModel.setBandInstagramLink(newInstagramLink)
+                    },
+                    spotifyLink = uiState.bandSpotifyLink,
+                    onSpotifyLinkChanged = { newSpotifyLink ->
+                        viewModel.setBandSpotifyLink(newSpotifyLink)
+                    }
+                )
+            }
+            CreateBandScreenButtonSection(
+                onCancelClick = onCancelClick,
+                onCreateClick = {
+                    when (viewModel.validateBandProfile()) {
+                        CreateBandValidationResult.BandNameEmpty -> Toast.makeText(
+                            context,
+                            bandNameEmptyMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        CreateBandValidationResult.Success -> {
+                            viewModel.createBandFlow()
                         }
                     }
                 }
-            }
-        )
+            )
+        }
+        if (showLoadingProgress) Box(modifier = Modifier.align(Alignment.Center)) { LoadingCircularProgressIndicator() }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -213,11 +233,10 @@ fun BandImageRegistSection(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun BandCoverImageRegistSection(
-    selectedBandCoverImageUrl: String = "",
-    onCoverSelect: (String) -> Unit = {}
+    selectedBandCoverImageUrl: String,
+    onCoverSelect: (String) -> Unit
 ) {
     val photoPicker = rememberPhotoPicker(onCoverSelect)
 

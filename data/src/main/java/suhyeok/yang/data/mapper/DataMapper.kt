@@ -40,6 +40,7 @@ fun UserDTO.toBusinessUser() = User(
     skillLevel = this._skillLevel,
     birthDate = DateTimeUtils.toLocalDate(this._birthDate),
     bandId = this._bandId,
+    hasBand = this._hasBand,
     isLeader = this._isLeader,
     signupDate = DateTimeUtils.toLocalDate(this._signupDate),
     lastLoginDate = DateTimeUtils.toLocalDateTime(this._lastLoginDate)
@@ -57,6 +58,7 @@ fun User.toFirestoreUserDTO() = mapOf(
     "_skillLevel" to this.skillLevel,
     "_birthDate" to DateTimeUtils.toIsoString(this.birthDate.atStartOfDay()),
     "_bandId" to this.bandId,
+    "_hasBand" to this.hasBand,
     "_isLeader" to this.isLeader,
     "_signupDate" to DateTimeUtils.toIsoString(this.signupDate.atStartOfDay()),
     "_lastLoginDate" to DateTimeUtils.toIsoString(this.lastLoginDate)

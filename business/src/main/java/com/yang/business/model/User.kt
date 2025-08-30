@@ -18,6 +18,7 @@ data class User(
     var skillLevel: SkillLevel = SkillLevel.BEGINNER,
     val birthDate: LocalDate = LocalDate.now(),
     var bandId: String = "",
+    var hasBand: Boolean = false,
     var isLeader: Boolean = false,
     val signupDate: LocalDate = LocalDate.now(),
     var lastLoginDate: LocalDateTime = LocalDateTime.now()

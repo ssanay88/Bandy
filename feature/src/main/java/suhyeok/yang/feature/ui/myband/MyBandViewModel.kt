@@ -22,49 +22,54 @@ class MyBandViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MyBandUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun checkHasBand() {
-        viewModelScope.launch {
-            _uiState.update {
-                if (dataStoreRepository.bandId.first().isEmpty()) {
-                    it.copy(hasBand = false)
-                } else {
-                    it.copy(hasBand = true)
-                }
-            }
-        }
-    }
-
     fun loadMyBandData() {
         viewModelScope.launch {
             val myBandId = dataStoreRepository.bandId.first()
-            bandUseCases.readBand(myBandId).collectLatest { result ->
-                _uiState.update {
-                    when (result) {
-                        is DataResourceResult.Success -> {
-                            it.copy(
-                                myBand = result.data,
-                                isMyBandLoading = false
-                            )
-                        }
 
-                        is DataResourceResult.Failure -> {
-                            it.copy(
-                                myBandErrorMessage = result.exception.message,
-                                isMyBandLoading = false
-                            )
-                        }
+            when {
+                myBandId.isEmpty() -> {
+                    _uiState.update {
+                        it.copy(
+                            hasBand = false,
+                            isMyBandLoading = false
+                        )
+                    }
+                }
 
-                        is DataResourceResult.Loading -> {
-                            it.copy(isMyBandLoading = true)
-                        }
+                else -> {
+                    bandUseCases.readBand(myBandId).collectLatest { result ->
+                        _uiState.update {
+                            when (result) {
+                                is DataResourceResult.Success -> {
+                                    it.copy(
+                                        myBand = result.data,
+                                        hasBand = true,
+                                        isMyBandLoading = false
+                                    )
+                                }
 
-                        else -> {
-                            it
-                        }
+                                is DataResourceResult.Failure -> {
+                                    it.copy(
+                                        myBandErrorMessage = result.exception.message,
+                                        hasBand = true,
+                                        isMyBandLoading = false
+                                    )
+                                }
 
+                                is DataResourceResult.Loading -> {
+                                    it.copy(isMyBandLoading = true)
+                                }
+
+                                else -> {
+                                    it
+                                }
+
+                            }
+                        }
                     }
                 }
             }
+
         }
 
     }

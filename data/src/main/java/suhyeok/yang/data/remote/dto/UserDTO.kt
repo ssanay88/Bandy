@@ -18,6 +18,7 @@ data class UserDTO(
     var _skillLevel: SkillLevel = SkillLevel.BEGINNER,
     val _birthDate: String = "",
     var _bandId: String = "",
+    var _hasBand: Boolean = false,
     var _isLeader: Boolean = false,
     val _signupDate: String = "",
     var _lastLoginDate: String = ""
