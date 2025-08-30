@@ -164,7 +164,7 @@ class CreateBandViewModel @Inject constructor(
         emit(DataResourceResult.Loading)
 
         newBand.members.forEach { member ->
-            userUseCases.updateUser(member.copy(bandId = newBand.bandId, hasBand = true))
+            userUseCases.updateUser(member.copy(bandId = newBand.bandId, hasBand = true, isLeader = newBand.bandId == loggedUserId))
                 .first {
                     it is DataResourceResult.Failure || it is DataResourceResult.Success
                 }.let { result ->
