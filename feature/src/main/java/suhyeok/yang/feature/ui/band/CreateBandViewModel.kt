@@ -67,13 +67,14 @@ class CreateBandViewModel @Inject constructor(
 
     private fun uiStateToBand(): Band =
         with(_uiState.value) {
+            val newBandId = "band_${UUID.randomUUID()}"
             Band(
-                bandId = "band_${UUID.randomUUID()}",
+                bandId = newBandId,
                 bandName = bandName,
                 bandProfileImageUrl = bandProfileImageUrl,
                 coverImageUrl = bandCoverImageUrl,
                 bandDescription = bandIntroduce,
-                members = bandMemberList,
+                members = updateBandMemberData(bandMemberList, newBandId),
                 region = Region(
                     sido = bandSido,
                     sigungu = bandSigungu
@@ -83,6 +84,11 @@ class CreateBandViewModel @Inject constructor(
                 instagramLink = bandInstagramLink,
                 spotifyLink = bandSpotifyLink
             )
+        }
+
+    private fun updateBandMemberData(bandMembers: List<User>, newBandId: String): List<User> =
+        bandMembers.map {
+            it.copy(bandId = newBandId, hasBand = true, isLeader = (it.userId == loggedUserId))
         }
 
     fun searchByNickname(nickname: String) {
