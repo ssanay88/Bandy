@@ -38,8 +38,8 @@ class FirestoreUserDataSourceImpl @Inject constructor(): UserDataSource {
     }
 
     override suspend fun createUser(newUser: User): DataResourceResult<Unit> = runCatching {
-        db.collection(USER_COLLECTION)
-            .add(newUser.toFirestoreUserDTO())
+        db.collection(USER_COLLECTION).document(newUser.userId)
+            .set(newUser.toFirestoreUserDTO())
             .await()
         DataResourceResult.Success(Unit)
     }.getOrElse {
@@ -47,17 +47,16 @@ class FirestoreUserDataSourceImpl @Inject constructor(): UserDataSource {
     }
 
     override suspend fun updateUser(updatedUser: User): DataResourceResult<Unit> = runCatching {
-        db.collection(USER_COLLECTION)
-            .whereEqualTo("_userId", updatedUser.userId)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful && task.result.size() > 0) {
-                    task.result.forEach {
-                        db.collection(USER_COLLECTION).document(it.id)
-                            .update(updatedUser.toFirestoreUserDTO())
-                    }
-                }
-            }.await()
+        db.runTransaction { transaction ->
+            val userRef = db.collection(USER_COLLECTION).document(updatedUser.userId)
+            val userDoc = transaction.get(userRef)
+
+            if (userDoc.exists()) {
+                transaction.set(userRef, updatedUser.toFirestoreUserDTO(), SetOptions.merge())
+            } else {
+                transaction.set(userRef, updatedUser.toFirestoreUserDTO())
+            }
+        }.await()
         DataResourceResult.Success(Unit)
     }.getOrElse {
         DataResourceResult.Failure(it)
@@ -82,13 +81,13 @@ class FirestoreUserDataSourceImpl @Inject constructor(): UserDataSource {
 
     override suspend fun searchUserByNickname(nickname: String): DataResourceResult<List<User>> = runCatching {
         val usersSnapshot = db.collection(USER_COLLECTION)
+            .whereEqualTo("_hasBand",false)
             .whereGreaterThanOrEqualTo("_nickName", nickname)
             .whereLessThanOrEqualTo("_nickName", nickname + "\uf8ff")
             .get()
             .await()
 
         val users = usersSnapshot.documents.mapNotNull { it.toObject(UserDTO::class.java)?.toBusinessUser() }
-
         DataResourceResult.Success(users)
     }.getOrElse {
         DataResourceResult.Failure(it)
