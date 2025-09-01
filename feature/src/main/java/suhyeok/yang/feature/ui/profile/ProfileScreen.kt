@@ -159,6 +159,7 @@ fun ProfileMenuSection(
         UpdateProfile(onUpdateProfileClick)
         PostingHistory(onPostingsHistoryClick)
         if (isBandLeader) ManageBand(onManageBandClick)
+        ManageBand(onManageBandClick)
         NotificationPopup(onNotificationClick)
     }
 }

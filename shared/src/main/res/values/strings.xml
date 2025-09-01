@@ -16,4 +16,6 @@
     <string name="create_recruiting_member_screen_title">멤버 모집</string>
     <string name="posting_history_screen_title">게시글 내역</string>
     <string name="create_posting_screen_title">게시글 작성</string>
+    <string name="custom_alert_dialog_default_confirm_button_text">확인</string>
+    <string name="custom_alert_dialog_default_dismiss_button_text">취소</string>
 </resources>

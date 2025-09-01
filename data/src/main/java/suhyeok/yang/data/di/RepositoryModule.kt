@@ -1,5 +1,6 @@
 package suhyeok.yang.data.di
 
+import com.yang.business.repository.BandInfoRepository
 import com.yang.business.repository.BandRepository
 import com.yang.business.repository.ChatRoomRepository
 import com.yang.business.repository.DataStoreRepository
@@ -13,6 +14,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import suhyeok.yang.data.datastore.DataStoreRepositoryImpl
+import suhyeok.yang.data.repository.FirestoreBandInfoRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreBandRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreChatRoomRepositoryImpl
 import suhyeok.yang.data.repository.FirestoreHomeTopBannerRepositoryImpl
@@ -57,4 +59,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindDataStoreRepository(dataStoreRepositoryImpl: DataStoreRepositoryImpl): DataStoreRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBandInfoRepository(firestoreBandInfoRepositoryImpl: FirestoreBandInfoRepositoryImpl): BandInfoRepository
 }

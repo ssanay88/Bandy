@@ -5,12 +5,14 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import suhyeok.yang.data.datasource.BandDataSource
+import suhyeok.yang.data.datasource.BandInfoDataSource
 import suhyeok.yang.data.datasource.ChatRoomDataSource
 import suhyeok.yang.data.datasource.HomeTopBannerDataSource
 import suhyeok.yang.data.datasource.PostingDataSource
 import suhyeok.yang.data.datasource.RecruitPostingDataSource
 import suhyeok.yang.data.datasource.UserDataSource
 import suhyeok.yang.data.remote.firebase.FirestoreBandDataSourceImpl
+import suhyeok.yang.data.remote.firebase.FirestoreBandInfoDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreChatRoomDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestoreHomeTopBannerDataSourceImpl
 import suhyeok.yang.data.remote.firebase.FirestorePostingDataSourceImpl
@@ -46,4 +48,7 @@ abstract class DataSourceModule {
     @Singleton
     abstract fun bindChatRoomDataSource(firestoreChatRoomDataSourceImpl: FirestoreChatRoomDataSourceImpl): ChatRoomDataSource
 
+    @Binds
+    @Singleton
+    abstract fun bindBandInfoDataSource(firestoreBandInfoDataSourceImpl: FirestoreBandInfoDataSourceImpl): BandInfoDataSource
 }

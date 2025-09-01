@@ -1,5 +1,6 @@
 package suhyeok.yang.bandy.di
 
+import com.yang.business.repository.BandInfoRepository
 import com.yang.business.repository.BandRepository
 import com.yang.business.repository.ChatRoomRepository
 import com.yang.business.repository.HomeTopBannerRepository
@@ -22,6 +23,10 @@ import com.yang.business.usecase.chatroom.ReadChatRoomUseCase
 import com.yang.business.usecase.chatroom.UpdateChatRoomUseCase
 import com.yang.business.usecase.hometopbanner.HomeTopBannerUseCases
 import com.yang.business.usecase.hometopbanner.ReadHomeTopBannerUseCase
+import com.yang.business.usecase.manageband.AddMemberUseCase
+import com.yang.business.usecase.manageband.ChangeLeaderUseCase
+import com.yang.business.usecase.manageband.ManageBandUseCases
+import com.yang.business.usecase.manageband.RemoveMemberUseCase
 import com.yang.business.usecase.message.DeleteMessageUseCase
 import com.yang.business.usecase.message.GetChatParticipantsUseCase
 import com.yang.business.usecase.message.GetUnreadMessageCountUseCase
@@ -150,6 +155,16 @@ object UseCaseModule {
             readRecruitPostingList = ReadRecruitPostingListUseCase(recruitPostingRepository),
             updateRecruitPosting = UpdateRecruitPostingUseCase(recruitPostingRepository),
             deleteRecruitPosting = DeleteRecruitPostingUseCase(recruitPostingRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideManageBandUseCases(bandInfoRepository: BandInfoRepository): ManageBandUseCases {
+        return ManageBandUseCases(
+            addMember = AddMemberUseCase(bandInfoRepository),
+            removeMember = RemoveMemberUseCase(bandInfoRepository),
+            handOverLeader = ChangeLeaderUseCase(bandInfoRepository)
         )
     }
 

@@ -15,7 +15,7 @@ import suhyeok.yang.feature.nav.NavKeys
 import suhyeok.yang.feature.ui.band.CreateBandScreen
 import suhyeok.yang.feature.ui.recruitmember.CreateRecruitingMemberScreen
 import suhyeok.yang.feature.ui.home.HomeScreen
-import suhyeok.yang.feature.screen.ManageBandScreen
+import suhyeok.yang.feature.ui.band.ManageBandScreen
 import suhyeok.yang.feature.ui.myband.MyBandScreen
 import suhyeok.yang.feature.screen.NotificationScreen
 import suhyeok.yang.feature.ui.posting.PostingDetailScreen
@@ -151,7 +151,15 @@ fun BandyNavGraph(
             )
         }
         composable<NestedScreenRoute.ManageBandScreen> {
-            ManageBandScreen(onCancelClick = { navController.popBackStack() })
+            ManageBandScreen(
+                backToProfileScreen = {
+                    navController.navigate(MainScreenRoute.ProfileScreen) {
+                        popUpTo(MainScreenRoute.ProfileScreen) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onCancelClick = { navController.popBackStack() })
         }
         composable<NestedScreenRoute.CreateBandScreen> {
             CreateBandScreen(
