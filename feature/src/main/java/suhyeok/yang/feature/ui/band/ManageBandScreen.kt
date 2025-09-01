@@ -67,57 +67,51 @@ fun ManageBandScreen(
     backToProfileScreen: () -> Unit = {},
     onCancelClick: () -> Unit = {}
 ) {
-    var bandProfileImageUrl by remember { mutableStateOf("") }
-    var bandName by remember { mutableStateOf("") }
-    var selectedSido by remember { mutableStateOf("") }
-    var selectedSigungu by remember { mutableStateOf("") }
-    var bandMemberList by remember { mutableStateOf(emptyList<User>()) }
-    var bandIntroduce by remember { mutableStateOf("") }
-
     val viewModel: ManageBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val changeLeaderResult by viewModel.changeLeaderResult.collectAsStateWithLifecycle()
     val removedMemberResult by viewModel.removedMemberResult.collectAsStateWithLifecycle()
-    var showLoadingProgress by remember { mutableStateOf(false) }
+    var changingLeaderLoadingProgress by remember { mutableStateOf(false) }
+    var removingMemberLoadingProgress by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadMyBand()
     }
 
-    when {
-        changeLeaderResult is UpdateRequestResult.Initial -> {
-            showLoadingProgress = false
+    when (changeLeaderResult) {
+        is UpdateRequestResult.Initial -> {
+            changingLeaderLoadingProgress = false
         }
 
-        changeLeaderResult is UpdateRequestResult.Loading -> {
-            showLoadingProgress = true
+        is UpdateRequestResult.Loading -> {
+            changingLeaderLoadingProgress = true
         }
 
-        changeLeaderResult is UpdateRequestResult.Success -> {
-            showLoadingProgress = false
+        is UpdateRequestResult.Success -> {
+            changingLeaderLoadingProgress = false
             backToProfileScreen()
         }
 
-        changeLeaderResult is UpdateRequestResult.Failure -> {
-            showLoadingProgress = false
+        is UpdateRequestResult.Failure -> {
+            changingLeaderLoadingProgress = false
         }
     }
 
-    when {
-        removedMemberResult is UpdateRequestResult.Initial -> {
-            showLoadingProgress = false
+    when (removedMemberResult) {
+        is UpdateRequestResult.Initial -> {
+            removingMemberLoadingProgress = false
         }
 
-        removedMemberResult is UpdateRequestResult.Loading -> {
-            showLoadingProgress = true
+        is UpdateRequestResult.Loading -> {
+            removingMemberLoadingProgress = true
         }
 
-        removedMemberResult is UpdateRequestResult.Success -> {
-            showLoadingProgress = false
+        is UpdateRequestResult.Success -> {
+            removingMemberLoadingProgress = false
         }
 
-        removedMemberResult is UpdateRequestResult.Failure -> {
-            showLoadingProgress = false
+        is UpdateRequestResult.Failure -> {
+            removingMemberLoadingProgress = false
         }
     }
 
@@ -171,7 +165,7 @@ fun ManageBandScreen(
                     }
                 )
             }
-            if (showLoadingProgress) Box(modifier = Modifier.align(Alignment.Center)) { LoadingCircularProgressIndicator() }
+            if (changingLeaderLoadingProgress || removingMemberLoadingProgress) Box(modifier = Modifier.align(Alignment.Center)) { LoadingCircularProgressIndicator() }
         }
     }
 }
