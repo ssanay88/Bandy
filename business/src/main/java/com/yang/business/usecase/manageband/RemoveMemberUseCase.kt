@@ -5,5 +5,5 @@ import com.yang.business.repository.BandInfoRepository
 class RemoveMemberUseCase(
     private val bandInfoRepository: BandInfoRepository
 ) {
-    suspend operator fun invoke(bandId: String, userId: String) = bandInfoRepository.removeMember(bandId, userId)
+    suspend operator fun invoke(bandId: String, removedUserId: String) = bandInfoRepository.removeMember(bandId, removedUserId)
 }

@@ -32,6 +32,9 @@ class ManageBandViewModel @Inject constructor(
     private val _changeLeaderResult = MutableStateFlow<UpdateRequestResult>(UpdateRequestResult.Initial)
     val changeLeaderResult: StateFlow<UpdateRequestResult> = _changeLeaderResult.asStateFlow()
 
+    private val _removedMemberResult = MutableStateFlow<UpdateRequestResult>(UpdateRequestResult.Initial)
+    val removedMemberResult: StateFlow<UpdateRequestResult> = _removedMemberResult.asStateFlow()
+
     private lateinit var loadedBandInfo: Band
 
     fun loadMyBand() {
@@ -73,12 +76,16 @@ class ManageBandViewModel @Inject constructor(
 
     fun removeMember(userId: String) {
         viewModelScope.launch {
+            _removedMemberResult.emit(UpdateRequestResult.Loading)
+
             manageBandUseCases.removeMember(loadedBandInfo.bandId, userId).collectLatest { result ->
                 _uiState.update {
                     when (result) {
                         is DataResourceResult.Success -> {
-                            loadedBandInfo.members =
-                                loadedBandInfo.members.filter { member -> member.userId != userId }
+                            _removedMemberResult.emit(UpdateRequestResult.Success)
+
+                            loadedBandInfo.members = loadedBandInfo.members.filter { member -> member.userId != userId }
+
                             it.copy(
                                 overallLoading = false,
                                 bandMemberList = loadedBandInfo.members.filter { member -> member.userId != userId }

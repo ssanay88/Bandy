@@ -23,10 +23,10 @@ class FirestoreBandInfoRepositoryImpl @Inject constructor(
 
     override suspend fun removeMember(
         bandId: String,
-        userId: String,
+        removedUserId: String,
     ): Flow<DataResourceResult<Unit>> = flow {
         emit(DataResourceResult.Loading)
-        emit(bandInfoDataSource.removeMember(bandId, userId))
+        emit(bandInfoDataSource.removeMember(bandId, removedUserId))
     }.catch {
         emit(DataResourceResult.Failure(it))
     }

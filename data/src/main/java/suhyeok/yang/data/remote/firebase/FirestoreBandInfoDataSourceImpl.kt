@@ -68,9 +68,8 @@ class FirestoreBandInfoDataSourceImpl @Inject constructor() : BandInfoDataSource
 
     override suspend fun removeMember(
         bandId: String,
-        userId: String,
+        removedUserId: String,
     ): DataResourceResult<Unit> = runCatching {
-        // 1. 밴드 컬렉션에서 bandId에 해당하는 문서 가져오기
         val bandQuerySnapshot = Firebase.firestore
             .collection(BAND_COLLECTION)
             .whereEqualTo("_bandId", bandId)
@@ -78,17 +77,15 @@ class FirestoreBandInfoDataSourceImpl @Inject constructor() : BandInfoDataSource
             .await()
 
         if (bandQuerySnapshot.isEmpty) {
-            // 밴드가 존재하지 않는 경우
             return DataResourceResult.Failure(Exception("Band with ID $bandId not found"))
         }
 
-        // 밴드 문서 참조
         val bandDocumentReference = bandQuerySnapshot.documents.first().reference
 
         val currentMembers = bandDocumentReference.get().await()
             .get("_members") as? ArrayList<Map<String, Any>> ?: arrayListOf()
 
-        val updatedMembers = currentMembers.filter { it["_userId"] != userId }
+        val updatedMembers = currentMembers.filter { it["_userId"] != removedUserId }
 
         if (updatedMembers.size == currentMembers.size) {
             return DataResourceResult.Success(Unit) // 멤버가 없으므로 성공으로 처리
@@ -96,18 +93,22 @@ class FirestoreBandInfoDataSourceImpl @Inject constructor() : BandInfoDataSource
 
         bandDocumentReference.update("_members", updatedMembers).await()
 
+        // User DB에서 처리
         val userDocument = Firebase.firestore
             .collection(USER_COLLECTION)
-            .document(userId)
+            .document(removedUserId)
             .get()
             .await()
 
         if (!userDocument.exists()) {
-            return DataResourceResult.Failure(Exception("User with ID $userId not found"))
+            return DataResourceResult.Failure(Exception("User with ID $removedUserId not found"))
         }
 
         // 유저의 밴드 정보 업데이트
-        userDocument.reference.update("_bandId", "").await()
+        userDocument.reference.apply {
+            update("_bandId", "").await()
+            update("_hasBand", false).await()
+        }
 
         DataResourceResult.Success(Unit)
     }.getOrElse {

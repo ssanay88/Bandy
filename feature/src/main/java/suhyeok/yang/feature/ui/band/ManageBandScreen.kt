@@ -77,6 +77,7 @@ fun ManageBandScreen(
     val viewModel: ManageBandViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val changeLeaderResult by viewModel.changeLeaderResult.collectAsStateWithLifecycle()
+    val removedMemberResult by viewModel.removedMemberResult.collectAsStateWithLifecycle()
     var showLoadingProgress by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -98,6 +99,24 @@ fun ManageBandScreen(
         }
 
         changeLeaderResult is UpdateRequestResult.Failure -> {
+            showLoadingProgress = false
+        }
+    }
+
+    when {
+        removedMemberResult is UpdateRequestResult.Initial -> {
+            showLoadingProgress = false
+        }
+
+        removedMemberResult is UpdateRequestResult.Loading -> {
+            showLoadingProgress = true
+        }
+
+        removedMemberResult is UpdateRequestResult.Success -> {
+            showLoadingProgress = false
+        }
+
+        removedMemberResult is UpdateRequestResult.Failure -> {
             showLoadingProgress = false
         }
     }
@@ -311,10 +330,12 @@ fun ManageBandMemberItemView(viewModel: ManageBandViewModel, member: User) {
                             ManageBandMenu(
                                 title = stringResource(R.string.remove_member_text),
                                 dialogTitle = stringResource(R.string.remove_member_text),
-                                dialogDescription = stringResource(R.string.remove_member_dialog_description),
+                                dialogDescription = stringResource(R.string.remove_member_dialog_description, member.nickName),
                                 dialogConfirmButtonText = stringResource(R.string.remove_member_dialog_confirm_button_text),
                                 dialogDismissButtonText = stringResource(R.string.cancel_text),
-                                onConfirmClick = {},
+                                onConfirmClick = {
+                                    viewModel.removeMember(member.userId)
+                                },
                                 onDismissClick = {
                                     expanded = false
                                 }
