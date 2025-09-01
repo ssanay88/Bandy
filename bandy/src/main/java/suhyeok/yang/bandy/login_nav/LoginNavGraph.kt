@@ -34,7 +34,6 @@ fun LoginNavGraph(
 ) {
     val context = LocalContext.current
     val loginViewModel: LoginViewModel = hiltViewModel()
-    val profileRegViewModel: ProfileRegViewModel = hiltViewModel()
 
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
     val newUserId by loginViewModel.newUserId.collectAsStateWithLifecycle()
@@ -75,7 +74,7 @@ fun LoginNavGraph(
         }
         composable<SubScreenRoute.ProfileRegScreen> {navBackStackEntry ->
             val newUserId = navBackStackEntry.toRoute<SubScreenRoute.ProfileRegScreen>().newUserId
-            ProfileRegScreen(profileRegViewModel,newUserId, navController) {
+            ProfileRegScreen(newUserId, navController) {
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
                 (context as? ComponentActivity)?.finish()

@@ -54,7 +54,8 @@ class ProfileRegViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreRepository.apply {
                 setUserId(user.userId)
-                setUserName(user.nickName)
+                setUserName(user.userName)
+                setUserNickname(user.nickName)
                 setUserProfileImage(user.profileImageUrl)
                 setUserInstrument(user.instrument.toStr())
                 setUserDescription(user.userDescription)

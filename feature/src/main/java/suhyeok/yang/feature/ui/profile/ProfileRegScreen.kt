@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -79,7 +80,6 @@ import java.time.Instant
 
 @Composable
 fun ProfileRegScreen(
-    viewModel: ProfileRegViewModel,
     newUserId: String,
     navController: NavController,
     onRegisterClick: () -> Unit
@@ -95,6 +95,7 @@ fun ProfileRegScreen(
     var selectedBirthDate by remember { mutableStateOf<LocalDate>(LocalDate.now()) }
     var regDescription by remember { mutableStateOf("") }
 
+    val viewModel: ProfileRegViewModel = hiltViewModel()
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

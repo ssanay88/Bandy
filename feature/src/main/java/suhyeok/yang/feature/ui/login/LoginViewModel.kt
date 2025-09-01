@@ -47,6 +47,7 @@ class LoginViewModel @Inject constructor(
             when (loginResult) {
                 is DataResourceResult.Success -> {
                     loginResult.data.profile?.id?.let { profileId ->
+                        _newUserId.value = profileId
                         checkUserRegistered(profileId)
                     }
                 }
