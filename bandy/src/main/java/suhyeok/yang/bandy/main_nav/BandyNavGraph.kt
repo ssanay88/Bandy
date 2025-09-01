@@ -157,7 +157,11 @@ fun BandyNavGraph(
             CreateBandScreen(
                 onCancelClick = { navController.popBackStack() },
                 onCreateBandClick = {
-                    navController.navigate(MainScreenRoute.MyBandScreen)
+                    navController.navigate(MainScreenRoute.MyBandScreen) {
+                        popUpTo(MainScreenRoute.MyBandScreen) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

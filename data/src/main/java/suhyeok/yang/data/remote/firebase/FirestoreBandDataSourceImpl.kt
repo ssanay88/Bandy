@@ -35,11 +35,11 @@ class FirestoreBandDataSourceImpl @Inject constructor(): BandDataSource {
     override suspend fun readBand(bandId: String): DataResourceResult<Band> = runCatching {
         val bandSnapshot = db.collection(BAND_COLLECTION)
             .whereEqualTo("_bandId", bandId)
-            .limit(1)
             .get()
             .await()
 
-        val bandDTO = bandSnapshot.documents.first().toObject(BandDTO::class.java)
+        val bandDTO = bandSnapshot.toObjects(BandDTO::class.java).firstOrNull()
+
         if (bandDTO != null) {
             DataResourceResult.Success(bandDTO.toBusinessBand())
         } else {
